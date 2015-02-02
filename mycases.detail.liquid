@@ -108,13 +108,19 @@
                                         <td>{{desk.system.snippets.assigned_agent}}:</td>
                                         <td>{{case.user.name_public | show_something: desk.system.snippets.unassigned}}</td>
                                       </tr>
+                                      {% if desk.customer.can_access_company_tickets? %}
+                                      <tr>
+                                        <td>{{desk.system.snippets.from}}:</td>
+                                        <td>{{case.customer.first_name}} {{case.customer.last_name}}</td>
+                                      </tr>
+                                      {% endif %}
                                     </tbody>
                                   </table>
                               </div>
                               <div class="col-md-4">
                                 {% if case.status.id == 10 or case.status.id == 30 or case.status.id == 50 %}
                                   {{resolve_or_reopen_button}}
-                                {% else %}
+                                {% elsif case.status.id != 90 %}
                                   <button id="reOpen" onclick="javascript: $('div#ReplyRow').toggleClass('hidden'); $('#interaction_body').focus();
                                   $('<p>Add a response to reopen this case</p>').insertBefore('#interaction_body').slideDown(1000);"> {{ desk.system.snippets.reopen_case }}</button>
                                 {% endif %}
@@ -196,7 +202,53 @@
                                {{ question.body_plain | escape_newlines }}
                             </div>
                           </div>
-
+                          <div class="status row">
+                              <div class="col-md-8 stats">
+                                  <table class="table table-hover">
+                                    <tbody>
+                                      <tr>
+                                        <td>{{ system.snippets.case_status }}</td>
+                                        <td>
+                                            {% case case.status.id %}
+                                            {% when 10 %}
+                                              {{desk.system.snippets.case_new}}
+                                            {% when 30 %}
+                                              {{desk.system.snippets.case_open}}
+                                            {% when 50 %}
+                                              {{desk.system.snippets.case_pending}}
+                                            {% when 70 %}
+                                              {{desk.system.snippets.case_resolved}}
+                                            {% when 90 %}
+                                              {{desk.system.snippets.case_closed}}
+                                            {% endcase %}
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td>{{desk.system.snippets.case_id}}:</td>
+                                        <td>{{case.id}}</td>
+                                      </tr>
+                                      <tr>
+                                        <td>{{desk.system.snippets.assigned_agent}}:</td>
+                                        <td>{{case.user.name_public | show_something: desk.system.snippets.unassigned}}</td>
+                                      </tr>
+                                      {% if desk.customer.can_access_company_tickets? %}
+                                      <tr>
+                                        <td>{{desk.system.snippets.from}}:</td>
+                                        <td>{{case.customer.first_name}} {{case.customer.last_name}}</td>
+                                      </tr>
+                                      {% endif %}
+                                    </tbody>
+                                  </table>
+                              </div>
+                              <div class="col-md-4">
+                                {% if case.status.id == 10 or case.status.id == 30 or case.status.id == 50 %}
+                                  {{resolve_or_reopen_button}}
+                                {% elsif case.status.id != 90 %}
+                                  <button id="reOpen" onclick="javascript: $('div#ReplyRow').toggleClass('hidden'); $('#interaction_body').focus();
+                                  $('<p>Add a response to reopen this case</p>').insertBefore('#interaction_body').slideDown(1000);"> {{ desk.system.snippets.reopen_case }}</button>
+                                {% endif %}
+                              </div>
+                          </div>
                           <!-- ///////////////////////////////////////////////////////////////
                                               **** CASE ANSWERS  SECTION ****
                           /////////////////////////////////////////////////////////////// -->
@@ -320,13 +372,19 @@
                                         <td>{{desk.system.snippets.assigned_agent}}:</td>
                                         <td>{{case.user.name_public | show_something: desk.system.snippets.unassigned}}</td>
                                       </tr>
+                                      {% if desk.customer.can_access_company_tickets? %}
+                                      <tr>
+                                        <td>{{desk.system.snippets.from}}:</td>
+                                        <td>{{case.customer.first_name}} {{case.customer.last_name}}</td>
+                                      </tr>
+                                      {% endif %}
                                     </tbody>
                                   </table>
                               </div>
                               <div class="col-md-4">
                                 {% if case.status.id == 10 or case.status.id == 30 or case.status.id == 50 %}
                                   {{resolve_or_reopen_button}}
-                                {% else %}
+                                {% elsif case.status.id != 90 %}
                                   <button id="reOpen" onclick="javascript: $('div#ReplyRow').toggleClass('hidden'); $('#interaction_body').focus();
                                   $('<p>Add a response to reopen this case</p>').insertBefore('#interaction_body').slideDown(1000);"> {{ desk.system.snippets.reopen_case }}</button>
                                 {% endif %}
@@ -402,6 +460,12 @@
                                       <td>{{desk.system.snippets.assigned_agent}}:</td>
                                       <td>{{case.user.name_public | show_something: desk.system.snippets.unassigned}}</td>
                                     </tr>
+                                    {% if desk.customer.can_access_company_tickets? %}
+                                    <tr>
+                                      <td>{{desk.system.snippets.from}}:</td>
+                                      <td>{{case.customer.first_name}} {{case.customer.last_name}}</td>
+                                    </tr>
+                                    {% endif %}
                                   </tbody>
                                 </table>
                             </div>
@@ -459,11 +523,52 @@
                               <p><a href="{{ thread_url }}" target="_blank">View and reply to this thread on Facebook</a></p>
                             </div>
                       {% elsif case.is_phone_channel? %}<!--PH-->
-                        <div class='interaction row'>
-                          <h1> PHONE CASE</h1>
+                        <div class="header row">
+                          <h2>Phone Case</h2>
                           {{ case.description | escape_newlines }}
                         </div>
+                        <div class="status row">
+                            <div class="col-md-6 stats">
+                                <table class="table table-hover">
+                                  <tbody>
+                                    <tr>
+                                      <td>{{ system.snippets.case_status }}:</td>
+                                      <td>
+                                          {% case case.status.id %}
+                                          {% when 10 %}
+                                            {{desk.system.snippets.case_new}}
+                                          {% when 30 %}
+                                            {{desk.system.snippets.case_open}}
+                                          {% when 50 %}
+                                            {{desk.system.snippets.case_pending}}
+                                          {% when 70 %}
+                                            {{desk.system.snippets.case_resolved}}
+                                          {% when 90 %}
+                                            {{desk.system.snippets.case_closed}}
+                                          {% endcase %}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td>{{desk.system.snippets.case_id}}:</td>
+                                      <td>{{case.id}}</td>
+                                    </tr>
+                                    <tr>
+                                      <td>{{desk.system.snippets.assigned_agent}}:</td>
+                                      <td>{{case.user.name_public | show_something: desk.system.snippets.unassigned}}</td>
+                                    </tr>
+                                    {% if desk.customer.can_access_company_tickets? %}
+                                    <tr>
+                                      <td>{{desk.system.snippets.from}}:</td>
+                                      <td>{{case.customer.first_name}} {{case.customer.last_name}}</td>
+                                    </tr>
+                                    {% endif %}
+                                  </tbody>
+                                </table>
+                            </div>
+                        </div>
                       {% endif %}
+
+
                       <!-- ///////////////////////////////////////////////////////////////
                                         **** REPLY ROW  SECTION ****
                       /////////////////////////////////////////////////////////////// -->
