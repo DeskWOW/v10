@@ -85,6 +85,17 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 
+
+<!-- LOGO WIDTH TESTING -->
+{% if desk.page.theme.logo-img != "" %}
+  {% assign logowidth = desk.page.theme.logo-img-width | plus: 0 %}
+  {% if logowidth > 300 %}
+    {% assign widelogo = true %}
+  {% else %}
+   {% assign widelogo = false %}
+  {% endif %}
+{% endif %}
+
 <style>
     {% if desk.page.theme.logo-img != "" %}
     /* LOGO FUNCTIONALITY */
@@ -100,7 +111,7 @@
         text-indent: -9999px;
         {% endif %}
       }
-      {% if logowidth < 300 %}
+      {% if widelogo = false %}
       #mobile-menu .brand .logo{
         text-indent: -9999px;
         display: block;
@@ -112,7 +123,7 @@
       }
       {% endif %}
       /* ADJUST MENU FOR SUPER WIDE LOGO/BANNER IMAGE */
-      {% if logowidth > 550 %}
+      {% if widelogo = true %}
         #header .container {padding: 15px;}
         #header ul.nav.nav-pills {
           height: auto;
