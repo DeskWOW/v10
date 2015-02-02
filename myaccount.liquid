@@ -1,0 +1,54 @@
+
+        <!--
+              db       .g8"""bgd   .g8"""bgd   .g8""8q. `7MMF'   `7MF'`7MN.   `7MF'MMP""MM""YMM
+             ;MM:    .dP'     `M .dP'     `M .dP'    `YM. MM       M    MMN.    M  P'   MM   `7
+            ,V^MM.   dM'       ` dM'       ` dM'      `MM MM       M    M YMb   M       MM
+           ,M  `MM   MM          MM          MM        MM MM       M    M  `MN. M       MM
+           AbmmmqMA  MM.         MM.         MM.      ,MP MM       M    M   `MM.M       MM
+          A'     VML `Mb.     ,' `Mb.     ,' `Mb.    ,dP' YM.     ,M    M     YMM       MM
+        .AMA.   .AMMA. `"bmmmd'    `"bmmmd'    `"bmmd"'    `bmmmmd"'  .JML.    YM     .JMML.
+                        BEGIN MY ACCOUNT
+                                                                                              -->
+        <div id="desk-external-variables-myaccount" class="desk-external-variables hide">
+          <div id="system-snippets-email_required">{{system.snippets.email_required}}</div>
+          <div id="system-snippets-invalid_email">{{system.snippets.invalid_email}}</div>
+          <div id="system-snippets-duplicate_email">{{system.snippets.duplicate_email}}</div>
+        </div>
+        <div id="content">
+          <div class="container myportal account">
+            <div class="row">
+              <div class="col-md-8 {% if desk.page.theme.layout != 'left' %} col-md-push-4 {% endif %}">
+                <div class="header row">
+                  <div class="col-md-12">
+                    <h2>{{desk.system.snippets.account_title}}</h2>
+                    <a href='{{ desk.system.links.myportal }}'>{{desk.system.snippets.track_support_cases_clickable}}</a>{{desk.system.snippets.track_support_cases}}
+                  </div>
+                </div>
+                <div class="body row">
+                  <div class="col-md-12">
+                    {% unless current_customer.verified? %}
+                      <p class="bg-warning"> {{system.snippets.account_not_verified}} </p>
+                    {% endunless %}
+                    <p>
+                      {% if site.myportal_enabled %}
+
+                      {% else %}
+                        {{system.snippets.verify_email_addresses}}
+                      {% endif %}
+                    </p>
+                    <hr />
+                    <div id='form' class='myaccount-form'>
+                      {{desk.page.content.form}}
+                      <div id="twitterAdd"></div>
+                      <div id="facebookAdd"></div>
+                    </div>
+                  </div>
+                </div>
+              </div><!--END ACCOUNT-->
+              <!--Begin Sidebar-->
+              {{ sidebar_main }}
+              <!--END Sidebar-->
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript" src="//desk-customers.s3.amazonaws.com/shared/default/js/desk.portal.body.myaccount.js"></script>

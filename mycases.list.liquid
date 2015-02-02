@@ -1,0 +1,119 @@
+
+          <!--
+          `7MM"""Mq.   .g8""8q. `7MM"""Mq. MMP""MM""YMM   db      `7MMF'
+            MM   `MM..dP'    `YM. MM   `MM.P'   MM   `7  ;MM:       MM
+            MM   ,M9 dM'      `MM MM   ,M9      MM      ,V^MM.      MM
+            MMmmdM9  MM        MM MMmmdM9       MM     ,M  `MM      MM
+            MM       MM.      ,MP MM  YM.       MM     AbmmmqMA     MM      ,
+            MM       `Mb.    ,dP' MM   `Mb.     MM    A'     VML    MM     ,M
+          .JMML.       `"bmmd"' .JMML. .JMM.  .JMML..AMA.   .AMMA..JMMmmmmMMM
+                          BEGIN MY PORTAL INDEX
+                                                                              -->
+          <div id="registration-in-progress" class="hide">
+            <img alt='Ajax-loader-small' src='{{ "/images/ajax-loader-small.gif" | portal_image_url: image_asset_host }}' />
+            {{desk.system.snippets.registration_in_progress}}
+          </div>
+          <div id="content">
+            <div class="container myportal index">
+              <div class="row">
+                <!-- FULL WIDTH IF COMPANY CASES ARE ENDABLED  -->
+                {% if desk.customer.can_access_company_tickets? %}
+                <div class="col-md-12">
+                {% else %}
+                <div class="col-md-8">
+                {% endif %}
+                  <div class="header row">
+                    <div class="col-md-12">
+                      <!-- <h2>{{desk.system.snippets.my_cases}}</h2> -->
+                      <ul class="case-menu">
+                        <li>
+                          <select id="CaseFilter" class="form-control">
+                            <option value="my">{{desk.system.snippets.show_my_cases}}</option>
+                            {% if desk.customer.can_access_company_tickets? %}
+                            <option value="company" selected="selected">{{desk.system.snippets.show_all_cases}}</option>
+                            {% endif %}
+                            <option value="7">{{desk.system.snippets.show_last_num_days | format_snippet: '"num":"7"' }}</option>
+                            <option value="30">{{desk.system.snippets.show_last_num_days | format_snippet: '"num":"30"' }}</option>
+                          </select>
+                        </li>
+                        <li>
+                          <label class="checkbox">
+                            <input class="checkbox" id="ActiveOnly" type="checkbox" name="checkbox"></input>
+                            <span></span>
+                          </label>
+                          <label for="checkbox">{{desk.system.snippets.active_only}}</label>
+                        </li>
+                        {% if site.email_enabled_config %}
+                          <li class="new"><a href="{{desk.system.links.email}}" class="button">{{desk.system.snippets.create_new_case}}</a></li>
+                        {% endif %}
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="body row">
+                    <div class="col-md-12">
+                      <table id="MyCases" class="table table-striped table-hover {% if MyCasesSort == true %} sort {% endif %}">
+                        <thead>
+                          <tr>
+                            <th class="hidden-xs"><span>{{desk.system.snippets.case_id}}</span></th>
+                            <th class="hidden-xs"><span>{{desk.system.snippets.assigned_agent}}</span></th>
+                            <th><span>{{desk.system.snippets.subject}}</span></th>
+                            {% if desk.customer.can_access_company_tickets? %}
+                            <th class="hidden-xs"><span>{{desk.system.snippets.from}}</span></th>
+                            {% endif %}
+                            <th class="hidden-xs"><span>{{desk.system.snippets.updated}}</span></th>
+                            <th><span>{{desk.system.snippets.status}}</span></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for case in desk.page.content.cases %}
+                          <tr>
+                            <td class='hidden-xs a-caseid'>{{ case.id }}</td>
+                            <td class="hidden-xs"><span>{{case.user.name_public | show_something: desk.system.snippets.unassigned}}</span></td>
+                            <td class='a-casesubject'><img src='{{ case.channel_icon }}'/><a href="{{ case.portal_url }}">{{ case.subject | clip:30 }}</a></td>
+                            {% if desk.customer.can_access_company_tickets? %}
+                            <td class='a-casefrom hidden-xs'>{{case.customer.first_name}}</td>
+                            {% endif %}
+                            <td class='a-casecreated hidden-xs'>{{ case.updated_at | in_time_zone: site.timezone | date: '%b %d %Y' }}</td>
+                            <td class='a-casestatus'>{% case case.status.id %}
+                              {% when 10 %}
+                              {{desk.system.snippets.case_new}}
+                              {% when 30 %}
+                              {{desk.system.snippets.case_open}}
+                              {% when 50 %}
+                              {{desk.system.snippets.case_pending}}
+                              {% when 70 %}
+                              {{desk.system.snippets.case_resolved}}
+                              {% when 90 %}
+                              {{desk.system.snippets.case_closed}}
+                              {% endcase %}
+                            </td>
+                          </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                      <div id='pagination'>
+                        {{ desk.page.content.more_cases_block }}
+                      </div>
+                    </div>
+                  </div><!-- .row -->
+                </div>
+                <!-- ONLY SHOW SIDEBAR IF COMPANY CASES IS DISABLED -->
+                {% if desk.customer.can_access_company_tickets? %} {% else %}
+                <!--Begin Sidebar-->
+                {{ sidebar_main }}
+                <!--END Sidebar-->
+                {% endif %}
+              </div><!-- .row-->
+            </div><!-- .portal-->
+          </div><!-- #content -->
+
+
+
+
+        {% if MyCasesSort == true %}
+          <script type="text/javascript" src="//desk-customers.s3.amazonaws.com/shared/default/js/jquery.tablesorter.min.js"></script>
+          <input id="MyCaseSort" class="hidden" value="true" />
+        {% endif %}
+        <script type="text/javascript" src="//desk-customers.s3.amazonaws.com/shared/default/js/desk.portal.body.myportal_index.js"></script>
+
+

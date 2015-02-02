@@ -1,0 +1,417 @@
+{% if desk.apps.get_satisfaction.enabled %}
+{{ gsinit }}
+{% endif %}
+
+{% if favicon.size > 0 %}
+<link rel="SHORTCUT ICON" type='image/ico' href='{{favicon}}' />
+<link rel="icon" type='image/png' href='{{favicon}}' />
+{% else %}
+<link rel="icon" type='image/vnd.microsoft.icon' href='{{ "/favicon.ico" | portal_image_url: image_asset_host }}' />
+<link rel="icon" type='image/png' href='{{ "/favicon.png" | portal_image_url: image_asset_host }}' />
+{% endif %}
+<title>
+  {{ site.company_name }} |
+  {% case page %}
+  {% when 'page_index' %}
+    {{desk.system.snippets.portal_title}}
+  {% when 'page_search_result' %}
+    {{desk.system.snippets.search_results}}
+  {% when 'page_topic' %}
+    {{ topic.name | clip:40 }}
+  {% when 'page_article' %}
+    {{ article.subject_plain | clip:40 }}
+  {% when 'question_new' or 'question_pre_create' %}
+    {{desk.system.snippets.post_public_question}}
+  {% when 'question_show' %}
+    {{ question.subject_plain | clip:40 }}
+  {% when 'email_new' or 'email_pre_create' %}
+    {{desk.system.snippets.email_us}}
+  {% when 'email_submitted' %}
+    {{desk.system.snippets.email_sent}}
+  {% when 'chat_new' or 'chat_pre_create' %}
+    {{desk.system.snippets.live_chat}}
+  {% when 'myportal_index' %}
+    {{desk.system.snippets.my_cases}}
+  {% when 'myportal_show' %}
+    {{desk.page.content.case.subject | clip:40 }}
+  {% when 'login' %}
+    {{desk.system.snippets.login_title}}
+  {% when 'registration' %}
+    {{desk.system.snippets.registration_title}}
+  {% when 'forgot_password' %}
+    {{desk.system.snippets.password_reset_title}}
+  {% when 'myaccount' %}
+    {{desk.system.snippets.account_title}}
+  {% when 'authentication_verification' %}
+    {{desk.system.snippets.auth_verification_title}}
+  {% when 'customer_feedback' %}
+    {{desk.system.snippets.customer_feedback_title}}
+  {% when 'customer_feedback_completed' %}
+    {{desk.system.snippets.customer_feedback_title}}
+  {% endcase %}
+</title>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{% if page == 'page_article' %}
+<meta property="og:title" content="{{ article.subject_plain | clip:40 }}"/>
+<meta property="og:type" content="article"/>
+<meta property="og:site_name" content="{{ site.company_name }}"/>
+<meta property="og:description" content="{{ article.body_text | clip: 120}}"/>
+{% endif %}
+
+{% if page == 'page_topic' %}
+  {% if site.questions_enabled_config and topic.question_count > 0 and topic.allow_questions %}
+  <link rel="alternate" type="application/rss+xml" title="{{ topic.name | clip:40 }} - Questions (RSS 2.0)" href="{{ topic.public_url }}/questions.rss" />
+  {% endif %}
+  {% if topic.article_count > 0 %}
+  <link rel="alternate" type="application/rss+xml" title="{{ topic.name | clip:40 }} - Articles (RSS 2.0)" href="{{ topic.public_url }}/articles.rss" />
+  {% endif %}
+{% endif %}
+
+    <!-- ///////////////////////////////////////////////////////////////
+                  **** STYLE SHEETS FONTS AND MORE ****
+    /////////////////////////////////////////////////////////////// -->
+
+<link rel="stylesheet" href="//desk-customers.s3.amazonaws.com/shared/default/css/bootstrap.min.css">
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="//desk-customers.s3.amazonaws.com/shared/default/css/default.css" rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,600,400,300,700,800" rel='stylesheet' type='text/css'>
+ <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<style>
+    {% if desk.page.theme.logo-img != "" %}
+    /* LOGO FUNCTIONALITY */
+      #header h1 a {
+        display: inline-block;
+        min-width: 100%;
+        background: url('{{desk.page.theme.logo-img}}') no-repeat scroll 0 center transparent;
+        background-size: {{ desk.page.theme.logo-img-width | divided_by:1}}px {{desk.page.theme.logo-img-height | divided_by:1}}px;
+        height: {{desk.page.theme.logo-img-height | divided_by:1}}px;
+        padding-left: {{ desk.page.theme.logo-img-width | plus:24}}px;
+        line-height: {{desk.page.theme.logo-img-height}}px;
+        {% if  logowidth > 300 %}
+        text-indent: -9999px;
+        {% endif %}
+      }
+      {% if logowidth < 300 %}
+      #mobile-menu .brand .logo{
+        text-indent: -9999px;
+        display: block;
+        margin: 10px auto;
+        background: url('{{desk.page.theme.logo-img}}') no-repeat scroll 0 center transparent;
+        padding-top: {{desk.page.theme.logo-img-height | plus: 15 }}px;
+        height: {{desk.page.theme.logo-img-height | divided_by: 1}}px;
+        width: {{ desk.page.theme.logo-img-width | divided_by: 1}}px;
+      }
+      {% endif %}
+      /* ADJUST MENU FOR SUPER WIDE LOGO/BANNER IMAGE */
+      {% if logowidth > 550 %}
+        #header .container {padding: 15px;}
+        #header ul.nav.nav-pills {
+          height: auto;
+          padding-top: 15px;
+        }
+      {% else %}
+        #header ul.nav.nav-pills {
+          height: {{desk.page.theme.logo-img-height}}px;
+          padding-top: {{desk.page.theme.logo-img-height | divided_by: 3}}px;
+        }
+      {% endif %}
+    {% endif %}
+
+    /** BODY BACKGROUND ONLY  **/
+      body,html {
+        background: {{desk.page.theme.background-color}};
+
+      }
+    /* HEADER */
+      #header,
+      #mobileHeader,
+      #mobile-menu .search,
+      #mobile-menu input#q2{
+        background: {{desk.page.theme.hdr-background-color}};
+      }
+    /* HEADER TEXT/LINKS */
+      #header h1 a,
+      #header ul.nav.nav-pills li a,
+      #header ul.nav.nav-pills li p,
+      #header .langslct,
+      #header .langslct > .langslctInner{
+        border-color: {{desk.page.theme.hdr-text-color}};
+        color: {{desk.page.theme.hdr-text-color}} ;
+      }
+    /* HEADER HOVERS */
+      #header ul.nav.nav-pills li:hover a,
+      #header .langslct:hover,
+      #header .langslct.langslctHover,
+      #header .langslct.langslctOpen,
+      #header .langslct.langslctFocus {
+        border-color: {{desk.page.theme.hdr-text-color}}!important;
+        color: {{desk.page.theme.hdr-text-color}}!important;
+      }
+    /* MOBILE  HEADER*/
+      #mobileHeader,
+      #mobile-menu .search .row {
+        border-bottom: 1px solid {{desk.page.theme.hdr-text-color}};
+      }
+      #mobileHeader h1 a,
+      #mobile-menu input#q2,
+      #mobile-menu .search button {
+        color: {{desk.page.theme.hdr-text-color}}!important;
+      }
+      #mobileHeader .menu-button span {
+        background: {{desk.page.theme.hdr-text-color}};
+      }
+    /* HEADER COLORS/FACES */
+      body, p, html, h1, h2, h3, h4, h5, h6,
+      #content .container.index .desk-topic h3 a,
+      #content .container.index .desk-qna h3 a,
+      #content .container.index .get-sat h4 a,
+      #content .container.topic .body .qna h3 a,
+      #content .container.topic .body .article h3 a{
+        font-family: {{desk.page.theme.header-font}};
+        color: {{desk.page.theme.default-text-color}};
+      }
+    /* DEFAULT CONTENT COLORS/FACES */
+      body,p {
+        line-height: 1.64;
+        font-size: {{desk.page.theme.content-font-size }}px;
+        font-family: {{desk.page.theme.default-font}};
+      }
+      body, p, blockquote, ul, ol, li,
+      .breadcrumb > .active,
+      .myportal.index .body table tbody,
+      #content .container.index .desk-topic ul li a,
+      #content .container.index .desk-qna ul li a,
+      #content .container.index .get-sat ul li a {
+        color: {{desk.page.theme.content-text-color}};
+        font-family: {{ desk.page.theme.content-font }};
+      }
+    /* BUTTON COLORS */
+      .myportal.index .header ul.case-menu li.new a,
+      .myportal.case .status  button,
+      .myportal.case .status  input[type="submit"],
+      .new_customer_contact_email button,
+      #content .container.topic .header .switch .btn.active,
+      #content .container.topic .header .switch .btn:hover,
+      .input-button > input,
+      .attachments a.add_attachment,
+      .desk_file_upload input[type=button],
+      .input-button > input,
+      .input-button > input.btn.btn-submit,
+      .btn.btn-submit,
+      #rowbar ul li a,
+      .topics-only a.btn-primary {
+        background: {{desk.page.theme.btn-background-color}};
+        border-color: {{desk.page.theme.btn-background-color}};
+        color: {{desk.page.theme.btn-text-color}};
+      }
+    /* BUTTN HOVERS */
+      .myportal.index .header ul.case-menu li.new a:hover,
+      .myportal.case .status  button:hover,
+      .myportal.case .status  input[type="submit"]:hover,
+      .new_customer_contact_email button:hover,
+      #content .container.topic .header .switch .btn.active:hover,
+      #content .container.topic .header .switch .btn:hover:hover,
+      .input-button > input:hover,
+      .attachments a.add_attachment:hover,
+      .desk_file_upload input[type=button]:hover,
+      .input-button > input:hover,
+      .input-button > input.btn.btn-submit:hover,
+      .btn.btn-submit:hover,
+      #rowbar ul li a:hover,
+      .topics-only a.btn-primary:hover
+      #content .container.topic .header .switch .btn:hover{
+        background: {{desk.page.theme.btn-hover-color}};
+        border-color: {{desk.page.theme.btn-hover-color}};
+        color: {{desk.page.theme.btn-text-color}};
+      }
+    /* DEFAULT PILL STYLE BUTTONS */
+      .login a.btn,
+      .input-button > input.btn,
+      a.btn.btn-pill{
+        background: none;
+        border: 2px solid {{desk.page.theme.btn-background-color}};
+        color: {{desk.page.theme.btn-background-color}};
+      }
+      a.btn.btn-pill span {
+        color: {{desk.page.theme.btn-background-color}};
+        border-right: 2px solid {{desk.page.theme.btn-background-color}};
+      }
+      .login a.btn:hover,
+      .input-button > input.btn:hover,
+      #content a.btn.btn-pill:hover{
+        background: {{desk.page.theme.btn-background-color}};
+        color: {{desk.page.theme.btn-text-color}};
+        border-color: {{desk.page.theme.btn-background-color}};
+      }
+      #content a.btn.btn-pill:hover
+      #content a.btn.btn-pill span:hover,
+      #content a.btn.btn-pill:hover span{
+        color: {{desk.page.theme.btn-text-color}};
+        border-color: {{desk.page.theme.btn-text-color}};
+      }
+      #content a.btn.btn-pill:hover {
+        border-color: {{desk.page.theme.btn-background-color}};
+      }
+    /* QUESTION/ARTICLE SWITCH */
+      #content .container.topic .header .switch .btn {
+        background: none;
+        border-color: {{desk.page.theme.btn-background-color}} ;
+        color:  {{desk.page.theme.btn-background-color}} ;
+      }
+      #content .container.topic .header .switch .btn:hover,
+      #content .container.topic .header .switch .btn.active{
+        background: {{desk.page.theme.btn-background-color}};
+        border-color: {{desk.page.theme.btn-background-color}};
+        color: {{desk.page.theme.btn-text-color}};
+      }
+    /* LINKS COLOR */
+      a,
+      #breadcrumbs ol.breadcrumb li a,
+      .myportal.index .body table tbody tr a,
+      div.myportal.account .myaccount-form  div[id^="email_"] .verified input,
+      #add_facebook input.btn,
+      #add_twitter input.btn,
+      .container.pre-create .panel-body ul li h4 a span.highlight,
+      .container.pre-create .panel-body ul li a,
+      .container.pre-create .panel-body ul li h4,
+      div.options ul li a,
+      #sidebar > ul > li > a,
+      .gs-content ul > li > div,
+      #sidebar .autosuggest > ul > li > a > span,
+      #footer,
+      #footer .container p,
+      #footer .container a span,
+      #mobile-menu .mobile-suggest ul.results li a i {
+        color: {{desk.page.theme.hyperlink-color}};
+      }
+    /* PAGINATION */
+      .pagination>li>a, .pagination>li>span {
+        color: {{desk.page.theme.btn-background-color}};
+      }
+      .pagination>li>a:hover,
+      .pagination>li>span:hover,
+      .pagination>li>a:focus,
+      .pagination>li>span:focus {
+        color: {{desk.page.theme.btn-background-color}};
+      }
+      .pagination>.active>a,
+      .pagination>.active>span,
+      .pagination>.active>a:hover,
+      .pagination>.active>span:hover,
+      .pagination>.active>a:focus,
+      .pagination>.active>span:focus{
+        background: {{desk.page.theme.btn-background-color}};
+        border-color: {{desk.page.theme.btn-background-color}};
+        color: {{desk.page.theme.btn-text-color}};
+      }
+    /* SEARCH BAR -- Uses Old Title Background */
+      #search {background: {{desk.page.theme.title-background-color}};}
+    /* AUTOCOLETE */
+      .ui-menu {
+        background: {{desk.page.theme.autocomplete-background-color}};
+      }
+      ul.ui-menu li.ui-menu-item a{
+        font-size: {{desk.page.theme.autocomplete-font-size }}px;
+        color: {{ desk.page.theme.autocomplete-text-color }};
+        font-size: {{desk.page.theme.autocomplete-font-size}}px;
+      }
+      ul.ui-menu li.ui-menu-item:hover{
+        background-color: {{desk.page.theme.autocomplete-text-color}};
+        color: {{desk.page.theme.autocomplete-background-color}};
+      }
+      ul.ui-menu li.ui-menu-item:hover a span {
+        color: {{desk.page.theme.autocomplete-background-color}};
+      }
+     ul.ui-menu li.ui-menu-item .article-autocomplete-body {
+        font-size: {{desk.page.theme.autocomplete-font-size | minus: 4}}px;
+        color: {{desk.page.theme.autocomplete-snippet-color}};
+      }
+    {% if desk.page.theme.content-background-color != "" or desk.page.theme.content-background-color != "#" %}
+    /** CONTENT BACKGROUND ONLY  **/
+      #content,
+      #breadcrumbs,
+      .panel,
+      .field input[type=text],
+      .field input[type=password],
+      .form-control {
+        background: {{desk.page.theme.content-background-color }};
+      }
+    {% endif %}
+    {% if desk.page.theme.background-color != "#" and desk.page.theme.content-background-color != "#" %}
+      /** NON FULL WIDTH (BODY/CONTENT HAVE SEPERATE COLORS) **/
+        body,html {
+          background: {{desk.page.theme.background-color}};
+        }
+      /* HEADER */
+        #header {background: none;}
+        #header > .container {
+          background: {{desk.page.theme.hdr-background-color}};
+          padding: 40px 25px;
+        }
+        #header > .container > .row {margin: 0px;}
+      /* SEARCH */
+        #search {background: none;}
+        #search > .container {
+          padding: 30px 25px;
+          background: {{desk.page.theme.title-background-color}}
+        }
+        #search > .container > .row {
+          margin: 0px;
+        }
+        #search > .container > .row  div.col-md-12 {padding: 0px;}
+
+      /* BREADCRUMBS */
+        #breadcrumbs {background: none;}
+        #breadcrumbs > .container {
+          background: {{desk.page.theme.content-background-color}};
+          padding: 40px 25px 44px 25px;
+        }
+        #breadcrumbs > .container > .row {
+          margin: 0px!important;
+        }
+      /* CONTENT */
+        #content {background: none;}
+        #content > .container {
+          padding: 15px 25px 130px 25px;
+          background: {{desk.page.theme.content-background-color}};
+        }
+        #content > .container.index {
+          padding: 84px 25px 130px;
+        }
+        #content > .container > .row {
+          margin: 0px!important;
+        }
+
+      /* INNER CONTENT/FORMS */
+        .panel,
+        .field input[type=text],
+        .field input[type=password],
+        .form-control {
+          background: {{desk.page.theme.content-background-color}};
+        }
+
+      /* INDEX */
+        #content > .container { }
+
+      /* FOOTER */
+        #footer {
+          background: none;
+          padding:0px;
+        }
+        #footer > .container {
+          background: #353C45;
+          padding:  95px 25px 80px 25px;
+        }
+    {% endif %}
+    /** Custom CSS **/
+    {{ desk.page.theme.custom_css }}
+</style>
