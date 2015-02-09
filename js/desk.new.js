@@ -221,11 +221,14 @@ jQuery(document).ready(function() {
 
   //MAIN SEARCH AUTOCOMPLETE/FORMS/VALIDATION
     //DEFAULT SEARCH / AUTOCOMPLETE
+    var searchWidth = 0;
+    var searchWidth = $('#search #q').width();
+    var searchWidth = searchWidth + 20;
     if($('#q').length) {
       if ($("#q").val().length > 0) $("#question-mask").hide();
       // Default FOCUS
       $("#q").bind("autocompleteopen", function(event, ui) {
-        $('.ui-autocomplete').css({'margin':'0 0 0 -5px', 'width':'845px'});
+        $('.ui-autocomplete').css({'margin':'0px', 'width': searchWidth });
       });
     }
 
