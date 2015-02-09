@@ -39,15 +39,16 @@ jQuery(function($) {
 });
 
 // CONTORLS LOADING AND SORTING OF ALL CASES ON THE SAME PAGE
-(function($) { 
-  if($('#MyCaseSort').val() != null) { 
+(function($) {
+  if($('#MyCaseSort').val() != null) {
+    if($('#pagination a.next_page').length){
       function nextPage(url, callback) {
         $.get(url, function(data, textStatus, jqXHR) {
           var cases = $(data).find('#MyCases tbody tr')
             , nextUrl = $(data).find('#pagination a.next_page');
-          
+
           callback(cases);
-          
+
           if (nextUrl && nextUrl.attr('href')) nextPage(nextUrl.attr('href'), callback);
         }, 'html');
       }
@@ -58,8 +59,11 @@ jQuery(function($) {
         });
         $('#pagination').hide();
       }
-      $('#MyCases').ajaxStop(function(){ 
+      $('#MyCases').ajaxStop(function(){
         $("#MyCases").tablesorter();
       });
+    } else {
+      $("#MyCases").tablesorter();
+    }
   }
 }(jQuery));
