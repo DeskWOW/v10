@@ -410,7 +410,7 @@
 <!-- External Variables for Portal Header -->
 <div id="desk-external-variables-header" class="desk-external-variables" style="display:none;">
   <div id="system_language">{{system.language}}</div>
-  <div id="brand_id">{{ desk.current_brand.id }}</div>
+
   <div id="results_mobile">{{system.snippets.results_found_for | replace: 'for', '' }}</div>
   <div id="read_only">{{read_only}}</div>
   <div id="header_text">{{desk.page.theme.hdr-text-color}}</div>
@@ -432,25 +432,28 @@
   <div id="system-snippets-invalid_characters_found">{{system.snippets.invalid_characters_found}}</div>
   <div id="site-search_autocomplete_articles_url">{{site.search_autocomplete_articles_url}}</div>
   <div id="search-term">{{search_term}}</div>
+  <div id="current-page">{{ page }}</div>
+  <div id="brand_id">{{ desk.current_brand.id }}</div>
   <div id="brands">
     {% for brand in desk.brands %}
        <div id="{{brand.id}}">{{brand.name}}</div>
     {% endfor %}
   </div>
   {% if desk.apps.get_satisfaction.enabled %}
-  <div id="system-snippets-get_satisfaction_error">{{system.snippets.get_satisfaction_error}}</div>
-  <div id="system-snippets-view_all">{{system.snippets.view_all}}</div>
-  <div id="system-snippets-no_related_discussions">{{system.snippets.no_related_discussions}}</div>
-  <div id="system-snippets-related_discussions">{{system.snippets.related_discussions}}</div>
-  <div id="zero0">{{0}}</div>
-  <div id="system-snippets-discussions">{{system.snippets.discussions}}</div>
-  <div id="system-snippets-replies">{{system.snippets.replies}}</div>
-  <div id="system-snippets-questions">{{system.snippets.questions}}</div>
-  <div id="system-snippets-ideas">{{system.snippets.ideas}}</div>
-  <div id="system-snippets-problems">{{system.snippets.problems}}</div>
-  <div id="system-snippets-praise">{{system.snippets.praise}}</div>
+    <div id="system-snippets-get_satisfaction_error">{{system.snippets.get_satisfaction_error}}</div>
+    <div id="system-snippets-view_all">{{system.snippets.view_all}}</div>
+    <div id="system-snippets-no_related_discussions">{{system.snippets.no_related_discussions}}</div>
+    <div id="system-snippets-related_discussions">{{system.snippets.related_discussions}}</div>
+    <div id="zero0">{{0}}</div>
+    <div id="system-snippets-discussions">{{system.snippets.discussions}}</div>
+    <div id="system-snippets-replies">{{system.snippets.replies}}</div>
+    <div id="system-snippets-questions">{{system.snippets.questions}}</div>
+    <div id="system-snippets-ideas">{{system.snippets.ideas}}</div>
+    <div id="system-snippets-problems">{{system.snippets.problems}}</div>
+    <div id="system-snippets-praise">{{system.snippets.praise}}</div>
   {% endif %}
 </div>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-<script src="//desk-customers.s3.amazonaws.com/shared/default/js/jquery.customSelect.min.js" type="text/javascript"></script>
-<script src="//desk-customers.s3.amazonaws.com/shared/default/js/desk.new.js" type="text/javascript"></script>
+<script src="//desk-customers.s3.amazonaws.com/v10/js/jquery.customSelect.min.js" type="text/javascript"></script>
+<script src="//desk-customers.s3.amazonaws.com/v10/js/desk.new.js" type="text/javascript"></script>
+<script src="//desk-customers.s3.amazonaws.com/v10/js/desk.portal.js" type="text/javascript"></script>

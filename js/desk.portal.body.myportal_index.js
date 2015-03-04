@@ -53,7 +53,7 @@ jQuery(function($) {
         }, 'html');
       }
       var nextUrl = $('#pagination a.next_page');
-      if (nextUrl && nextUrl.attr('href')) {
+    if (nextUrl && nextUrl.attr('href')) {
         nextPage(nextUrl.attr('href'), function(cases) {
           $('#MyCases tbody').append(cases);
         });
