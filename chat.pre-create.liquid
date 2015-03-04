@@ -44,7 +44,7 @@
                               <i class="fa fa-file-text-o"></i>
                           {% endif %}
                           <a href='{{ result.public_url }}' target='_blank'>
-                            {{ result.subject_plain }}
+                            {{ result.subject_plain | clip:70  }}
                           </a>
                         </h4>
                         <p>
@@ -58,8 +58,6 @@
                     </ul>
                 </div>
                 <div class="modal-footer">
-
-
                   {{form_begin}}
                   <div class="input-button">
                     {{system.snippets.did_not_help}}

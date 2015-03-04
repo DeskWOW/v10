@@ -219,6 +219,7 @@
       .input-button > input.btn.btn-submit,
       .btn.btn-submit,
       #rowbar ul li a,
+      .label,
       .topics-only a.btn-primary {
         background: {{desk.page.theme.btn-background-color}};
         border-color: {{desk.page.theme.btn-background-color}};
@@ -229,8 +230,8 @@
       .myportal.case .status  button:hover,
       .myportal.case .status  input[type="submit"]:hover,
       .new_customer_contact_email button:hover,
-      #content .container.topic .header .switch .btn.active:hover,
-      #content .container.topic .header .switch .btn:hover:hover,
+      #content .container.topic .header .switch .btn.active,
+      #content .container.topic .header .switch .btn:hover,
       .input-button > input:hover,
       .attachments a.add_attachment:hover,
       .desk_file_upload input[type=button]:hover,
@@ -256,7 +257,13 @@
         color: {{desk.page.theme.btn-background-color}};
         border-right: 2px solid {{desk.page.theme.btn-background-color}};
       }
+      .alternatelogins #facebook,
+      .alternatelogins #twitter {
+        border: 2px solid {{desk.page.theme.btn-background-color}};
+      }
       .login a.btn:hover,
+      .alternatelogins #facebook:hover,
+      .alternatelogins #twitter:hover,
       .input-button > input.btn:hover,
       #content a.btn.btn-pill:hover{
         background: {{desk.page.theme.btn-background-color}};

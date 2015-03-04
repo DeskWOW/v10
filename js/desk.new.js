@@ -222,8 +222,7 @@ jQuery(document).ready(function() {
   //MAIN SEARCH AUTOCOMPLETE/FORMS/VALIDATION
     //DEFAULT SEARCH / AUTOCOMPLETE
     var searchWidth = 0;
-    var searchWidth = $('#search #q').width();
-    var searchWidth = searchWidth + 20;
+    var searchWidth = $('#search #q').outerWidth();
     if($('#q').length) {
       if ($("#q").val().length > 0) $("#question-mask").hide();
       // Default FOCUS

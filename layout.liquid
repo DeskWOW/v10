@@ -2,7 +2,7 @@
 {% assign MyCasesSort = true %}
 {% assign IndexLayout = "Grid" %}
 
-<!-- LOGO WIDTH TESTING -->
+<!-- LOGO WIDTH TESTING // DONT REMOVE-->
 {% if desk.page.theme.logo-img != "" %}
   {% assign logowidth = desk.page.theme.logo-img-width | plus: 0 %}
   {% if logowidth > 300 %}
@@ -13,7 +13,7 @@
 {% endif %}
 
 
-
+<!-- FOR DEMO PURPOSES ONLY // DO REMOVE -->
 {% if desk.current_brand.id == 5305 %}
   {% assign IndexLayout = "Grid" %}
 {% elsif desk.current_brand.id == 5306 %}
@@ -25,9 +25,6 @@
 
 
 {% capture sidebar_main %}
-
-
-
     <!-- BEGIN MAIN SIDEBAR -->
       <div id="sidebar" class="col-md-4 {% if desk.page.theme.layout != 'left' %}left col-md-pull-8{% endif %}">
         {% if site.questions_enabled_config or desk.apps.get_satisfaction.enabled or  site.email_enabled_config or site.chat_enabled_config or site.phone_enabled_config %}
@@ -89,7 +86,7 @@
 
 {% capture sidebar_suggest %}
     <!-- BEGIN AUTO SUGGEST SIDEBAR -->
-    <div id="sidebar" class="col-md-4 sidebar suggest">
+    <div id="sidebar" class="sidebar suggest col-md-4 {% if desk.page.theme.layout != 'left' %}left col-md-pull-8 {% endif %}">
       <div class="autosuggest"></div>
       <div id="common">
         {% if page == "question_new" %}

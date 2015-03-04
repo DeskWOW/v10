@@ -748,6 +748,9 @@ PUBLIC QUESTION ------
   div.container.qna div.row.body.answer.best div.col-md-11 {
     padding-left: 30px;
   }
+   div.container.qna div.row.body.answer.last hr{display:none;}
+
+
   /* Reply Styles */
   div.container.qna div.reply.row {
     padding-top: 60px;
@@ -774,6 +777,7 @@ PUBLIC QUESTION ------
     -moz-border-radius: 50px;
     border-radius: 50px;
   }
+  .answer-rating span {text-transform: capitalize;}
   .answer-rating span.score {
     margin-right: 10px;
   }
@@ -789,7 +793,6 @@ PUBLIC QUESTION ------
 /* -----------------------------------------------------------
 MY PORTAL INDEX------
 ----------------------------------------------------------- */
-  #content .container.myportal.index {padding: 0px;}
   .myportal.index .header {}
   .myportal.index .header ul.case-menu {
     list-style: none;
@@ -1460,7 +1463,7 @@ BUTTONS & FORMS ------
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
   }
-
+  *input::-ms-clear { display: none; }
   /* CSAT ERROR REALTED */
   #spam_alert {
     color: #a94442;
@@ -2276,16 +2279,41 @@ MOBILE MENU BRUGER BUTTON ------
     -ms-transform: rotate(45deg) translate(-0.45em);
     transform: rotate(45deg) translate(-0.45em);
   }
-/* -----------------------------------------------------------
-RESPONSIVE TWEAKS ------
------------------------------------------------------------ */
 
-/* -- SMALL SCREENS --
-  max-width 640px, mobile-only styles, use when QAing mobile issues */
-  @media only screen and (max-width: 40em) {
+/*=====================================================
+=            Bootstrap 2.3.2 Media Queries            =
+=====================================================*/
+#mobileHeader {display: none;}
+
+@media only screen and (max-width : 1200px) {
+  #mobileHeader {display: none;}
+}
+@media only screen and (max-width : 979px) {
+    #header,
+    #search {display: none;}
+    #mobileHeader {display: block;}
+    #breadcrumbs > .container > .row {
+      padding: 0px 15px;
+    }
+    #content > .container > .row > .col-md-8 {
+      padding: 0px 15px;
+    }
+    #content > .container > .row > .col-md-4{
+      padding: 0px 15px;
+    }
+}
+
+@media only screen and (max-width : 767px) {
+    #header,
+    #search {display: none;}
+    #mobileHeader {display: block;}
+}
+
+@media only screen and (max-width : 480px) {
     #header,
     #search {display: none;}
     #sidebar {margin-top: 50px;}
+    #mobileHeader {display: block;}
     #mobileHeader select {padding: 10px 15px;}
     #content .gravatar {display: none;}
     #mobile-menu .gravatar {display: block;}
@@ -2331,80 +2359,7 @@ RESPONSIVE TWEAKS ------
     .new_customer_contact_email input {
       max-width: 75%;
     }
-  }
-/* -- MEDIUM SCREENS --
-  min-width 641px, medium screens */
-  @media only screen and (min-width: 40.063em) {
-
-  }
-  /* min-width 641px and max-width 1024px */
-  @media only screen and (min-width: 40.063em) and (max-width: 64em) {
-    #header,
-    #search {display: none;}
-    #breadcrumbs > .container > .row {
-      padding: 0px 15px;
-    }
-    #content > .container > .row > .col-md-8 {
-      padding: 0px 15px;
-    }
-    #content > .container > .row > .col-md-4{
-      padding: 0px 15px;
-    }
-  }
-/* -- LARGE SCREENS --
-  min-width 1025px, large screens */
-  @media only screen and (min-width: 64.063em) {
-    #mobileHeader {display: none;}
-  }
-  /* min-width 1024px and max-width 1440px */
-  @media only screen and (min-width: 64.063em) and (max-width: 90em) {
-
-  }
-/* -- XLARGE SCREENS --
-  min-width 1441px, xlarge screens */
-  @media only screen and (min-width: 90.063em) {
-
-  }
-  /* min-width 1441px and max-width 1920px */
-  @media only screen and (min-width: 90.063em) and (max-width: 120em) {
-
-  }
-  /* min-width 1921px, xlarge screens */
-  @media only screen and (min-width: 120.063em) {
-
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
 
 /* -----------------------------------------------------------
                 ------ END STYLES ------

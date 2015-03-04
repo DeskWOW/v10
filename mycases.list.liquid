@@ -20,7 +20,7 @@
                 {% if desk.customer.can_access_company_tickets? %}
                 <div class="col-md-12">
                 {% else %}
-                <div class="col-md-8">
+                <div class="col-md-8 {% if desk.page.theme.layout != 'left' %} col-md-push-4 {% endif %}">
                 {% endif %}
                   <div class="header row">
                     <div class="col-md-12">
