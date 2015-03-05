@@ -963,16 +963,37 @@ var currentPage = deskEV('current-page');
 
 
 // =====================================================
-// Another Page
+// CSAT Page(S)
 // =====================================================
-if (currentPage == '') { };
+  if (currentPage == 'customer_feedback') {
+
+    //CUSTOMER SATASTICATION HIGHLIGHT VALUE/SELECTED
+    var VoteValue = $('#customer-feedback-checked-rating').val();
+    $('.btn.value-' + VoteValue ).addClass('active');
+
+    //FEEDBACK BUTTONS
+    $(function () {
+      $('.btn-radio').click(function(e) {
+        $('.btn-radio').not(this).removeClass('active')
+          .siblings('input').prop('checked',false)
+        $(this).addClass('active')
+          .siblings('input').prop('checked',true)
+      });
+    });
+
+  };
 
 
-
 // =====================================================
-// Another Page
+// Login Page
 // =====================================================
-if (currentPage == '') { };
+  if (currentPage == 'login') {
+      //LOGIN PAGE SOCIAL BUTTON TWEAKS
+      $(".alternatelogins a[href*='facebook']").prepend('<i class="fa fa-facebook fa-lg"></i> ').addClass('btn').after('<br />');
+      $(".alternatelogins a[href*='twitter']").prepend('<i class="fa fa-twitter fa-lg"></i> ').addClass('btn');
+      $("div.newaccount").prependTo("li.create").html();
+      $("div.forgotpw").prependTo("li.reset").html();
+  };
 
 
 
@@ -998,6 +1019,20 @@ $(document).ready(function() {
 // =====================================================
 // Search Related
 // =====================================================
+
+    //HIGHLIGHT SEARCH TERMS
+    setTimeout(function(){
+      function highlightSearchTerms(search_terms){
+        $.each(search_terms.split(' '), function(index, value) {
+          if(value.length > 3) {
+            $('#content a, #content p, #PreCreate p, #PreCreate a').highlight($.trim(value), '<span class=\"highlight\">$1</span>');
+            $('.container.search a, .container.search p').highlight($.trim(value), '<span class=\"highlight\">$1</span>');
+          }
+        });
+      }
+      highlightSearchTerms($('#search-term').html());
+    }, 500);
+
     var searchWidth = 0;
     var searchWidth = $('#search #q').outerWidth();
     if($('#q').length) {
@@ -1124,17 +1159,31 @@ $(document).ready(function() {
 // =====================================================
 // ALL PAGES // SITE WIDE JS
 // =====================================================
+
+    //MODAL CLOSE GO BACK
+    $('.onclick-go-back').click(function() {
+        history.back();
+    });
+
     //BREADCRUMBS HOME LINK
     var home_link = $('#breadcrumbs a:first-child').attr("href") || location.href;
     $("a[href='/']").attr("href", home_link );
 
-    // HIDE VARIABLE DIVS
+    // HIDE VARIABLE DIVS (backup to css display:none)
     $('.desk-external-variables').hide();
 
     //BOOSTRAP FORM CLASSES AND LEGACY BROWSER PLACE HOLDER
     $('input.default').addClass('form-control');
     $('select.default').addClass('form-control');
     $(":input[placeholder]").placeholder();
+
+    //PAGINATION BLOCK BOOTSTRAP CONVERSION
+    $( ".pagination" ).addClass("pagination-lg");
+    $( ".pagination .previous_page" ).html('<i class="fa fa-angle-double-left"></i>');
+    $( ".pagination .next_page" ).html('<i class="fa fa-angle-double-right"></i>');
+    $( ".pagination > a" ).wrap( "<li></li>" );
+    $( ".pagination > span.disabled" ).wrap( "<li class='disabled'><a></a></li>" );
+    $( ".pagination > em" ).wrap( "<li class='active'><a></a></li>" );
 
     //CUSTOM LANGUAGE SELECTS
     $('#desk-mobile-lang-list').append( $('#a-content-select').clone(true).removeAttr('id') );
@@ -1159,6 +1208,23 @@ $(document).ready(function() {
         }
     }
     $('#header ul.nav.nav-pills li a, #header .langslct').css('border-color', hexToRgbA($('#header_text').text()));
+
+    // Twitter Share Button
+    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+    // Facebook Like Button
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=190751927613851";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+    // Google Plus Button
+    (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'https://apis.google.com/js/plusone.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+    })();
 
     // READ ONLY PORTAL UI ADJUSTMENTS
     if (deskEV('read_only') == 'true') {

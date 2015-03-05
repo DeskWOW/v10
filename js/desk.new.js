@@ -11,22 +11,6 @@ function deskEV(v) {
 
 
 jQuery(document).ready(function() {
-    $('.onclick-go-back').click(function() {
-        history.back();
-    });
-
-  //HIGHLIGHT SEARCH TERMS
-  setTimeout(function(){
-    function highlightSearchTerms(search_terms){
-      $.each(search_terms.split(' '), function(index, value) {
-        if(value.length > 3) {
-          $('#content a, #content p, #PreCreate p, #PreCreate a').highlight($.trim(value), '<span class=\"highlight\">$1</span>');
-          $('.container.search a, .container.search p').highlight($.trim(value), '<span class=\"highlight\">$1</span>');
-        }
-      });
-    }
-    highlightSearchTerms($('#search-term').html());
-  }, 500);
 
 
 
@@ -36,9 +20,9 @@ jQuery(document).ready(function() {
 
 
 
-    //CUSTOMER SATASTICATION HIGHLIGHT VALUE/SELECTED
-    var VoteValue = $('#customer-feedback-checked-rating').val();
-    $('.btn.value-' + VoteValue ).addClass('active');
+
+
+
 
 
   //FORM PLACEHOLDERS
@@ -46,53 +30,18 @@ jQuery(document).ready(function() {
   //MOVE CAPTCHA ABOVE SUBMIT BUTTON
 
   //PAGINATION > BOOTSTRAP SUPPORT
-    $( ".pagination" ).addClass("pagination-lg");
-    $( ".pagination .previous_page" ).html('<i class="fa fa-angle-double-left"></i>');
-    $( ".pagination .next_page" ).html('<i class="fa fa-angle-double-right"></i>');
-    $( ".pagination > a" ).wrap( "<li></li>" );
-    $( ".pagination > span.disabled" ).wrap( "<li class='disabled'><a></a></li>" );
-    $( ".pagination > em" ).wrap( "<li class='active'><a></a></li>" );
-
-  //LOGIN PAGE SOCIAL BUTTON TWEAKS
-    $(".alternatelogins a[href*='facebook']").prepend('<i class="fa fa-facebook fa-lg"></i> ').addClass('btn').after('<br />');
-    $(".alternatelogins a[href*='twitter']").prepend('<i class="fa fa-twitter fa-lg"></i> ').addClass('btn');
-    $("div.newaccount").prependTo("li.create").html();
-    $("div.forgotpw").prependTo("li.reset").html();
-
-
-
-  //FEEDBACK BUTTONS
-    $(function () {
-      $('.btn-radio').click(function(e) {
-        $('.btn-radio').not(this).removeClass('active')
-          .siblings('input').prop('checked',false)
-        $(this).addClass('active')
-          .siblings('input').prop('checked',true)
-      });
-    });
 
 
 
 
 
 
-  //SOCIAL SHARE BUTTONS
-    // Tweet Button
-    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
-    // Facebook Like Button
-    (function(d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return;
-      js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=190751927613851";
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-    // Google Plus Button
-    (function() {
-        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-        po.src = 'https://apis.google.com/js/plusone.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-    })();
+
+
+
+
+
+
 
   // FOR BACK BUTTON LINKS (previously <a href="/" onclick="history.back(); return false;"> )
   // found in the question_pre_create, email_pre_create, chat_pre_create
@@ -105,74 +54,7 @@ jQuery(document).ready(function() {
 
 
 
-  //MAIN SEARCH AUTOCOMPLETE/FORMS/VALIDATION
-    //DEFAULT SEARCH / AUTOCOMPLETE
-    var searchWidth = 0;
-    var searchWidth = $('#search #q').outerWidth();
-    if($('#q').length) {
-      if ($("#q").val().length > 0) $("#question-mask").hide();
-      // Default FOCUS
-      $("#q").bind("autocompleteopen", function(event, ui) {
-        $('.ui-autocomplete').css({'margin':'0px', 'width': searchWidth });
-      });
-    }
 
-
-  //Do not load autocomplete if the search pacth is null - this happens if the search path is empty or
-  //the containing div cannot be found (may have been removed by the client)
-    if($("#site-search_autocomplete_articles_url").length>0) {
-      var autocomplete_source = deskEV('site-search_autocomplete_articles_url');
-      var brandID = deskEV('brand_id');
-      autocomplete_source += '?';
-      $("#q").autocomplete({
-        delay: 200,
-        minLength: 2,
-        search: function(event, ui) { $("#q").autocomplete("option", "source", autocomplete_source);},
-        select: function(event, ui) { $(location).attr('href', ui.item.id); },
-        focus: function(event, ui) { return false; }
-      });
-    }
-  //IF TEXT ENTERED
-    if($('#q').length) {
-      if ($('#q').length !== 0) {
-          //Hide #question-mask if search has content
-          if($('#q').val().length > 0) {
-            $('#question-mask').hide();
-          }
-          $('#q').focus(function(){
-            $('#question-mask').hide();
-          });
-          $('#q').blur(function(){
-            if($(this).val().length === 0) $('#question-mask').show();
-          });
-      }
-    }
-    $('#question-mask').click(function() {
-      $('#q').focus();
-    });
-
-    $('form').submit(function(){
-        $('input[type=text]').each(function(){
-          $(this).val($.trim($(this).val()))
-        });
-    });
-
-  // Extra validator added to handle invalid characters
-    $.validator.addMethod('invalidchars', function(value, element, param) {
-      param = param.split("").join("|");
-      if(param.length > 0){
-        return this.optional(element) || ! new RegExp(param).test(value);
-      }
-      return true;
-    }, deskEV('system.snippets.invalid_characters_found'));
-
-    $("#a-content-select").change(function(event){
-      var r = location.pathname.match(/\/customer(.*)\/portal(.*)/i);
-      if(r && r.length>1)
-        location.href = "/customer/" + $(this).val() + "/portal" + r[2] + location.search;
-      else
-        location.href = "/customer/" + $(this).val() + "/portal/articles" + location.search;
-    });
 
 
 
