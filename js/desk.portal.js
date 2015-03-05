@@ -10,35 +10,35 @@ var currentPage = deskEV('current-page');
 // =====================================================
 // Registration Page
 // =====================================================
-if (currentPage == 'registration') {
-  $('#form form').validate({
-    submitHandler: function(form) {
-      $('#registration_submit').attr('disabled',true);
-      $('#registration_submit').addClass('disabled');
-      form.submit();
-    },
-    rules:{
-      'email':{
-        'required':true,
-        'email':true
+  if (currentPage == 'registration') {
+    $('#form form').validate({
+      submitHandler: function(form) {
+        $('#registration_submit').attr('disabled',true);
+        $('#registration_submit').addClass('disabled');
+        form.submit();
+      },
+      rules:{
+        'email':{
+          'required':true,
+          'email':true
+        }
+      },
+      messages:{
+        'email':{
+          'required':$("#system-snippets-email_required").html(),
+          'email':$("#system-snippets-invalid_email").html()
+        }
+      },
+      highlight: function (element) {
+          $(element).closest('div.field').removeClass('has-success').addClass('has-error');
+          $('label:empty').remove();
+      },
+      success: function (element) {
+          $(element).closest('div.field').removeClass('has-error').addClass('has-success');
+          $('label:empty').remove();
       }
-    },
-    messages:{
-      'email':{
-        'required':$("#system-snippets-email_required").html(),
-        'email':$("#system-snippets-invalid_email").html()
-      }
-    },
-    highlight: function (element) {
-        $(element).closest('div.field').removeClass('has-success').addClass('has-error');
-        $('label:empty').remove();
-    },
-    success: function (element) {
-        $(element).closest('div.field').removeClass('has-error').addClass('has-success');
-        $('label:empty').remove();
-    }
-  });
-}
+    });
+  }
 
 // =====================================================
 // Question New
@@ -927,6 +927,176 @@ if (currentPage == 'myportal_show') {
 
 
 // =====================================================
+// Index Page
+// =====================================================
+if (currentPage == 'page_index') {
+
+  //INDEX PAGE/GET SATISFACTION
+  setTimeout(function(){
+   $("#gs_questions div.topic h5 a").appendTo("#gs_questions div.topic").addClass("btn btn-pill");
+   $("#gs_ideas div.topic h5 a").appendTo("#gs_ideas div.topic").addClass("btn btn-pill");
+   $("#gs_problems div.topic h5 a").appendTo("#gs_problems div.topic").addClass("btn btn-pill");
+   $("#gs_praises div.topic h5 a").appendTo("#gs_praises div.topic").addClass("btn btn-pill");
+  }, 3500);
+
+};
+
+
+
+// =====================================================
+// Article Page
+// =====================================================
+  if (currentPage == 'page_article') {
+    //ARTICLE CONTENT ADJUSTMENTS
+      $(".container.article .body.row img").addClass("img-responsive");
+      $('.container.article .body.row img').css('width', '');
+      $('.container.article .body.row img').css('height', '');
+    //ARTICLE RATEBLOCK
+      setTimeout(function() {
+        $('a.rate.increment').html('<i class="fa fa-thumbs-up"></i>')
+        $('a.rate.decrement').html('<i class="fa fa-thumbs-down"></i>')
+        $('#blockrate').html('div.answer-rating ')
+        if($('#rate_article_container').css('display') == 'none')
+        {
+          $('div.row.rateblock').addClass('hidden');
+        }
+      }, 500);
+  };
+
+
+
+// =====================================================
 // Another Page
 // =====================================================
 if (currentPage == '') { };
+
+
+
+// =====================================================
+// Another Page
+// =====================================================
+if (currentPage == '') { };
+
+
+
+
+// =====================================================
+// Another Page
+// =====================================================
+if (currentPage == '') { };
+
+
+
+// =====================================================
+// All Forms // Email / Chat / Question  - Related
+// =====================================================
+
+  //MODAL/POPUPS
+    $('#PreCreate').appendTo("body").modal('show');
+
+
+// =====================================================
+// ALL PAGES // SITE WIDE JS
+// =====================================================
+$(document).ready(function() {
+
+    //BREADCRUMBS HOME LINK
+    var home_link = $('#breadcrumbs a:first-child').attr("href") || location.href;
+    $("a[href='/']").attr("href", home_link );
+
+    // HIDE VARIABLE DIVS
+    $('.desk-external-variables').hide();
+
+    //BOOSTRAP FORM CLASSES AND LEGACY BROWSER PLACE HOLDER
+    $('input.default').addClass('form-control');
+    $('select.default').addClass('form-control');
+    $(":input[placeholder]").placeholder();
+
+    //CUSTOM LANGUAGE SELECTS
+    $('#desk-mobile-lang-list').append( $('#a-content-select').clone(true).removeAttr('id') );
+    $("#desk-mobile-lang-list select").change(function() {
+      $('#a-content-select').val($("#desk-mobile-lang-list select").val()).change();
+    });
+    $('#a-content-select').customSelect({customClass:'langslct'});
+    $('.langslctInner').append('<i class="fa fa-angle-down"></i>');
+    $('#desk-mobile-lang-list').customSelect({customClass:'moblangslct'});
+    $('.moblangslctInner').append('<i class="fa fa-language"></i>');
+
+    //CONVERT HEADER TEXT COLOR TO RGBA COLORS FOR BORDERS
+    function hexToRgbA(hex){
+        var c;
+        if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
+            c= hex.substring(1).split('');
+            if(c.length== 3){
+                c= [c[0], c[0], c[1], c[1], c[2], c[2]];
+            }
+            c= '0x'+c.join('');
+            return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+', .30)';
+        }
+    }
+    $('#header ul.nav.nav-pills li a, #header .langslct').css('border-color', hexToRgbA($('#header_text').text()));
+
+    // READ ONLY PORTAL UI ADJUSTMENTS
+    if (deskEV('read_only') == 'true') {
+      $(".input-button input[type='submit']").hide();
+      $("#support-side a").each(function(){
+        if( $(this).attr("href").match(/emails/) ){
+            if (deskEV('site.default_mailbox').length > 0) {
+                var default_mailbox = "mailto:" + deskEV('site.default_mailbox');
+                $(this).attr("href", default_mailbox);
+            } else {
+                $(this).hide();
+            }
+        } else {
+          $(this).hide();
+        }
+      });
+      $(".answer-rating").hide();
+      $(".question #form").html("{{system.snippets.answers_unavailable}}");
+      $("#rate_article").hide();
+    }
+
+    //MODERATED FUNCTIONALITY
+    if ($('#system-snippets-just_moderated').text() == 'true') {
+      $('h5 a').css('display', 'none');
+
+      $("#moderation_okay_button").click(function() {
+        $('h5 a').css('display', 'inline');
+        $('#modal-screen').hide();
+        $('#modal').hide();
+      });
+      $("#modal-screen").css({
+        "opacity":"0.7"
+      });
+      if($.browser.msie && $.browser.version < 7) {
+        $("#qna_kb_topic_id").css("display","none");
+        $("#modal-screen").css({
+          "width": $(window).width() + "px",
+          "height": $(window).height() + "px"
+        });
+      }
+    }
+
+    //SNIPPETS LOADING
+    if (deskEV('enable_gs') == 'true') { // XXX Ask Kevin if 'true' is correct string
+      gsStringTable['generic_error'] = deskEV('system.snippets.get_satisfaction_error');
+      gsStringTable['view_all'] = deskEV('system.snippets.view_all');
+      gsStringTable['search_header_no_results'] = deskEV('system.snippets.no_related_discussions');
+      gsStringTable['search_header_with_results'] = deskEV('system.snippets.related_discussions')+" {0} "+deskEV('system.snippets.discussions');
+      gsStringTable['generic_results_subheader'] = "{0} "+deskEV('system.snippets.discussions');
+      gsStringTable['generic_replies'] = "{0} "+deskEV('system.snippets.replies');
+      gsStringTable['questions_header'] = deskEV('system.snippets.questions');
+      gsStringTable['ideas_header'] = deskEV('system.snippets.ideas');
+      gsStringTable['problems_header'] = deskEV('system.snippets.problems');
+      gsStringTable['praises_header'] = deskEV('system.snippets.praise');
+      getCompanyId(); //Get Satisfaction Company ID
+    }
+
+    //Get Satisfaction Search Terms
+    if (deskEV('enable_gs') == 'true') {
+        var search_term = deskEV('search_term');
+        var params = ( search_term !== null ) ? "&topic[query]=" + escape(search_term) : "";
+        $('#gs_link').attr('href', gsurl + "/topics/new?from=company&product=&commit=Nope.+Finish+posting+my+question" + params);
+    }
+
+}); //End OnLoad

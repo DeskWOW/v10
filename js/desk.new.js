@@ -11,11 +11,11 @@ function deskEV(v) {
 
 
 jQuery(document).ready(function() {
-      $('.onclick-go-back').click(function() {
+    $('.onclick-go-back').click(function() {
         history.back();
     });
 
-    //HIGHLIGHT SEARCH TERMS
+  //HIGHLIGHT SEARCH TERMS
   setTimeout(function(){
     function highlightSearchTerms(search_terms){
       $.each(search_terms.split(' '), function(index, value) {
@@ -29,29 +29,10 @@ jQuery(document).ready(function() {
   }, 500);
 
 
-  //INDEX PAGE/GET SATISFACTION
-  setTimeout(function(){
-   $("#gs_questions div.topic h5 a").appendTo("#gs_questions div.topic").addClass("btn btn-pill");
-   $("#gs_ideas div.topic h5 a").appendTo("#gs_ideas div.topic").addClass("btn btn-pill");
-   $("#gs_problems div.topic h5 a").appendTo("#gs_problems div.topic").addClass("btn btn-pill");
-   $("#gs_praises div.topic h5 a").appendTo("#gs_praises div.topic").addClass("btn btn-pill");
-  }, 3500);
 
 
-  //ARTICLE CONTENT ADJUSTMENTS
-    $(".container.article .body.row img").addClass("img-responsive");
-    $('.container.article .body.row img').css('width', '');
-    $('.container.article .body.row img').css('height', '');
-  //ARTICLE RATEBLOCK
-    setTimeout(function() {
-      $('a.rate.increment').html('<i class="fa fa-thumbs-up"></i>')
-      $('a.rate.decrement').html('<i class="fa fa-thumbs-down"></i>')
-      $('#blockrate').html('div.answer-rating ')
-      if($('#rate_article_container').css('display') == 'none')
-      {
-        $('div.row.rateblock').addClass('hidden');
-      }
-    }, 500);
+
+
 
 
 
@@ -78,29 +59,7 @@ jQuery(document).ready(function() {
     $("div.newaccount").prependTo("li.create").html();
     $("div.forgotpw").prependTo("li.reset").html();
 
-  //CUSTOM LANGUAGE SELECTS
-    $('#desk-mobile-lang-list').append( $('#a-content-select').clone(true).removeAttr('id') );
-    $("#desk-mobile-lang-list select").change(function() {
-      $('#a-content-select').val($("#desk-mobile-lang-list select").val()).change();
-    });
-    $('#a-content-select').customSelect({customClass:'langslct'});
-      $('.langslctInner').append('<i class="fa fa-angle-down"></i>');
-    $('#desk-mobile-lang-list').customSelect({customClass:'moblangslct'});
-      $('.moblangslctInner').append('<i class="fa fa-language"></i>');
 
-  //CONVERT HEADER TEXT COLOR TO RGBA COLORS FOR BORDERS
-    function hexToRgbA(hex){
-        var c;
-        if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
-            c= hex.substring(1).split('');
-            if(c.length== 3){
-                c= [c[0], c[0], c[1], c[1], c[2], c[2]];
-            }
-            c= '0x'+c.join('');
-            return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+', .30)';
-        }
-    }
-    $('#header ul.nav.nav-pills li a, #header .langslct').css('border-color', hexToRgbA($('#header_text').text()));
 
   //FEEDBACK BUTTONS
     $(function () {
@@ -112,13 +71,8 @@ jQuery(document).ready(function() {
       });
     });
 
-  //MODAL/POPUPS
-    $('#PreCreate').appendTo("body").modal('show');
 
-  //BOOSTRAP FORM CLASSES AND LEGACY BROWSER PLACE HOLDER
-    $('input.default').addClass('form-control');
-    $('select.default').addClass('form-control');
-    $(":input[placeholder]").placeholder();
+
 
 
 
@@ -142,14 +96,6 @@ jQuery(document).ready(function() {
 
   // FOR BACK BUTTON LINKS (previously <a href="/" onclick="history.back(); return false;"> )
   // found in the question_pre_create, email_pre_create, chat_pre_create
-
-
-  //BREADCRUMBS HOME LINK
-    var home_link = $('#breadcrumbs a:first-child').attr("href") || location.href;
-    $("a[href='/']").attr("href", home_link );
-
-  // HIDE VARIABLE DIVS
-    $('.desk-external-variables').hide();
 
 
 
@@ -372,14 +318,5 @@ jQuery(document).ready(function() {
       time_text_days_ago: $('#system-snippets-days_ago').html(),
       time_text_about: $('#system-snippets-about').html()
     });
-  }
-});
-
-/// PORTAL FOOTER JS START
-$(document).ready(function() {
-  if (deskEV('enable_gs') == 'true') {
-      var search_term = deskEV('search_term');
-      var params = ( search_term !== null ) ? "&topic[query]=" + escape(search_term) : "";
-      $('#gs_link').attr('href', gsurl + "/topics/new?from=company&product=&commit=Nope.+Finish+posting+my+question" + params);
   }
 });
