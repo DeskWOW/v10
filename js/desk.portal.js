@@ -12,8 +12,10 @@ function deskEV(v) {
 
 
 var currentPage = deskEV('current-page');
-// Testing - alert(currentPage);
+//(currentPage);
 
+
+$(document).ready(function() {
 // =====================================================
 // Registration Page
 // =====================================================
@@ -1002,7 +1004,7 @@ var currentPage = deskEV('current-page');
       $("div.forgotpw").prependTo("li.reset").html();
   };
 
-
+}); //END ONLOAD FOR PAGES
 
 
 // =====================================================
