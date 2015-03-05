@@ -879,67 +879,64 @@ var currentPage = deskEV('current-page');
 // =====================================================
 // My Portal - Show Case
 // =====================================================
-if (currentPage == 'myportal_show') {
-
-    $('#qna_body').textarea_maxlength();
-      $('#interaction_body').validate({
-        submitHandler: function(form) {
-          $('#answer_submit').attr('disabled',true);
-          $('#answer_submit').addClass('disabled');
-          form.submit();
-        },
-        messages:{
-          'interaction[name]':{
-            'required': deskEV('system.snippets.name_required')
+  if (currentPage == 'myportal_show') {
+      $('#qna_body').textarea_maxlength();
+        $('#interaction_body').validate({
+          submitHandler: function(form) {
+            $('#answer_submit').attr('disabled',true);
+            $('#answer_submit').addClass('disabled');
+            form.submit();
           },
-          'interaction[email]':{
-            'required': deskEV('system.snippets.email_required'),
-            'email': deskEV('system.snippets.invalid_email')
-          },
-          'qna[body]':{
-            'required': deskEV('system.snippets.answer_required'),
-            'maxlength': deskEV('system.snippets.exceeding_max_chars')
-          }
-        },
-        rules:{
-          'interaction[name]':{
-            'required':true
-          },
-          'interaction[email]':{
-            'required':true,
-            'email':true
-          },
-          'qna[body]':{
-            'required':true,
-            'maxlength':5000
-          }
-        },
-        highlight: function (element) {
-                $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-                $('label:empty').remove();
+          messages:{
+            'interaction[name]':{
+              'required': deskEV('system.snippets.name_required')
             },
-        success: function (element) {
-                $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
-                $('label:empty').remove();
+            'interaction[email]':{
+              'required': deskEV('system.snippets.email_required'),
+              'email': deskEV('system.snippets.invalid_email')
+            },
+            'qna[body]':{
+              'required': deskEV('system.snippets.answer_required'),
+              'maxlength': deskEV('system.snippets.exceeding_max_chars')
             }
-      });
-};
+          },
+          rules:{
+            'interaction[name]':{
+              'required':true
+            },
+            'interaction[email]':{
+              'required':true,
+              'email':true
+            },
+            'qna[body]':{
+              'required':true,
+              'maxlength':5000
+            }
+          },
+          highlight: function (element) {
+                  $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+                  $('label:empty').remove();
+              },
+          success: function (element) {
+                  $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+                  $('label:empty').remove();
+              }
+        });
+  };
 
 
 // =====================================================
 // Index Page
 // =====================================================
-if (currentPage == 'page_index') {
-
-  //INDEX PAGE/GET SATISFACTION
-  setTimeout(function(){
-   $("#gs_questions div.topic h5 a").appendTo("#gs_questions div.topic").addClass("btn btn-pill");
-   $("#gs_ideas div.topic h5 a").appendTo("#gs_ideas div.topic").addClass("btn btn-pill");
-   $("#gs_problems div.topic h5 a").appendTo("#gs_problems div.topic").addClass("btn btn-pill");
-   $("#gs_praises div.topic h5 a").appendTo("#gs_praises div.topic").addClass("btn btn-pill");
-  }, 3500);
-
-};
+  if (currentPage == 'page_index') {
+    //INDEX PAGE/GET SATISFACTION
+    setTimeout(function(){
+     $("#gs_questions div.topic h5 a").appendTo("#gs_questions div.topic").addClass("btn btn-pill");
+     $("#gs_ideas div.topic h5 a").appendTo("#gs_ideas div.topic").addClass("btn btn-pill");
+     $("#gs_problems div.topic h5 a").appendTo("#gs_problems div.topic").addClass("btn btn-pill");
+     $("#gs_praises div.topic h5 a").appendTo("#gs_praises div.topic").addClass("btn btn-pill");
+    }, 3500);
+  };
 
 
 
@@ -986,7 +983,8 @@ if (currentPage == '') { };
 if (currentPage == '') { };
 
 
-
+//START ONLOAD
+$(document).ready(function() {
 // =====================================================
 // All Forms // Email / Chat / Question  - Related
 // =====================================================
@@ -995,8 +993,74 @@ if (currentPage == '') { };
     $('#PreCreate').appendTo("body").modal('show');
 
 
+
+
 // =====================================================
-// MOBILE RELATED JS
+// Search Related
+// =====================================================
+    var searchWidth = 0;
+    var searchWidth = $('#search #q').outerWidth();
+    if($('#q').length) {
+      if ($("#q").val().length > 0) $("#question-mask").hide();
+      // Default FOCUS
+      $("#q").bind("autocompleteopen", function(event, ui) {
+        $('.ui-autocomplete').css({'margin':'0px', 'width': searchWidth });
+      });
+    }
+
+    if($("#site-search_autocomplete_articles_url").length>0) {
+      var autocomplete_source = deskEV('site-search_autocomplete_articles_url');
+      var brandID = deskEV('brand_id');
+      autocomplete_source += '?';
+      $("#q").autocomplete({
+        delay: 200,
+        minLength: 2,
+        search: function(event, ui) { $("#q").autocomplete("option", "source", autocomplete_source);},
+        select: function(event, ui) { $(location).attr('href', ui.item.id); },
+        focus: function(event, ui) { return false; }
+      });
+    }
+    //Text Enterted
+    if($('#q').length) {
+      if ($('#q').length !== 0) {
+          //Hide #question-mask if search has content
+          if($('#q').val().length > 0) {
+            $('#question-mask').hide();
+          }
+          $('#q').focus(function(){
+            $('#question-mask').hide();
+          });
+          $('#q').blur(function(){
+            if($(this).val().length === 0) $('#question-mask').show();
+          });
+      }
+    }
+    $('#question-mask').click(function() {
+      $('#q').focus();
+    });
+    $('form').submit(function(){
+        $('input[type=text]').each(function(){
+          $(this).val($.trim($(this).val()))
+        });
+    });
+    // Extra validator added to handle invalid characters
+    $.validator.addMethod('invalidchars', function(value, element, param) {
+      param = param.split("").join("|");
+      if(param.length > 0){
+        return this.optional(element) || ! new RegExp(param).test(value);
+      }
+      return true;
+    }, deskEV('system.snippets.invalid_characters_found'));
+    $("#a-content-select").change(function(event){
+      var r = location.pathname.match(/\/customer(.*)\/portal(.*)/i);
+      if(r && r.length>1)
+        location.href = "/customer/" + $(this).val() + "/portal" + r[2] + location.search;
+      else
+        location.href = "/customer/" + $(this).val() + "/portal/articles" + location.search;
+    });
+
+// =====================================================
+// Mobile Related
 // =====================================================
     //MOBILE MENU TOGGLE
     $('#MobileToggle').click(function() {
@@ -1060,8 +1124,6 @@ if (currentPage == '') { };
 // =====================================================
 // ALL PAGES // SITE WIDE JS
 // =====================================================
-$(document).ready(function() {
-
     //BREADCRUMBS HOME LINK
     var home_link = $('#breadcrumbs a:first-child').attr("href") || location.href;
     $("a[href='/']").attr("href", home_link );
@@ -1161,4 +1223,6 @@ $(document).ready(function() {
         $('#gs_link').attr('href', gsurl + "/topics/new?from=company&product=&commit=Nope.+Finish+posting+my+question" + params);
     }
 
+
+//ENDING ONLOAD
 }); //End OnLoad
