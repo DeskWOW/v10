@@ -360,6 +360,7 @@ if (currentPage == 'registration') {
         errorClass:'invalid'
       });
     });
+
     function check_duplicate() {
       var return_val = true;
       $(".email_address").each(function(index) {
@@ -369,6 +370,7 @@ if (currentPage == 'registration') {
       });
       return return_val;
     }
+
     jQuery(document).ready(function() {
         //MY ACCOUNT PAGE TWEAKS
         $(".myaccount-form input#new_email").addClass('form-control');
@@ -567,56 +569,55 @@ if (currentPage == 'registration') {
     $(document).ready(function () {
       $('#email_body').textarea_maxlength();
       $('#new_email').validate({
-              submitHandler: function(form) {
-                   $('#email_submit').prop('disabled',true);
-                   $('#email_submit').addClass('disabled');
-                   $('#email_submit_spinner').show();
-                   form.submit();
-               },
-              messages:{
-                'interaction[name]':{
-                  'required':$("#system-snippets-name_required").html()
-                },
-                'interaction[email]':{
-                  'required':$("#system-snippets-invalid_email").html(),
-                  'email':$("#system-snippets-invalid_email").html()
-                },
-                'email[subject]':{
-                  'required':$("#system-snippets-subject_required").html()
-                },
-                'email[body]':{
-                  'required':$("#system-snippets-question_required").html(),
-                  'maxlength':$("#system-snippets-exceeding_max_chars").html()
-                }
-              },
-              rules:{
-                'interaction[name]':{
-                  'minlength': 2,
-                  'required':true
-                },
-                'interaction[email]':{
-                  'required':true,
-                  'email':true
-                },
-                'email[subject]':{
-                  'required':true,
-                  'invalidchars':''
-                },
-                'email[body]':{
-                  'required':true,
-                  'maxlength':5000,
-                  'invalidchars':''
-                }
+          submitHandler: function(form) {
+               $('#email_submit').prop('disabled',true);
+               $('#email_submit').addClass('disabled');
+               $('#email_submit_spinner').show();
+               form.submit();
+           },
+          messages:{
+            'interaction[name]':{
+              'required':$("#system-snippets-name_required").html()
             },
-            highlight: function (element) {
-                $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-                $('label:empty').remove();
+            'interaction[email]':{
+              'required':$("#system-snippets-invalid_email").html(),
+              'email':$("#system-snippets-invalid_email").html()
             },
-            success: function (element) {
-                $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
-                $('label:empty').remove();
+            'email[subject]':{
+              'required':$("#system-snippets-subject_required").html()
+            },
+            'email[body]':{
+              'required':$("#system-snippets-question_required").html(),
+              'maxlength':$("#system-snippets-exceeding_max_chars").html()
             }
-
+          },
+          rules:{
+            'interaction[name]':{
+              'minlength': 2,
+              'required':true
+            },
+            'interaction[email]':{
+              'required':true,
+              'email':true
+            },
+            'email[subject]':{
+              'required':true,
+              'invalidchars':''
+            },
+            'email[body]':{
+              'required':true,
+              'maxlength':5000,
+              'invalidchars':''
+            }
+        },
+        highlight: function (element) {
+            $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+            $('label:empty').remove();
+        },
+        success: function (element) {
+            $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+            $('label:empty').remove();
+        }
       });
     });
   };
@@ -631,12 +632,23 @@ if (currentPage == 'registration') {
         $(this).addClass('disabled');
       })
     });
-
     if (deskEV('number_search_results') == '0') {
-          jQuery('#new_chat').submit();
-      }
-
-
+      jQuery(document).ready(function() {
+        $('#chat_submit').click(function(){
+          $(this).addClass('disabled');
+          setTimeout(function(){ window.location = $('#breadcrumbs a:first-child').attr("href"); }, 5000);
+        })
+      });
+      function openChatWindow(){ window.open('','newChatWin','width=500,height=500,toolbar=0');}
+    } else {
+      jQuery(document).ready(function() {
+        $('#chat_submit').click(function(){
+          $(this).addClass('disabled');
+          setTimeout(function(){ window.location = $('#breadcrumbs a:first-child').attr("href"); }, 5000);
+        })
+      });
+      function openChatWindow(){ window.open('','newChatWin','width=500,height=500,toolbar=0');}
+    }
     $('#chat_subject').textarea_maxlength();
       $('#new_chat').validate({
           submitHandler: function(form) {
@@ -867,4 +879,54 @@ if (currentPage == 'registration') {
 // =====================================================
 // My Portal - Show Case
 // =====================================================
-if (currentPage == 'myportal_show') { };
+if (currentPage == 'myportal_show') {
+
+    $('#qna_body').textarea_maxlength();
+      $('#interaction_body').validate({
+        submitHandler: function(form) {
+          $('#answer_submit').attr('disabled',true);
+          $('#answer_submit').addClass('disabled');
+          form.submit();
+        },
+        messages:{
+          'interaction[name]':{
+            'required': deskEV('system.snippets.name_required')
+          },
+          'interaction[email]':{
+            'required': deskEV('system.snippets.email_required'),
+            'email': deskEV('system.snippets.invalid_email')
+          },
+          'qna[body]':{
+            'required': deskEV('system.snippets.answer_required'),
+            'maxlength': deskEV('system.snippets.exceeding_max_chars')
+          }
+        },
+        rules:{
+          'interaction[name]':{
+            'required':true
+          },
+          'interaction[email]':{
+            'required':true,
+            'email':true
+          },
+          'qna[body]':{
+            'required':true,
+            'maxlength':5000
+          }
+        },
+        highlight: function (element) {
+                $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+                $('label:empty').remove();
+            },
+        success: function (element) {
+                $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+                $('label:empty').remove();
+            }
+      });
+};
+
+
+// =====================================================
+// Another Page
+// =====================================================
+if (currentPage == '') { };
