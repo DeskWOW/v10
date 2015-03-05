@@ -5,15 +5,7 @@ function deskEV(v) {
 }
 
 var currentPage = deskEV('current-page');
-alert(currentPage);
-
-
-
-
-
-
-
-
+// Testing - alert(currentPage);
 
 // =====================================================
 // Registration Page
@@ -51,177 +43,177 @@ if (currentPage == 'registration') {
 // =====================================================
 // Question New
 // =====================================================
-if (currentPage == 'question_new') {
-    $(function() {
-      // Skip pre-create
-      $('#new_email').attr('action','/customer/portal/emails');
+  if (currentPage == 'question_new') {
+      $(function() {
+        // Skip pre-create
+        $('#new_email').attr('action','/customer/portal/emails');
 
-      //-- Real-time auto-suggest
-      $('#qna_subject, #qna_body').on("keyup paste",function() {
-        if ($('#qna_subject').val().length > 2 || $('#qna_body').val().length > 2) {
-          clearTimeout(window.timer);
-          window.timer=setTimeout(function(){ // setting the delay for each keypress
-            articleSuggest();
-          }, 500);
-        }
+        //-- Real-time auto-suggest
+        $('#qna_subject, #qna_body').on("keyup paste",function() {
+          if ($('#qna_subject').val().length > 2 || $('#qna_body').val().length > 2) {
+            clearTimeout(window.timer);
+            window.timer=setTimeout(function(){ // setting the delay for each keypress
+              articleSuggest();
+            }, 500);
+          }
+        });
+
       });
 
-    });
-
-    //-- UPDATED AUTO SUGGEST
-    articleSuggest = function() {
-      as_count = 0;
-      var search_query = $('#qna_subject').val() + " " + $('#qna_body').val();
-      var systemLanguageDesk = $('#system_language').html();
-      var brandID = $('#brand_id').html();
-      if (brandID == "/" || brandID == "") {
-        $.ajax({
-          url: '//' + document.domain.toString() + '/customer/' + systemLanguageDesk + '/portal/articles/autocomplete?term=' + search_query,
-          dataType: 'json'
-        }).done(apiSuccess).fail(apiFail);
-      } else {
-        $.ajax({
-          url: '//' + document.domain.toString() + '/customer/' + systemLanguageDesk + '/portal/articles/autocomplete?term=' + search_query + '&b_id=' + brandID,
-          dataType: 'json'
-        }).done(apiSuccess).fail(apiFail);
-      }
-    };
-
-    apiSuccess = function(data) {
-      auto_suggest_content = "";
-      auto_suggest_articles = "";
-      auto_suggest_questions = "";
-      var system_snippet_do_these_help = $('#system-snippets-do_these_help').text() || 'Do these help?';
-      $('.autosuggest').html('<h2 class="muted">' + system_snippet_do_these_help + '</h4><ul class="unstyled"></ul>');
-      $.each(data, function() {
-        var html = $(this.label);
-        article_title = html.find(".article-autocomplete-subject").html();
-        if (this.id.indexOf("questions") !== -1) {
-            auto_suggest_questions += '<li><a target="_blank" href="' + this.id + '" class="discussion"><span>' + article_title + '</span><i class="fa fa-angle-right"></i></a></li>';
+      //-- UPDATED AUTO SUGGEST
+      articleSuggest = function() {
+        as_count = 0;
+        var search_query = $('#qna_subject').val() + " " + $('#qna_body').val();
+        var systemLanguageDesk = $('#system_language').html();
+        var brandID = $('#brand_id').html();
+        if (brandID == "/" || brandID == "") {
+          $.ajax({
+            url: '//' + document.domain.toString() + '/customer/' + systemLanguageDesk + '/portal/articles/autocomplete?term=' + search_query,
+            dataType: 'json'
+          }).done(apiSuccess).fail(apiFail);
         } else {
-            auto_suggest_articles += '<li><a target="_blank" href="' + this.id + '" class="article"><span>' + article_title + '</span><i class="fa fa-angle-right"></i></a></li>';
+          $.ajax({
+            url: '//' + document.domain.toString() + '/customer/' + systemLanguageDesk + '/portal/articles/autocomplete?term=' + search_query + '&b_id=' + brandID,
+            dataType: 'json'
+          }).done(apiSuccess).fail(apiFail);
         }
-        as_count++;
+      };
+
+      apiSuccess = function(data) {
+        auto_suggest_content = "";
+        auto_suggest_articles = "";
+        auto_suggest_questions = "";
+        var system_snippet_do_these_help = $('#system-snippets-do_these_help').text() || 'Do these help?';
+        $('.autosuggest').html('<h2 class="muted">' + system_snippet_do_these_help + '</h4><ul class="unstyled"></ul>');
+        $.each(data, function() {
+          var html = $(this.label);
+          article_title = html.find(".article-autocomplete-subject").html();
+          if (this.id.indexOf("questions") !== -1) {
+              auto_suggest_questions += '<li><a target="_blank" href="' + this.id + '" class="discussion"><span>' + article_title + '</span><i class="fa fa-angle-right"></i></a></li>';
+          } else {
+              auto_suggest_articles += '<li><a target="_blank" href="' + this.id + '" class="article"><span>' + article_title + '</span><i class="fa fa-angle-right"></i></a></li>';
+          }
+          as_count++;
+        });
+        if (as_count > 0) {
+          $('.autosuggest ul').append(auto_suggest_articles + auto_suggest_questions);
+          $("#common").hide();
+          $(".autosuggest").removeClass('hide');
+        } else {
+          $(".autosuggest").addClass('hide');
+          $("#common").show();
+        }
+      };
+
+      apiFail = function(data) {
+
+      };
+
+      $('#qna_body').textarea_maxlength();
+      $('#new_question').validate({
+        submitHandler: function(form) {
+          $('#question_submit').attr('disabled',true);
+          $('#question_submit').addClass('disabled');
+          $('#question_submit_spinner').show();
+          form.submit();
+        },
+        messages:{
+          'interaction[name]':{
+            'required':$("#system-snippets-name_required").html()
+          },
+          'interaction[email]':{
+            'required':$("#system-snippets-email_required").html(),
+            'email':$("#system-snippets-invalid_email").html()
+          },
+          'qna[subject]':{
+            'required':$("#system-snippets-subject_required").html()
+          },
+          'qna[body]':{
+            'required':$("#system-snippets-question_required").html(),
+            'maxlength':$("#system-snippets-exceeding_max_chars").html()
+          }
+        },
+        rules:{
+          'interaction[name]':{
+            'required':true
+          },
+          'interaction[email]':{
+            'required':true,
+            'email':true
+          },
+          'qna[subject]':{
+            'required':true,
+            'invalidchars':'<>'
+          },
+          'qna[body]':{
+            'required':true,
+            'maxlength':5000,
+            'invalidchars':''
+          }
+        },
+          highlight: function (element) {
+              $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+              $('label:empty').remove();
+          },
+          success: function (element) {
+              $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+              $('label:empty').remove();
+          }
       });
-      if (as_count > 0) {
-        $('.autosuggest ul').append(auto_suggest_articles + auto_suggest_questions);
-        $("#common").hide();
-        $(".autosuggest").removeClass('hide');
-      } else {
-        $(".autosuggest").addClass('hide');
-        $("#common").show();
+
+      if ($("#qna-kb_topic_id").text() != ''){
+          $('#qna_kb_topic_id').val($("#qna-kb_topic_id").text());
       }
-    };
-
-    apiFail = function(data) {
-
-    };
-
-    $('#qna_body').textarea_maxlength();
-    $('#new_question').validate({
-      submitHandler: function(form) {
-        $('#question_submit').attr('disabled',true);
-        $('#question_submit').addClass('disabled');
-        $('#question_submit_spinner').show();
-        form.submit();
-      },
-      messages:{
-        'interaction[name]':{
-          'required':$("#system-snippets-name_required").html()
-        },
-        'interaction[email]':{
-          'required':$("#system-snippets-email_required").html(),
-          'email':$("#system-snippets-invalid_email").html()
-        },
-        'qna[subject]':{
-          'required':$("#system-snippets-subject_required").html()
-        },
-        'qna[body]':{
-          'required':$("#system-snippets-question_required").html(),
-          'maxlength':$("#system-snippets-exceeding_max_chars").html()
-        }
-      },
-      rules:{
-        'interaction[name]':{
-          'required':true
-        },
-        'interaction[email]':{
-          'required':true,
-          'email':true
-        },
-        'qna[subject]':{
-          'required':true,
-          'invalidchars':'<>'
-        },
-        'qna[body]':{
-          'required':true,
-          'maxlength':5000,
-          'invalidchars':''
-        }
-      },
-        highlight: function (element) {
-            $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-            $('label:empty').remove();
-        },
-        success: function (element) {
-            $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
-            $('label:empty').remove();
-        }
-    });
-
-    if ($("#qna-kb_topic_id").text() != ''){
-        $('#qna_kb_topic_id').val($("#qna-kb_topic_id").text());
-    }
-};
+  };
 
 
 // =====================================================
 // Question Show
 // =====================================================
-if (currentPage == 'question_show') {
-    $('#qna_body').textarea_maxlength();
-    $('#new_answer').validate({
-      submitHandler: function(form) {
-        $('#answer_submit').attr('disabled',true);
-        $('#answer_submit').addClass('disabled');
-        form.submit();
-      },
-      messages:{
-        'interaction[name]':{
-          'required': deskEV('system.snippets.name_required')
+  if (currentPage == 'question_show') {
+      $('#qna_body').textarea_maxlength();
+      $('#new_answer').validate({
+        submitHandler: function(form) {
+          $('#answer_submit').attr('disabled',true);
+          $('#answer_submit').addClass('disabled');
+          form.submit();
         },
-        'interaction[email]':{
-          'required': deskEV('system.snippets.email_required'),
-          'email': deskEV('system.snippets.invalid_email')
-        },
-        'qna[body]':{
-          'required': deskEV('system.snippets.answer_required'),
-          'maxlength': deskEV('system.snippets.exceeding_max_chars')
-        }
-      },
-      rules:{
-        'interaction[name]':{
-          'required':true
-        },
-        'interaction[email]':{
-          'required':true,
-          'email':true
-        },
-        'qna[body]':{
-          'required':true,
-          'maxlength':5000
-        }
-      },
-      highlight: function (element) {
-              $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-              $('label:empty').remove();
+        messages:{
+          'interaction[name]':{
+            'required': deskEV('system.snippets.name_required')
           },
-      success: function (element) {
-              $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
-              $('label:empty').remove();
+          'interaction[email]':{
+            'required': deskEV('system.snippets.email_required'),
+            'email': deskEV('system.snippets.invalid_email')
+          },
+          'qna[body]':{
+            'required': deskEV('system.snippets.answer_required'),
+            'maxlength': deskEV('system.snippets.exceeding_max_chars')
           }
-    });
-};
+        },
+        rules:{
+          'interaction[name]':{
+            'required':true
+          },
+          'interaction[email]':{
+            'required':true,
+            'email':true
+          },
+          'qna[body]':{
+            'required':true,
+            'maxlength':5000
+          }
+        },
+        highlight: function (element) {
+                $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+                $('label:empty').remove();
+            },
+        success: function (element) {
+                $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+                $('label:empty').remove();
+            }
+      });
+  };
 
 
 // =====================================================
@@ -440,89 +432,439 @@ if (currentPage == 'question_show') {
 // =====================================================
 // Email PreCreate
 // =====================================================
-if (currentPage == 'email_pre_create') {
+  if (currentPage == 'email_pre_create') {
+      jQuery(document).ready(function() {
+          $('#email_submit').click(function(){
+            $(this).addClass('disabled');
+          })
+      });
+
+      if (deskEV('number_search_results') == '0') {
+          jQuery('#new_email').submit();
+      }
+
+      $('#email_body').textarea_maxlength();
+      $('#new_email').validate({
+        submitHandler: function(form) {
+          $('#email_submit').prop('disabled',true);
+          $('#email_submit').addClass('disabled');
+          $('#email_submit_spinner').show();
+          form.submit();
+        },
+        messages:{
+          'interaction[name]':{
+            'required':$("#system-snippets-name_required").html()
+          },
+          'interaction[email]':{
+            'required':$("#system-snippets-email_required").html(),
+            'email':$("#system-snippets-invalid_email").html()
+          },
+          'email[subject]':{
+            'required':$("#system-snippets-subject_required").html()
+          },
+          'email[body]':{
+            'required':$("#system-snippets-question_required").html(),
+            'maxlength':$("#system-snippets-exceeding_max_chars").html()
+          }
+        },
+        rules:{
+          'interaction[name]':{
+            'required':true
+          },
+          'interaction[email]':{
+            'required':true,
+            'email':true
+          },
+          'email[subject]':{
+            'required':true,
+            'invalidchars':'<>'
+          },
+          'email[body]':{
+            'required':true,
+            'maxlength':5000,
+            'invalidchars':'<>'
+          }
+        },
+        errorClass:'invalid'
+      });
+  };
+
+
+// =====================================================
+// Email New
+// =====================================================
+  if (currentPage == 'email_new') {
+
+    $(function() {
+        //-- Real-time auto-suggest
+        $('#email_subject').on("keyup paste",function() {
+            if ($('#email_subject').val().length > 3 && $('#email_subject').val().length <= 250) {
+              clearTimeout(window.timer);
+              window.timer=setTimeout(function(){ // setting the delay for each keypress
+                articleSuggest();
+              }, 500);
+            }
+          });
+        //-- Real-time auto-suggest
+        $('#email_body').on("keyup paste",function() {
+            if ($('#email_body').val().length > 3 && $('#email_body').val().length <= 250) {
+              clearTimeout(window.timer);
+              window.timer=setTimeout(function(){ // setting the delay for each keypress
+                articleSuggest();
+              }, 500);
+            }
+          });
+    });
+    //-- UPDATED AUTO SUGGEST
+    articleSuggest = function() {
+      as_count = 0;
+      var search_query = $('#email_subject').val() + '  ' + $('#email_body').val();
+      var systemLanguageDesk = $('#system_language').html();
+      var brandID = $('#brand_id').text();
+      if (brandID == "/" || brandID == "") {
+        $.ajax({
+          url: '//' + document.domain.toString() + '/customer/' + systemLanguageDesk + '/portal/articles/autocomplete?term=' + search_query,
+          dataType: 'json'
+        }).done(apiSuccess).fail(apiFail);
+      } else {
+        $.ajax({
+          url: '//' + document.domain.toString() + '/customer/' + systemLanguageDesk + '/portal/articles/autocomplete?term=' + search_query + '&b_id=' + brandID,
+          dataType: 'json'
+        }).done(apiSuccess).fail(apiFail);
+      }
+    }
+    //RESULTS
+    apiSuccess = function(data) {
+      auto_suggest_content = "";
+      auto_suggest_articles = "";
+      auto_suggest_questions = "";
+      var system_snippet_do_these_help = $('#system-snippets-do_these_help').text() || 'Do these help?';
+      $('.autosuggest').html('<h2 class="muted">' + system_snippet_do_these_help + '</h4><ul class="unstyled"></ul>');
+      $.each(data, function() {
+        var html = $(this.label);
+        article_title = html.find(".article-autocomplete-subject").html();
+        if (this.id.indexOf("questions") !== -1) {
+            auto_suggest_questions += '<li><a target="_blank" href="' + this.id + '" class="discussion"><span>' + article_title + '</span><i class="fa fa-angle-right"></i></a></li>';
+        } else {
+            auto_suggest_articles += '<li><a target="_blank" href="' + this.id + '" class="article"><span>' + article_title + '</span><i class="fa fa-angle-right"></i></a></li>';
+        }
+        as_count++;
+      });
+      if (as_count > 0) {
+        $('.autosuggest ul').append(auto_suggest_articles + auto_suggest_questions);
+        $("#common").hide();
+        $(".autosuggest").removeClass('hide');
+      } else {
+        $(".autosuggest").addClass('hide');
+        $("#common").show();
+      }
+    };
+    //NO RESULTS
+    apiFail = function(data) {
+    }
+
+    //-- FORM VALIDATION NEW
+    $(document).ready(function () {
+      $('#email_body').textarea_maxlength();
+      $('#new_email').validate({
+              submitHandler: function(form) {
+                   $('#email_submit').prop('disabled',true);
+                   $('#email_submit').addClass('disabled');
+                   $('#email_submit_spinner').show();
+                   form.submit();
+               },
+              messages:{
+                'interaction[name]':{
+                  'required':$("#system-snippets-name_required").html()
+                },
+                'interaction[email]':{
+                  'required':$("#system-snippets-invalid_email").html(),
+                  'email':$("#system-snippets-invalid_email").html()
+                },
+                'email[subject]':{
+                  'required':$("#system-snippets-subject_required").html()
+                },
+                'email[body]':{
+                  'required':$("#system-snippets-question_required").html(),
+                  'maxlength':$("#system-snippets-exceeding_max_chars").html()
+                }
+              },
+              rules:{
+                'interaction[name]':{
+                  'minlength': 2,
+                  'required':true
+                },
+                'interaction[email]':{
+                  'required':true,
+                  'email':true
+                },
+                'email[subject]':{
+                  'required':true,
+                  'invalidchars':''
+                },
+                'email[body]':{
+                  'required':true,
+                  'maxlength':5000,
+                  'invalidchars':''
+                }
+            },
+            highlight: function (element) {
+                $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+                $('label:empty').remove();
+            },
+            success: function (element) {
+                $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+                $('label:empty').remove();
+            }
+
+      });
+    });
+  };
+
+
+// =====================================================
+// Chat PreCreate
+// =====================================================
+  if (currentPage == 'chat_pre_create') {
     jQuery(document).ready(function() {
-        $('#email_submit').click(function(){
-          $(this).addClass('disabled');
-        })
+      $('#chat_submit').click(function(){
+        $(this).addClass('disabled');
+      })
     });
 
     if (deskEV('number_search_results') == '0') {
-        jQuery('#new_email').submit();
-    }
+          jQuery('#new_chat').submit();
+      }
 
-    $('#email_body').textarea_maxlength();
-    $('#new_email').validate({
+
+    $('#chat_subject').textarea_maxlength();
+      $('#new_chat').validate({
+          submitHandler: function(form) {
+           $('#chat_submit').attr('disabled',true);
+           $('#chat_submit').addClass('disabled');
+           $('#chat_submit_spinner').show();
+           form.submit();
+      },
+          messages:{
+            'interaction[name]':{
+              'required': deskEV('system.snippets.name_required')
+            },
+            'interaction[email]':{
+              'required': deskEV('system.snippets.email_required'),
+              'email': deskEV('system.snippets.invalid_email')
+            },
+            'chat[subject]':{
+              'required': deskEV('system.snippets.question_required'),
+              'maxlength': deskEV('system.snippets.exceeding_max_chars')
+            }
+          },
+          rules:{
+            'interaction[name]':{
+              'required':true
+            },
+            'interaction[email]':{
+              'required':true,
+              'email':true
+            },
+            'chat[subject]':{
+              'required':true,
+              'maxlength':5000,
+              'invalidchars':'<>'
+            }
+          },
+          errorClass:'invalid'
+        });
+
+      $('#chat_subject').textarea_maxlength();
+      $('#new_chat').validate({
+        submitHandler: function(form) {
+                                         $('#chat_submit').attr('disabled',true);
+                                         $('#chat_submit').addClass('disabled');
+                                         $('#chat_submit_spinner').show();
+                                         form.submit();
+                                         },
+        messages:{
+          'interaction[name]':{
+            'required': deskEV('system.snippets.name_required')
+          },
+          'interaction[email]':{
+            'required': deskEV('system.snippets.email_required'),
+            'email': deskEV('system.snippets.invalid_email')
+          },
+          'chat[subject]':{
+            'required': deskEV('system.snippets.question_required'),
+            'maxlength': deskEV('system.snippets.exceeding_max_chars')
+          }
+        },
+        rules:{
+          'interaction[name]':{
+            'required':true
+          },
+          'interaction[email]':{
+            'required':true,
+            'email':true
+          },
+          'chat[subject]':{
+            'required':true,
+            'maxlength':5000,
+            'invalidchars':'<>'
+          }
+        },
+        errorClass:'invalid'
+      });
+  };
+
+
+// =====================================================
+// Chat New
+// =====================================================
+  if (currentPage == 'chat_new') {
+
+    $(function() {
+    //-- Real-time auto-suggest
+      $('#chat_subject').on("keyup paste",function() {
+        if ($('#chat_subject').val().length > 3 && $('#chat_subject').val().length <= 250) {
+          clearTimeout(window.timer);
+          window.timer=setTimeout(function(){ // setting the delay for each keypress
+            articleSuggest();
+          }, 500);
+        }
+      });
+    });
+
+    //-- UPDATED AUTO SUGGEST
+    articleSuggest = function() {
+        as_count = 0;
+        var search_query = $('#chat_subject').val();
+        var systemLanguageDesk = $('#system_language').html();
+        var brandID = $('#brand_id').html();
+        if (brandID == "/" || brandID == "") {
+          $.ajax({
+            url: '//' + document.domain.toString() + '/customer/' + systemLanguageDesk + '/portal/articles/autocomplete?term=' + search_query,
+            dataType: 'json'
+          }).done(apiSuccess).fail(apiFail);
+        } else {
+          $.ajax({
+            url: '//' + document.domain.toString() + '/customer/' + systemLanguageDesk + '/portal/articles/autocomplete?term=' + search_query + '&b_id=' + brandID,
+            dataType: 'json'
+          }).done(apiSuccess).fail(apiFail);
+        }
+    };
+
+    apiSuccess = function(data) {
+        auto_suggest_content = "";
+        auto_suggest_articles = "";
+        auto_suggest_questions = "";
+        var system_snippet_do_these_help = $('#system-snippets-do_these_help').text() || 'Do these help?';
+        $('.autosuggest').html('<h2 class="muted">' + system_snippet_do_these_help + '</h4><ul class="unstyled"></ul>');
+        $.each(data, function() {
+          var html = $(this.label);
+          article_title = html.find(".article-autocomplete-subject").html();
+          if (this.id.indexOf("questions") !== -1) {
+              auto_suggest_questions += '<li><a target="_blank" href="' + this.id + '" class="discussion"><span>' + article_title + '</span><i class="fa fa-angle-right"></i></a></li>';
+          } else {
+              auto_suggest_articles += '<li><a target="_blank" href="' + this.id + '" class="article"><span>' + article_title + '</span><i class="fa fa-angle-right"></i></a></li>';
+          }
+          as_count++;
+        });
+        if (as_count > 0) {
+          $('.autosuggest ul').append(auto_suggest_articles + auto_suggest_questions);
+          $("#common").hide();
+          $(".autosuggest").removeClass('hide');
+        } else {
+          $(".autosuggest").addClass('hide');
+          $("#common").show();
+        }
+    };
+
+    apiFail = function(data) {
+
+    };
+
+    //-- NEW CHAT VALIDATION
+    $(document).ready(function () {
+      $('#chat_subject').textarea_maxlength();
+      $('#new_chat').validate({
+        submitHandler: function(form) {
+          $('#chat_submit').attr('disabled',true);
+          $('#chat_submit').addClass('disabled');
+          $('#chat_submit_spinner').show();
+          form.submit();
+        },
+        messages:{
+          'interaction[name]':{
+            'required':deskEV('system-snippets-name_required')
+          },
+          'interaction[email]':{
+            'required':deskEV('system-snippets-email_required'),
+            'email':deskEV('system-snippets-invalid_email')
+          },
+          'chat[subject]':{
+            'required':deskEV('system-snippets-question_required'),
+            'maxlength':deskEV('system-snippets-exceeding_max_chars')
+          }
+        },
+        rules:{
+          'interaction[name]':{
+            'required':true
+          },
+          'interaction[email]':{
+            'required':true,
+            'email':true
+          },
+          'chat[subject]':{
+            'required':true,
+            'maxlength':5000,
+            'invalidchars':'<>'
+          }
+        },
+        highlight: function (element) {
+              $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+              $('label:empty').remove();
+          },
+          success: function (element) {
+              $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+              $('label:empty').remove();
+          }
+      });
+    });
+
+  };
+
+
+// =====================================================
+// Page Authentication Verification
+// =====================================================
+  if (currentPage == 'authentication_verification') {
+    $(document).ready(function() { $("#new_email").focus(); });
+    $('#new_customer_contact_email').validate({
       submitHandler: function(form) {
-        $('#email_submit').prop('disabled',true);
-        $('#email_submit').addClass('disabled');
-        $('#email_submit_spinner').show();
+        $('#add_email').prop('disabled',true);
+        $('#add_email').addClass('disabled');
+        $('#new_customer_contact_email_submit_spinner').show();
         form.submit();
       },
       messages:{
-        'interaction[name]':{
-          'required':$("#system-snippets-name_required").html()
-        },
-        'interaction[email]':{
-          'required':$("#system-snippets-email_required").html(),
+        'customer_contact_email[email]':{
+          'required':$("#system-snippets-invalid_email").html(),
           'email':$("#system-snippets-invalid_email").html()
-        },
-        'email[subject]':{
-          'required':$("#system-snippets-subject_required").html()
-        },
-        'email[body]':{
-          'required':$("#system-snippets-question_required").html(),
-          'maxlength':$("#system-snippets-exceeding_max_chars").html()
         }
       },
       rules:{
-        'interaction[name]':{
-          'required':true
-        },
-        'interaction[email]':{
+        'customer_contact_email[email]':{
           'required':true,
           'email':true
-        },
-        'email[subject]':{
-          'required':true,
-          'invalidchars':'<>'
-        },
-        'email[body]':{
-          'required':true,
-          'maxlength':5000,
-          'invalidchars':'<>'
         }
+      },
+      errorPlacement: function(error, element) {
+        error.insertAfter('button');
       },
       errorClass:'invalid'
     });
-};
+  };
 
 
 // =====================================================
-// Page
+// My Portal - Show Case
 // =====================================================
-if (currentPage == '') { };
-
-
-// =====================================================
-// Page
-// =====================================================
-if (currentPage == '') { };
-
-
-// =====================================================
-// Page
-// =====================================================
-if (currentPage == '') { };
-
-
-// =====================================================
-// Page
-// =====================================================
-if (currentPage == '') { };
-
-
-// =====================================================
-// Page
-// =====================================================
-if (currentPage == '') { };
+if (currentPage == 'myportal_show') { };
