@@ -102,67 +102,7 @@ jQuery(document).ready(function() {
 
 
   //MOBILE RELEATED --------------------- >
-  //MOBILE MENU TOGGLE
-    $('#MobileToggle').click(function() {
-        toggleNav();
-    });
 
-    //TOGGLE FUNCTION
-    function toggleNav() {
-      if ($('#site-wrapper').hasClass('show-nav')) {
-          // CLOSE NAV
-          $('#site-wrapper').removeClass('show-nav');
-          $('#mobileHeader').removeClass('show-nav');
-          $('#MobileToggle').removeClass('open');
-      } else {
-          // OPEN NAV
-          $('#site-wrapper').addClass('show-nav');
-          $('#mobileHeader').addClass('show-nav');
-          $('#MobileToggle').addClass('open');
-      }
-    }
-
-  // MOBILE MENU SEARCH SUGGESTION
-    //MOBILE SEARCH SUGGEST QUE
-    $('#q2').keyup(function() {
-      count = 0;
-      if ($('#q2').val().length > 2 ){
-        query = $('#q2').val();
-        $.ajax({
-        url: '//' + document.domain.toString() + '/customer/portal/articles/autocomplete?term=' + query,
-        dataType: 'json'
-        }).done(MOBapiSuccess).fail(MOBapiFail);
-      } else {
-        $(".mobile-suggest").addClass('hide');
-      }
-    });
-    //MOBILE SUGGEST RESULTS
-    MOBapiSuccess = function(data) {
-      auto_suggest_content = "";
-      auto_suggest_articles = "";
-      auto_suggest_questions = "";
-      var resultsMobile = $('#results_mobile').html();
-      $('.mobile-suggest').html('<ul class="results"><li class="title">' + resultsMobile + '</li></ul>');
-      $.each(data, function() {
-        var html = $(this.label);
-        article_title = html.find(".article-autocomplete-subject").html();
-
-        if (this.id.indexOf("questions") !== -1) {
-          auto_suggest_questions += '<li><a href="' + this.id + '" class="discussion">' + article_title + '<i class="fa fa-angle-right"></i></a></li>';
-        } else {
-          auto_suggest_articles += '<li><a href="' + this.id + '" class="article">' + article_title + '<i class="fa fa-angle-right"></i></a></li>';
-        }
-        count++;
-      });
-      if (count > 0) {
-        $('.mobile-suggest ul').append(auto_suggest_articles + auto_suggest_questions);
-        $(".mobile-suggest").removeClass('hide');
-      } else {
-        $(".mobile-suggest").addClass('hide');
-      }
-    };
-    //API FAILURE
-    MOBapiFail = function(data) {};
 
 
   //MAIN SEARCH AUTOCOMPLETE/FORMS/VALIDATION
@@ -238,46 +178,7 @@ jQuery(document).ready(function() {
 
 
 
-  // READ ONLY PORTAL UI ADJUSTMENTS
-    if (deskEV('read_only') == 'true') {
-      $(".input-button input[type='submit']").hide();
-      $("#support-side a").each(function(){
-        if( $(this).attr("href").match(/emails/) ){
-            if (deskEV('site.default_mailbox').length > 0) {
-                var default_mailbox = "mailto:" + deskEV('site.default_mailbox');
-                $(this).attr("href", default_mailbox);
-            } else {
-                $(this).hide();
-            }
-        } else {
-          $(this).hide();
-        }
-      });
-      $(".answer-rating").hide();
-      $(".question #form").html("{{system.snippets.answers_unavailable}}");
-      $("#rate_article").hide();
-    }
 
-  //MODERATED FUNCTIONALITY
-    if ($('#system-snippets-just_moderated').text() == 'true') {
-      $('h5 a').css('display', 'none');
-
-      $("#moderation_okay_button").click(function() {
-        $('h5 a').css('display', 'inline');
-        $('#modal-screen').hide();
-        $('#modal').hide();
-      });
-      $("#modal-screen").css({
-        "opacity":"0.7"
-      });
-      if($.browser.msie && $.browser.version < 7) {
-        $("#qna_kb_topic_id").css("display","none");
-        $("#modal-screen").css({
-          "width": $(window).width() + "px",
-          "height": $(window).height() + "px"
-        });
-      }
-    }
 }); //END JQUERY ONLOAD
 
 

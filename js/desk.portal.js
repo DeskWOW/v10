@@ -996,6 +996,68 @@ if (currentPage == '') { };
 
 
 // =====================================================
+// MOBILE RELATED JS
+// =====================================================
+    //MOBILE MENU TOGGLE
+    $('#MobileToggle').click(function() {
+        toggleNav();
+    });
+    //TOGGLE FUNCTION
+    function toggleNav() {
+      if ($('#site-wrapper').hasClass('show-nav')) {
+          // CLOSE NAV
+          $('#site-wrapper').removeClass('show-nav');
+          $('#mobileHeader').removeClass('show-nav');
+          $('#MobileToggle').removeClass('open');
+      } else {
+          // OPEN NAV
+          $('#site-wrapper').addClass('show-nav');
+          $('#mobileHeader').addClass('show-nav');
+          $('#MobileToggle').addClass('open');
+      }
+    }
+    // MOBILE MENU SEARCH SUGGESTION
+    $('#q2').keyup(function() {
+      count = 0;
+      if ($('#q2').val().length > 2 ){
+        query = $('#q2').val();
+        $.ajax({
+        url: '//' + document.domain.toString() + '/customer/portal/articles/autocomplete?term=' + query,
+        dataType: 'json'
+        }).done(MOBapiSuccess).fail(MOBapiFail);
+      } else {
+        $(".mobile-suggest").addClass('hide');
+      }
+    });
+    //MOBILE SUGGEST RESULTS
+    MOBapiSuccess = function(data) {
+      auto_suggest_content = "";
+      auto_suggest_articles = "";
+      auto_suggest_questions = "";
+      var resultsMobile = $('#results_mobile').html();
+      $('.mobile-suggest').html('<ul class="results"><li class="title">' + resultsMobile + '</li></ul>');
+      $.each(data, function() {
+        var html = $(this.label);
+        article_title = html.find(".article-autocomplete-subject").html();
+
+        if (this.id.indexOf("questions") !== -1) {
+          auto_suggest_questions += '<li><a href="' + this.id + '" class="discussion">' + article_title + '<i class="fa fa-angle-right"></i></a></li>';
+        } else {
+          auto_suggest_articles += '<li><a href="' + this.id + '" class="article">' + article_title + '<i class="fa fa-angle-right"></i></a></li>';
+        }
+        count++;
+      });
+      if (count > 0) {
+        $('.mobile-suggest ul').append(auto_suggest_articles + auto_suggest_questions);
+        $(".mobile-suggest").removeClass('hide');
+      } else {
+        $(".mobile-suggest").addClass('hide');
+      }
+    };
+    //API FAILURE
+    MOBapiFail = function(data) {};
+
+// =====================================================
 // ALL PAGES // SITE WIDE JS
 // =====================================================
 $(document).ready(function() {
