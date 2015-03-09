@@ -21,18 +21,7 @@ $(document).ready(function() {
 // Index Page
 // =====================================================
   if (currentPage == 'page_index') {
-    if (deskEV('enable_gs') == 'true') { // XXX Ask Kevin if 'true' is correct string
-      gsStringTable['generic_error'] = deskEV('system.snippets.get_satisfaction_error');
-      gsStringTable['view_all'] = deskEV('system.snippets.view_all');
-      gsStringTable['search_header_no_results'] = deskEV('system.snippets.no_related_discussions');
-      gsStringTable['search_header_with_results'] = deskEV('system.snippets.related_discussions')+" {0} "+deskEV('system.snippets.discussions');
-      gsStringTable['generic_results_subheader'] = "{0} "+deskEV('system.snippets.discussions');
-      gsStringTable['generic_replies'] = "{0} "+deskEV('system.snippets.replies');
-      gsStringTable['questions_header'] = deskEV('system.snippets.questions');
-      gsStringTable['ideas_header'] = deskEV('system.snippets.ideas');
-      gsStringTable['problems_header'] = deskEV('system.snippets.problems');
-      gsStringTable['praises_header'] = deskEV('system.snippets.praise');
-      getCompanyId(); //Get Satisfaction Company ID
+    if (deskEV('enable_gs') == 'true') {
       //INDEX PAGE/GET SATISFACTION
       setTimeout(function(){
        $("#gs_questions div.topic h5 a").appendTo("#gs_questions div.topic").addClass("btn btn-pill");
@@ -60,6 +49,8 @@ $(document).ready(function() {
           $('div.row.rateblock').addClass('hidden');
         }
       }, 500);
+
+      $('div.body.row iframe, div.body.row object, div.body.row video, div.body.row embed').addClass('embed-responsive-item').wrap('<div class="embed-responsive embed-responsive-16by9"></div>');
   };
 // =====================================================
 // Topic Page
@@ -253,6 +244,10 @@ $(document).ready(function() {
                 $('label:empty').remove();
             }
       });
+    setTimeout(function() {
+      $('a.rate.increment').html('<i class="fa fa-thumbs-up"></i>')
+      $('a.rate.decrement').html('<i class="fa fa-thumbs-down"></i>')
+    }, 500);
   };
 
 
@@ -557,7 +552,7 @@ $(document).ready(function() {
             'invalidchars':'<>'
           }
         },
-        highlight: function (element) {
+          highlight: function (element) {
               $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
               $('label:empty').remove();
           },
@@ -636,11 +631,11 @@ $(document).ready(function() {
       $('#chat_subject').textarea_maxlength();
       $('#new_chat').validate({
         submitHandler: function(form) {
-                                         $('#chat_submit').attr('disabled',true);
-                                         $('#chat_submit').addClass('disabled');
-                                         $('#chat_submit_spinner').show();
-                                         form.submit();
-                                         },
+         $('#chat_submit').attr('disabled',true);
+         $('#chat_submit').addClass('disabled');
+         $('#chat_submit_spinner').show();
+         form.submit();
+         },
         messages:{
           'interaction[name]':{
             'required': deskEV('system.snippets.name_required')
@@ -751,39 +746,15 @@ $(document).ready(function() {
 // My Portal - Show Case
 // =====================================================
   if (currentPage == 'myportal_show') {
-      $('#qna_body').textarea_maxlength();
-        $('#interaction_body').validate({
+        $('#qna_body').textarea_maxlength();
+        $('#new_reply').validate({
           submitHandler: function(form) {
-            $('#answer_submit').attr('disabled',true);
-            $('#answer_submit').addClass('disabled');
+          $('#reply_submit').attr('disabled',true);
+            $('#reply_submit').addClass('disabled');
             form.submit();
           },
-          messages:{
-            'interaction[name]':{
-              'required': deskEV('system.snippets.name_required')
-            },
-            'interaction[email]':{
-              'required': deskEV('system.snippets.email_required'),
-              'email': deskEV('system.snippets.invalid_email')
-            },
-            'qna[body]':{
-              'required': deskEV('system.snippets.answer_required'),
-              'maxlength': deskEV('system.snippets.exceeding_max_chars')
-            }
-          },
-          rules:{
-            'interaction[name]':{
-              'required':true
-            },
-            'interaction[email]':{
-              'required':true,
-              'email':true
-            },
-            'qna[body]':{
-              'required':true,
-              'maxlength':5000
-            }
-          },
+          messages:{'interaction[body]':{'required':$("#system-snippets-reply_required").html(),}},
+          rules:{'interaction[body]':{'required':true }},
           highlight: function (element) {
                   $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
                   $('label:empty').remove();
@@ -793,7 +764,14 @@ $(document).ready(function() {
                   $('label:empty').remove();
               }
         });
+    $(function(){
+        var flash_exists = $(".a-flash").html().trim().length > 0;
+        if(flash_exists){
+            $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+        }
+    });
   };
+
 
 
 
@@ -938,13 +916,16 @@ $(document).ready(function() {
             'email':$("#system-snippets-invalid_email").html()
           }
         },
-        errorPlacement: function(error, element) {
-          error.insertAfter('button');
+        highlight: function (element) {
+            $('.form-group').removeClass('has-success').addClass('has-error');
+            $('label:empty').remove();
         },
-        errorClass:'invalid'
+        success: function (element) {
+            $('.form-group').removeClass('has-error').addClass('has-success');
+            $('label:empty').remove();
+        }
       });
     });
-
     function check_duplicate() {
       var return_val = true;
       $(".email_address").each(function(index) {
@@ -954,9 +935,10 @@ $(document).ready(function() {
       });
       return return_val;
     }
-
     jQuery(document).ready(function() {
         //MY ACCOUNT PAGE TWEAKS
+        $("#new_email").wrap('<div class="form-group"></div>');
+        $("#add_email").appendTo('.form-group');
         $(".myaccount-form input#new_email").addClass('form-control');
         $(".myportal #add_facebook input").addClass('btn');
         $(".myportal #add_twitter input").addClass('btn');
@@ -1310,15 +1292,12 @@ $(document).ready(function() {
       gsStringTable['praises_header'] = deskEV('system.snippets.praise');
       getCompanyId(); //Get Satisfaction Company ID
     }
-
     //Get Satisfaction Search Terms
     if (deskEV('enable_gs') == 'true') {
         var search_term = deskEV('search_term');
         var params = ( search_term !== null ) ? "&topic[query]=" + escape(search_term) : "";
         $('#gs_link').attr('href', gsurl + "/topics/new?from=company&product=&commit=Nope.+Finish+posting+my+question" + params);
     }
-
-
 //ENDING ONLOAD
 }); //End OnLoad
 
@@ -1328,6 +1307,7 @@ $(document).ready(function() {
 // =====================================================
 // OLD JS? Is this even needed?
 // =====================================================
+
   //TWITTER... BROKEN DUE TO NEW API?
   jQuery(document).ready(function() {
     if (deskEV('twitter_enabled') == 'true') {
