@@ -2,6 +2,12 @@
 {% assign MyCasesSort = true %}
 {% assign IndexLayout = "Grid" %}
 
+<!-- MULTIBRAND OPTIONS -->
+{% assign MBSearchPage = true %}
+{% assign MBSearchSuggest = true %}
+{% assign MBArticleSuggest = true %}
+
+
 <!-- LOGO WIDTH TESTING // DONT REMOVE-->
 {% if desk.page.theme.logo-img != "" %}
   {% assign logowidth = desk.page.theme.logo-img-width | plus: 0 %}
@@ -21,8 +27,7 @@
 {% elsif desk.current_brand.id == 6430 %}
   {% assign IndexLayout = "List" %}
 {% endif %}
-
-
+{% assign demoMode = true %}
 
 {% capture sidebar_main %}
     <!-- BEGIN MAIN SIDEBAR -->
@@ -74,12 +79,14 @@
           </div>
           <!-- GS -->
         {% endif %}
-        <h2>Layout Options</h2>
-        <ul class="options">
-          <li><a href="https://zzz-v5.desk.com/?b_id=5305">Grid Layout</a></li>
-          <li><a href="https://zzz-v5.desk.com/?b_id=5306">Topics Only Layout</a></li>
-          <li><a href="https://zzz-v5.desk.com/?b_id=6430">List Layout</a></li>
-        </ul>
+        {% if demoMode == true %}
+          <h2>Layout Options</h2>
+          <ul class="options">
+            <li><a href="https://zzz-v5.desk.com/?b_id=5305">Grid Layout</a></li>
+            <li><a href="https://zzz-v5.desk.com/?b_id=5306">Topics Only Layout</a></li>
+            <li><a href="https://zzz-v5.desk.com/?b_id=6430">List Layout</a></li>
+          </ul>
+        {% endif %}
       </div>
     <!-- END MAIN SIDEBAR -->
 {% endcapture %}
@@ -290,8 +297,13 @@
               {{ search_form_begin }}
               <div class="col-md-12">
                 {{template_form_params}}
-                <input type="text" id="q" name="q" maxlength="100" value="" placeholder="{{system.snippets.have_a_question}}" class="input-xlarge form-control" />
-                <button type="submit" class="fa fa-search" id="support-search-submit" value="{{system.snippets.search}}"></button>
+                {% if MBSearchSuggest == true %}
+                  <input type="text" id="qMB" name="q" maxlength="100" value="" placeholder="{{system.snippets.have_a_question}}" class="input form-control" autocomplete="off" />
+                  <div id="AutoSuggest" class="ui-menu mutlibrand"></div>
+                {% else %}
+                  <input type="text" id="q" name="q" maxlength="100" value="" placeholder="{{system.snippets.have_a_question}}" class="input form-control" />
+                {% endif %}
+                  <button type="submit" class="fa fa-search" id="support-search-submit" value="{{system.snippets.search}}"></button>
               </div>
               {{ search_form_end }}
             </div>
@@ -412,7 +424,7 @@
   <div id="system_language">{{system.language}}</div>
   <div id="results_mobile">{{system.snippets.results_found_for | replace: 'for', '' }}</div>
   <div id="read_only">{{read_only}}</div>
-  <div id="header_text">{{desk.page.theme.hdr-text-color}}</div>
+
   <div id="system-snippets-do_these_help">{{system.snippets.do_these_help}}</div>
   <div id="site-default_mailbox">{{site.default_mailbox}}</div>
   <div id="desk_javascript_host">{{desk_javascript_host}}</div>
@@ -431,13 +443,6 @@
   <div id="system-snippets-invalid_characters_found">{{system.snippets.invalid_characters_found}}</div>
   <div id="site-search_autocomplete_articles_url">{{site.search_autocomplete_articles_url}}</div>
   <div id="search-term">{{search_term}}</div>
-  <div id="current-page">{{ page }}</div>
-  <div id="brand_id">{{ desk.current_brand.id }}</div>
-  <div id="brands">
-    {% for brand in desk.brands %}
-       <div id="{{brand.id}}">{{brand.name}}</div>
-    {% endfor %}
-  </div>
   {% if desk.apps.get_satisfaction.enabled %}
     <div id="system-snippets-get_satisfaction_error">{{system.snippets.get_satisfaction_error}}</div>
     <div id="system-snippets-view_all">{{system.snippets.view_all}}</div>
@@ -450,6 +455,25 @@
     <div id="system-snippets-ideas">{{system.snippets.ideas}}</div>
     <div id="system-snippets-problems">{{system.snippets.problems}}</div>
     <div id="system-snippets-praise">{{system.snippets.praise}}</div>
+  {% endif %}
+</div>
+<div id="ThemeOptions" class="hidden" style="display:none;">
+  <div id="header_text">{{desk.page.theme.hdr-text-color}}</div>
+  <div id="current-page">{{ page }}</div>
+  <div id="brand_id">{{ desk.current_brand.id }}</div>
+  <div id="site-brands">
+    {% for brand in desk.brands %}
+       <div id="{{brand.id}}">{{brand.name}}</div>
+    {% endfor %}
+  </div>
+  {% if MBSearchPage == true %}
+    <div id="MBSearchPage">true</div>
+  {% endif %}
+  {% if MBSearchSuggest == true %}
+    <div id="MBSearchSuggest">true</div>
+  {% endif %}
+  {% if MBArticleSuggest == true %}
+    <div id="MBArticleSuggest">true</div>
   {% endif %}
 </div>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
