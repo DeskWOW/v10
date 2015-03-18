@@ -1,13 +1,13 @@
 <!-- THEME OPTIONS -->
-{% assign MyCasesSort = true %}
+{% assign MyCasesSort = false %}
 {% assign IndexLayout = "Grid" %}
-{% assign SkipPreCreate = true %}
+{% assign SkipPreCreate = false %}
 
 <!-- MULTIBRAND OPTIONS -->
 {% assign MBSearchPage = false %}
-{% assign MBSearchExcludeQuestions = true %}
-{% assign MBSearchSuggest = true %}
-{% assign MBArticleSuggest = true %}
+{% assign MBSearchExcludeQuestions = false %}
+{% assign MBSearchSuggest = false %}
+{% assign MBArticleSuggest = false %}
 
 
 <!-- LOGO WIDTH TESTING // DONT REMOVE-->
@@ -430,7 +430,6 @@
   <div id="system_language">{{system.language}}</div>
   <div id="results_mobile">{{system.snippets.results_found_for | replace: 'for', '' }}</div>
   <div id="read_only">{{read_only}}</div>
-
   <div id="system-snippets-do_these_help">{{system.snippets.do_these_help}}</div>
   <div id="site-default_mailbox">{{site.default_mailbox}}</div>
   <div id="desk_javascript_host">{{desk_javascript_host}}</div>
@@ -487,5 +486,4 @@
   {% endif %}
 </div>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-<script src="//desk-customers.s3.amazonaws.com/v10/js/jquery.customSelect.min.js" type="text/javascript"></script>
 <script src="//desk-customers.s3.amazonaws.com/v10/js/desk.portal.js" type="text/javascript"></script>

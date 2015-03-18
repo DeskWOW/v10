@@ -306,6 +306,7 @@ SEARCH AUTO COMPLETE ------
     white-space: nowrap;
     padding: 4px 7px;
     font-size: 15px;
+    margin: 0px;
     float: right;
   }
   .ui-multi-brand h4 {
