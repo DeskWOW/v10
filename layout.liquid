@@ -1,6 +1,7 @@
 <!-- THEME OPTIONS -->
 {% assign MyCasesSort = true %}
 {% assign IndexLayout = "Grid" %}
+{% assign SkipPreCreate = true %}
 
 <!-- MULTIBRAND OPTIONS -->
 {% assign MBSearchPage = false %}
@@ -95,12 +96,6 @@
 {% capture sidebar_suggest %}
     <!-- BEGIN AUTO SUGGEST SIDEBAR -->
     <div id="sidebar" class="sidebar suggest col-md-4 {% if desk.page.theme.layout != 'left' %}left col-md-pull-8 {% endif %}">
-      {% if MBArticleSuggest === true %}
-        <div class="autosuggest multi-brand"></div>
-      {% else %}
-        <div class="autosuggest"></div>
-      {% endif %}
-
       <div id="common">
         {% if page == "question_new" %}
           <h2>{{ system.snippets.related_questions }}</h2>
@@ -109,6 +104,11 @@
         {% endif %}
           <h4>{{ system.snippets.start_typing }}</h4>
       </div>
+      {% if MBArticleSuggest == true %}
+        <div class="autosuggest multi-brand"></div>
+      {% else %}
+        <div class="autosuggest"></div>
+      {% endif %}
     </div>
     <!-- END AUTO SUGGEST SIDEBAR -->
 {% endcapture %}
@@ -472,6 +472,9 @@
        <div id="{{brand.id}}">{{brand.name}}</div>
     {% endfor %}
   </div>
+  {% if SkipPreCreate == true %}
+    <div id="SkipPreCreate">true</div>
+  {% endif %}
   {% if MBSearchPage == true %}
     <div id="MBSearchPage">true</div>
     <div id="results-count">{{ number_search_results }}</div>

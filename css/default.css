@@ -155,11 +155,11 @@ DESK SEARCH STYLES ------
   #search .container {
     padding: 30px 0px;
   }
-  #search #q {
+  #search input.form-control {
     background: white;
     font-weight: 300;
     font-size: 24px;
-    padding: 15px 30px;
+    padding: 5px 30px;
     width: 100%;
     border:2px solid #dadada;
     -webkit-border-radius: 40px;
@@ -186,7 +186,7 @@ DESK SEARCH STYLES ------
   .btn.btn-primary:hover,#search button:hover,#search button:focus {
    opacity: 1;
   }
-  #search input#q:focus {
+  #search input.form-control:focus {
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
@@ -223,7 +223,7 @@ DESK SEARCH STYLES ------
     background-color: #FFFFFF !important;
   }
 /* -----------------------------------------------------------
-SEARCH AUTO COMPLETE ------
+SINGLE BRAND SEARCH AUTO COMPLETE ------
 ----------------------------------------------------------- */
   .ui-menu {
     background: #fff;
@@ -281,6 +281,55 @@ SEARCH AUTO COMPLETE ------
     -moz-box-sizing: border-box;    /* Firefox, other Gecko */
     box-sizing: border-box;         /* Opera/IE 8+ */
   }
+/* -----------------------------------------------------------
+SEARCH AUTO COMPLETE ------
+----------------------------------------------------------- */
+  .ui-multi-brand {
+    background: #fff;
+    box-shadow: none;
+    padding: 10px;
+    margin: 0;
+    -webkit-box-shadow: 0px 1px 15px rgba(0, 0, 0, .24);
+    -moz-box-shadow: 0px 1px 15px rgba(0, 0, 0, .24);
+    box-shadow: 0px 1px 15px rgba(0, 0, 0, .24);
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    -ms-border-radius: 0px;
+    -o-border-radius: 0px;
+    border-radius: 0px;
+    position: absolute;
+    z-index: 999;
+    display: none;
+  }
+  .ui-multi-brand a.btn {
+    border: 1px solid transparent;
+    white-space: nowrap;
+    padding: 4px 7px;
+    font-size: 15px;
+    float: right;
+  }
+  .ui-multi-brand h4 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    float: left;
+    font-size: 18px;
+    color: #585858;
+    line-height: 21px;
+    margin:0px;
+  }
+  .ui-multi-brand ul {
+    display: block;
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  .ui-multi-brand ul li {display: inline-block; width: 100%;}
+  .ui-multi-brand ul li:before {display: none;}
+  .ui-multi-brand ul li a {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    color: #3498db;
+    line-height: 32px;
+  }
+  .ui-multi-brand ul li i {margin-right: 15px;}
 /* -----------------------------------------------------------
 BREADCRUMB STYLES ------
 ----------------------------------------------------------- */
@@ -540,6 +589,8 @@ SEARCH RESULTS ------
   #content .container.search .result.article p {
     margin-bottom: 18px;
   }
+  #siteResults div.tab-content div.tab-pane.brand label {display: none;}
+  #siteResults ul.nav.nav-tabs li span {margin-left: 5px;}
 /* -----------------------------------------------------------
 ARTICLE PAGE ------
 ----------------------------------------------------------- */
@@ -1737,23 +1788,23 @@ SIDEBAR ARTICLE SUGGEST ------
     font-style: italic;
     color: #999;
   }
-  #sidebar .autosuggest > ul {
+  #sidebar .autosuggest ul {
     list-style: none;
     background: none;
     padding: 0px;
     margin: 20px 0px;
   }
-  #sidebar .autosuggest > ul > li{
+  #sidebar .autosuggest ul  li{
     text-transform: uppercase;
     border-bottom:none;
     padding-right: 15px;
   }
-  #sidebar .autosuggest > ul > li > a{
+  #sidebar .autosuggest ul li a{
     color: #3498db;
     padding: 20px 0px 20px 15px;
     display: block;
   }
-  #sidebar .autosuggest > ul > li > a > span {
+  #sidebar .autosuggest ul li a span {
     color: #3498db;
     font-size: 14px;
     font-weight: 500;
@@ -1761,22 +1812,40 @@ SIDEBAR ARTICLE SUGGEST ------
     display: inline-block;
     width: 80%;
   }
-  #sidebar .autosuggest > ul > li:nth-child(odd) {
+  #sidebar .autosuggest ul li:nth-child(odd) {
     background: rgba( 0, 0, 0, .035);
   }
-  #sidebar .autosuggest > ul > li:nth-child(even) {
+  #sidebar .autosuggest ul li:nth-child(even) {
     background: none;
   }
-  #sidebar .autosuggest > ul > li > a > i {
+  #sidebar .autosuggest ul li a i {
     float: right;
     color: #c5c5c5;
     margin-right: 10px;
     font-size: 20px;
   }
-  #sidebar .autosuggest > ul > li:hover a {
+  #sidebar .autosuggest  ul li:hover a {
   }
-  #sidebar .autosuggest > ul > li:hover i {
+  #sidebar .autosuggest  ul li:hover i {
     color: #e2e2e2;
+  }
+  #sidebar .autosuggest.multi-brand ul li{
+    margin-bottom: 8px;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  #sidebar .autosuggest.multi-brand ul li a{}
+  #sidebar .autosuggest.multi-brand ul li a i{
+    color: #81878C;
+    margin-right: 10px;
+    min-width: 15px;
+    text-align: center;
+  }
+  #sidebar .autosuggest.multi-brand ul li a span{}
+  #sidebar .autosuggest.multi-brand .btn.btn-submit {
+    padding: 4px 13px;
   }
 /* -----------------------------------------------------------
 FOOTER ------

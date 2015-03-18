@@ -8,14 +8,26 @@ function deskEV(v) {
 * http://andrew-jones.com/jquery-placeholder-plugin
 * Copyright (c) 2012 Andrew Jones; Licensed MIT */
 (function(a){"use strict",a.extend({placeholder:{settings:{focusClass:"placeholderFocus",activeClass:"placeholder",overrideSupport:!1,preventRefreshIssues:!0}}}),a.support.placeholder="placeholder"in document.createElement("input"),a.fn.plVal=a.fn.val,a.fn.val=function(b){if(typeof b=="undefined")return a.fn.plVal.call(this);var c=a(this[0]),d=c.plVal(),e=a(this).plVal(b);return c.hasClass(a.placeholder.settings.activeClass)&&d===c.attr("placeholder")?(c.removeClass(a.placeholder.settings.activeClass),e):c.hasClass(a.placeholder.settings.activeClass)&&c.plVal()===c.attr("placeholder")?"":a.fn.plVal.call(this,b)},a(window).bind("beforeunload.placeholder",function(){var b=a("input."+a.placeholder.settings.activeClass);b.length>0&&b.val("").attr("autocomplete","off")}),a.fn.placeholder=function(b){return b=a.extend({},a.placeholder.settings,b),!b.overrideSupport&&a.support.placeholder?this:this.each(function(){var c=a(this);if(!c.is("[placeholder]"))return;if(c.is(":password"))return;b.preventRefreshIssues&&c.attr("autocomplete","off"),c.bind("focus.placeholder",function(){var c=a(this);this.value===c.attr("placeholder")&&c.hasClass(b.activeClass)&&c.val("").removeClass(b.activeClass).addClass(b.focusClass)}),c.bind("blur.placeholder",function(){var c=a(this);c.removeClass(b.focusClass),this.value===""&&c.val(c.attr("placeholder")).addClass(b.activeClass)}),c.triggerHandler("blur"),c.parents("form").submit(function(){c.triggerHandler("focus.placeholder")})})}})(jQuery);
-
+/*!
+ * jquery.customSelect() - v0.5.1
+ * http://adam.co/lab/jquery/customselect/
+ * 2014-04-19
+ *
+ * Copyright 2013 Adam Coulombe
+ * @license http://www.opensource.org/licenses/mit-license.html MIT License
+ * @license http://www.gnu.org/licenses/gpl.html GPL2 License
+ */
+(function(a){a.fn.extend({customSelect:function(c){if(typeof document.body.style.maxHeight==="undefined"){return this}var e={customClass:"customSelect",mapClass:true,mapStyle:true},c=a.extend(e,c),d=c.customClass,f=function(h,k){var g=h.find(":selected"),j=k.children(":first"),i=g.html()||"&nbsp;";j.html(i);if(g.attr("disabled")){k.addClass(b("DisabledOption"))}else{k.removeClass(b("DisabledOption"))}setTimeout(function(){k.removeClass(b("Open"));a(document).off("mouseup.customSelect")},60)},b=function(g){return d+g};return this.each(function(){var g=a(this),i=a("<span />").addClass(b("Inner")),h=a("<span />");g.after(h.append(i));h.addClass(d);if(c.mapClass){h.addClass(g.attr("class"))}if(c.mapStyle){h.attr("style",g.attr("style"))}g.addClass("hasCustomSelect").on("render.customSelect",function(){f(g,h);g.css("width","");var k=parseInt(g.outerWidth(),10)-(parseInt(h.outerWidth(),10)-parseInt(h.width(),10));h.css({display:"inline-block"});var j=h.outerHeight();if(g.attr("disabled")){h.addClass(b("Disabled"))}else{h.removeClass(b("Disabled"))}i.css({width:k,display:"inline-block"});g.css({"-webkit-appearance":"menulist-button",width:h.outerWidth(),position:"absolute",opacity:0,height:j,fontSize:h.css("font-size")})}).on("change.customSelect",function(){h.addClass(b("Changed"));f(g,h)}).on("keyup.customSelect",function(j){if(!h.hasClass(b("Open"))){g.trigger("blur.customSelect");g.trigger("focus.customSelect")}else{if(j.which==13||j.which==27){f(g,h)}}}).on("mousedown.customSelect",function(){h.removeClass(b("Changed"))}).on("mouseup.customSelect",function(j){if(!h.hasClass(b("Open"))){if(a("."+b("Open")).not(h).length>0&&typeof InstallTrigger!=="undefined"){g.trigger("focus.customSelect")}else{h.addClass(b("Open"));j.stopPropagation();a(document).one("mouseup.customSelect",function(k){if(k.target!=g.get(0)&&a.inArray(k.target,g.find("*").get())<0){g.trigger("blur.customSelect")}else{f(g,h)}})}}}).on("focus.customSelect",function(){h.removeClass(b("Changed")).addClass(b("Focus"))}).on("blur.customSelect",function(){h.removeClass(b("Focus")+" "+b("Open"))}).on("mouseenter.customSelect",function(){h.addClass(b("Hover"))}).on("mouseleave.customSelect",function(){h.removeClass(b("Hover"))}).trigger("render.customSelect")})}})})(jQuery);
 
 
 var currentPage = deskEV('current-page');
-//(currentPage);
+var MBSearchPage = deskEV('MBSearchPage');
+var MBSearchSuggest = deskEV('MBSearchSuggest');
+var MBArticleSuggest = deskEV('MBArticleSuggest');
+var SkipPreCreate = deskEV('SkipPreCreate');
 
 
-$(document).ready(function() {
+
 
 // =====================================================
 // Index Page
@@ -71,71 +83,6 @@ $(document).ready(function() {
 // Question New
 // =====================================================
   if (currentPage == 'question_new') {
-      $(function() {
-        // Skip pre-create
-        $('#new_email').attr('action','/customer/portal/emails');
-
-        //-- Real-time auto-suggest
-        $('#qna_subject, #qna_body').on("keyup paste",function() {
-          if ($('#qna_subject').val().length > 2 || $('#qna_body').val().length > 2) {
-            clearTimeout(window.timer);
-            window.timer=setTimeout(function(){ // setting the delay for each keypress
-              articleSuggest();
-            }, 500);
-          }
-        });
-
-      });
-
-      //-- UPDATED AUTO SUGGEST
-      articleSuggest = function() {
-        as_count = 0;
-        var search_query = $('#qna_subject').val() + " " + $('#qna_body').val();
-        var systemLanguageDesk = $('#system_language').html();
-        var brandID = $('#brand_id').html();
-        if (brandID == "/" || brandID == "") {
-          $.ajax({
-            url: '//' + document.domain.toString() + '/customer/' + systemLanguageDesk + '/portal/articles/autocomplete?term=' + search_query,
-            dataType: 'json'
-          }).done(apiSuccess).fail(apiFail);
-        } else {
-          $.ajax({
-            url: '//' + document.domain.toString() + '/customer/' + systemLanguageDesk + '/portal/articles/autocomplete?term=' + search_query + '&b_id=' + brandID,
-            dataType: 'json'
-          }).done(apiSuccess).fail(apiFail);
-        }
-      };
-
-      apiSuccess = function(data) {
-        auto_suggest_content = "";
-        auto_suggest_articles = "";
-        auto_suggest_questions = "";
-        var system_snippet_do_these_help = $('#system-snippets-do_these_help').text() || 'Do these help?';
-        $('.autosuggest').html('<h2 class="muted">' + system_snippet_do_these_help + '</h4><ul class="unstyled"></ul>');
-        $.each(data, function() {
-          var html = $(this.label);
-          article_title = html.find(".article-autocomplete-subject").html();
-          if (this.id.indexOf("questions") !== -1) {
-              auto_suggest_questions += '<li><a target="_blank" href="' + this.id + '" class="discussion"><span>' + article_title + '</span><i class="fa fa-angle-right"></i></a></li>';
-          } else {
-              auto_suggest_articles += '<li><a target="_blank" href="' + this.id + '" class="article"><span>' + article_title + '</span><i class="fa fa-angle-right"></i></a></li>';
-          }
-          as_count++;
-        });
-        if (as_count > 0) {
-          $('.autosuggest ul').append(auto_suggest_articles + auto_suggest_questions);
-          $("#common").hide();
-          $(".autosuggest").removeClass('hide');
-        } else {
-          $(".autosuggest").addClass('hide');
-          $("#common").show();
-        }
-      };
-
-      apiFail = function(data) {
-
-      };
-
       $('#qna_body').textarea_maxlength();
       $('#new_question').validate({
         submitHandler: function(form) {
@@ -187,7 +134,6 @@ $(document).ready(function() {
               $('label:empty').remove();
           }
       });
-
       if ($("#qna-kb_topic_id").text() != ''){
           $('#qna_kb_topic_id').val($("#qna-kb_topic_id").text());
       }
@@ -256,75 +202,6 @@ $(document).ready(function() {
 // Email New
 // =====================================================
   if (currentPage == 'email_new') {
-
-    $(function() {
-        //-- Real-time auto-suggest
-        $('#email_subject').on("keyup paste",function() {
-            if ($('#email_subject').val().length > 3 && $('#email_subject').val().length <= 250) {
-              clearTimeout(window.timer);
-              window.timer=setTimeout(function(){ // setting the delay for each keypress
-                articleSuggest();
-              }, 500);
-            }
-          });
-        //-- Real-time auto-suggest
-        $('#email_body').on("keyup paste",function() {
-            if ($('#email_body').val().length > 3 && $('#email_body').val().length <= 250) {
-              clearTimeout(window.timer);
-              window.timer=setTimeout(function(){ // setting the delay for each keypress
-                articleSuggest();
-              }, 500);
-            }
-          });
-    });
-    //-- UPDATED AUTO SUGGEST
-    articleSuggest = function() {
-      as_count = 0;
-      var search_query = $('#email_subject').val() + '  ' + $('#email_body').val();
-      var systemLanguageDesk = $('#system_language').html();
-      var brandID = $('#brand_id').text();
-      if (brandID == "/" || brandID == "") {
-        $.ajax({
-          url: '//' + document.domain.toString() + '/customer/' + systemLanguageDesk + '/portal/articles/autocomplete?term=' + search_query,
-          dataType: 'json'
-        }).done(apiSuccess).fail(apiFail);
-      } else {
-        $.ajax({
-          url: '//' + document.domain.toString() + '/customer/' + systemLanguageDesk + '/portal/articles/autocomplete?term=' + search_query + '&b_id=' + brandID,
-          dataType: 'json'
-        }).done(apiSuccess).fail(apiFail);
-      }
-    }
-    //RESULTS
-    apiSuccess = function(data) {
-      auto_suggest_content = "";
-      auto_suggest_articles = "";
-      auto_suggest_questions = "";
-      var system_snippet_do_these_help = $('#system-snippets-do_these_help').text() || 'Do these help?';
-      $('.autosuggest').html('<h2 class="muted">' + system_snippet_do_these_help + '</h4><ul class="unstyled"></ul>');
-      $.each(data, function() {
-        var html = $(this.label);
-        article_title = html.find(".article-autocomplete-subject").html();
-        if (this.id.indexOf("questions") !== -1) {
-            auto_suggest_questions += '<li><a target="_blank" href="' + this.id + '" class="discussion"><span>' + article_title + '</span><i class="fa fa-angle-right"></i></a></li>';
-        } else {
-            auto_suggest_articles += '<li><a target="_blank" href="' + this.id + '" class="article"><span>' + article_title + '</span><i class="fa fa-angle-right"></i></a></li>';
-        }
-        as_count++;
-      });
-      if (as_count > 0) {
-        $('.autosuggest ul').append(auto_suggest_articles + auto_suggest_questions);
-        $("#common").hide();
-        $(".autosuggest").removeClass('hide');
-      } else {
-        $(".autosuggest").addClass('hide');
-        $("#common").show();
-      }
-    };
-    //NO RESULTS
-    apiFail = function(data) {
-    }
-
     //-- FORM VALIDATION NEW
     $(document).ready(function () {
       $('#email_body').textarea_maxlength();
@@ -453,68 +330,6 @@ $(document).ready(function() {
 // Chat New
 // =====================================================
   if (currentPage == 'chat_new') {
-
-    $(function() {
-    //-- Real-time auto-suggest
-      $('#chat_subject').on("keyup paste",function() {
-        if ($('#chat_subject').val().length > 3 && $('#chat_subject').val().length <= 250) {
-          clearTimeout(window.timer);
-          window.timer=setTimeout(function(){ // setting the delay for each keypress
-            articleSuggest();
-          }, 500);
-        }
-      });
-    });
-
-    //-- UPDATED AUTO SUGGEST
-    articleSuggest = function() {
-        as_count = 0;
-        var search_query = $('#chat_subject').val();
-        var systemLanguageDesk = $('#system_language').html();
-        var brandID = $('#brand_id').html();
-        if (brandID == "/" || brandID == "") {
-          $.ajax({
-            url: '//' + document.domain.toString() + '/customer/' + systemLanguageDesk + '/portal/articles/autocomplete?term=' + search_query,
-            dataType: 'json'
-          }).done(apiSuccess).fail(apiFail);
-        } else {
-          $.ajax({
-            url: '//' + document.domain.toString() + '/customer/' + systemLanguageDesk + '/portal/articles/autocomplete?term=' + search_query + '&b_id=' + brandID,
-            dataType: 'json'
-          }).done(apiSuccess).fail(apiFail);
-        }
-    };
-
-    apiSuccess = function(data) {
-        auto_suggest_content = "";
-        auto_suggest_articles = "";
-        auto_suggest_questions = "";
-        var system_snippet_do_these_help = $('#system-snippets-do_these_help').text() || 'Do these help?';
-        $('.autosuggest').html('<h2 class="muted">' + system_snippet_do_these_help + '</h4><ul class="unstyled"></ul>');
-        $.each(data, function() {
-          var html = $(this.label);
-          article_title = html.find(".article-autocomplete-subject").html();
-          if (this.id.indexOf("questions") !== -1) {
-              auto_suggest_questions += '<li><a target="_blank" href="' + this.id + '" class="discussion"><span>' + article_title + '</span><i class="fa fa-angle-right"></i></a></li>';
-          } else {
-              auto_suggest_articles += '<li><a target="_blank" href="' + this.id + '" class="article"><span>' + article_title + '</span><i class="fa fa-angle-right"></i></a></li>';
-          }
-          as_count++;
-        });
-        if (as_count > 0) {
-          $('.autosuggest ul').append(auto_suggest_articles + auto_suggest_questions);
-          $("#common").hide();
-          $(".autosuggest").removeClass('hide');
-        } else {
-          $(".autosuggest").addClass('hide');
-          $("#common").show();
-        }
-    };
-
-    apiFail = function(data) {
-
-    };
-
     //-- NEW CHAT VALIDATION
     $(document).ready(function () {
       $('#chat_subject').textarea_maxlength();
@@ -568,6 +383,7 @@ $(document).ready(function() {
 // Chat PreCreate
 // =====================================================
   if (currentPage == 'chat_pre_create') {
+    function openChatWindow(){ window.open('','newChatWin','width=500,height=500,toolbar=0');}
     jQuery(document).ready(function() {
       $('#chat_submit').click(function(){
         $(this).addClass('disabled');
@@ -577,7 +393,7 @@ $(document).ready(function() {
       jQuery(document).ready(function() {
         $('#chat_submit').click(function(){
           $(this).addClass('disabled');
-          setTimeout(function(){ window.location = $('#breadcrumbs a:first-child').attr("href"); }, 5000);
+          setTimeout(function(){ window.location = $('#breadcrumbs ol.breadcrumb li:first-child a').attr("href"); }, 5000);
         })
       });
       function openChatWindow(){ window.open('','newChatWin','width=500,height=500,toolbar=0');}
@@ -585,7 +401,7 @@ $(document).ready(function() {
       jQuery(document).ready(function() {
         $('#chat_submit').click(function(){
           $(this).addClass('disabled');
-          setTimeout(function(){ window.location = $('#breadcrumbs a:first-child').attr("href"); }, 5000);
+          setTimeout(function(){ window.location = $('#breadcrumbs ol.breadcrumb li:first-child a').attr("href"); }, 5000);
         })
       });
       function openChatWindow(){ window.open('','newChatWin','width=500,height=500,toolbar=0');}
@@ -627,44 +443,6 @@ $(document).ready(function() {
           },
           errorClass:'invalid'
         });
-
-      $('#chat_subject').textarea_maxlength();
-      $('#new_chat').validate({
-        submitHandler: function(form) {
-         $('#chat_submit').attr('disabled',true);
-         $('#chat_submit').addClass('disabled');
-         $('#chat_submit_spinner').show();
-         form.submit();
-         },
-        messages:{
-          'interaction[name]':{
-            'required': deskEV('system.snippets.name_required')
-          },
-          'interaction[email]':{
-            'required': deskEV('system.snippets.email_required'),
-            'email': deskEV('system.snippets.invalid_email')
-          },
-          'chat[subject]':{
-            'required': deskEV('system.snippets.question_required'),
-            'maxlength': deskEV('system.snippets.exceeding_max_chars')
-          }
-        },
-        rules:{
-          'interaction[name]':{
-            'required':true
-          },
-          'interaction[email]':{
-            'required':true,
-            'email':true
-          },
-          'chat[subject]':{
-            'required':true,
-            'maxlength':5000,
-            'invalidchars':'<>'
-          }
-        },
-        errorClass:'invalid'
-      });
   };
 
 
@@ -727,7 +505,7 @@ $(document).ready(function() {
             }, 'html');
           }
           var nextUrl = $('#pagination a.next_page');
-        if (nextUrl && nextUrl.attr('href')) {
+          if (nextUrl && nextUrl.attr('href')) {
             nextPage(nextUrl.attr('href'), function(cases) {
               $('#MyCases tbody').append(cases);
             });
@@ -1006,7 +784,7 @@ $(document).ready(function() {
   };
 
 
-}); //END ONLOAD FOR PAGES
+
 
 
 
@@ -1026,7 +804,6 @@ $(document).ready(function() {
 
 
 
-
 // =====================================================
 // Search Related (Site Wide)
 // =====================================================
@@ -1036,8 +813,7 @@ $(document).ready(function() {
       function highlightSearchTerms(search_terms){
         $.each(search_terms.split(' '), function(index, value) {
           if(value.length > 3) {
-            $('#content a, #content p, #PreCreate p, #PreCreate a').highlight($.trim(value), '<span class=\"highlight\">$1</span>');
-            $('.container.search a, .container.search p').highlight($.trim(value), '<span class=\"highlight\">$1</span>');
+            $('#content h3, #content p, #PreCreate p, #PreCreate a, .container.search h3, .container.search p').highlight($.trim(value), '<span class=\"highlight\">$1</span>');
           }
         });
       }
@@ -1302,6 +1078,300 @@ $(document).ready(function() {
 }); //End OnLoad
 
 
+// =====================================================
+// MultiBrand Search Page (All results, One Page!)
+// =====================================================
+  if (MBSearchPage == 'true') {
+    jQuery(document).ready(function() {
+
+      //VARIABLES
+        themeID = 542224; //ONLY NEEDED IF WORKING ON THEME AND WANT TO RENDER LINKS w/THEME ID
+        brandCount = 0;
+        totalCount = 0;
+        searchTerm = $('#search-term').html(); //LOADS SEARCH TERM
+        systemLanguageDesk = $('#system_language').html(); //LOADS SYSTEM LANGUAGE
+      //FOR EACH BRAND FUNCTION
+        $('#site-brands > div').each( function(i,e) {
+          //LOOP VARIABLES
+            brandID = e.id;
+            brandCount ++;
+            totalBrands = $('#site-brands > div').length;
+            brandName = e.textContent;
+            searchBrandURL = 'https://' + document.domain.toString() + '/customer/' + systemLanguageDesk + '/portal/articles/search?q=' + searchTerm + '&b_id=' + brandID + '&t=' + themeID + '&displayMode=BrandOnly'
+          //ADDING TAB ELEMENTS FOR BRANDS AND ALL RESULTS
+            if (brandCount == 1) {
+                $('#siteResults ul.nav-tabs').append('<li role="presentation" class="active"><a href="#allResults" aria-controls="allResults" role="tab" data-toggle="tab">All Results <span></span></a></li>');
+                $('#siteResults div.tab-content').append('<div id="allResults" role="tabpanel" class="tab-pane active all"></div>');
+            }
+            $('#siteResults ul.nav-tabs').append('<li role="presentation"><a href="#' + brandID + 'Results" aria-controls="' + brandID + 'Results" role="tab" data-toggle="tab">' + brandName + '</a></li>');
+            $('#siteResults div.tab-content').append('<div id="' + brandID + 'Results" role="tabpanel" class="tab-pane brand"></div>');
+          //AJAX REQUEST(S)
+            $.ajax({
+               async: false,
+               type: 'GET',
+               url: searchBrandURL,
+               success: function(data) {
+                  var searchbrandResults = $(data).find('#brandResults article');
+                  var resultsCount = $(data).find('#results-count').html();
+                  var nextUrl = $(data).find('#paginate_block a.next_page').attr('href');
+                  $('#siteResults div.tab-content div#' + brandID + 'Results').append(searchbrandResults);
+                  $('a[href$="#' + brandID + 'Results"]').append('<span data-count="' + resultsCount + '">(' + resultsCount + ')</span>');
+                  //alert(nextUrl);
+                  function nextPageFunk(url, callback) {
+                    $.ajax({
+                      async: false,
+                      type: 'GET',
+                      url: url,
+                        success: function(datanew) {
+                          var articles = $(datanew).find('#brandResults article')
+                          var nextUrl = $(datanew).find('#pagination a.next_page');
+                          callback(articles);
+                          if (nextUrl && nextUrl.attr('href')) nextPageFunk(nextUrl.attr('href'), callback);
+                        }
+                    });//Second Request(s)
+                  }//Next Page Function
+                  if(typeof nextUrl != 'undefined') {
+                    nextPageFunk(nextUrl, function(articles) {
+                      $('#siteResults div.tab-content div#' + brandID + 'Results').append('<hr>');
+                      $('#siteResults div.tab-content div#' + brandID + 'Results').append(articles);
+                    });
+                  }
+               }//Success Function
+            }); //First Request
+          //POST AJAX FUNCTIONALITY (Total Counts / All Results Appending)
+            var eachbrandCount = $('a[href$="#' + brandID + 'Results"] span').data('count');
+            totalCount = totalCount + eachbrandCount;
+            if(eachbrandCount == 0){
+              $('a[href$="#' + brandID + 'Results"]').hide();
+            } else {
+             // $('#allResults').append('<h1>' + eachbrandCount + ' Results from ' + brandName + '</h1><hr>');
+              $('#siteResults div.tab-content div#' + brandID + 'Results article').clone().appendTo('#allResults');
+            }
+            if (i === totalBrands - 1) {
+              $('a[href$="#allResults"]').append('<span>(' + totalCount + ')</span>');
+              $('span#total').append(totalCount);
+            }
+        }); //END OF EACH BRAND FUNCTION
+      //CHECK URL PARAMETER
+        function getParameterByName(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+            return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+        }
+        displayMode = getParameterByName('displayMode');
+      //DISPLAY SITE WIDE RESULTS OR BRAND ONLY RESULTS
+        if (displayMode == "BrandOnly") {
+          $('#brandResults').removeClass('hidden');
+          $('#siteResults').addClass('hidden');
+        } else {
+          $('#brandResults, div.row.footer').addClass('hidden');
+          $('#siteResults').removeClass('hidden');
+        }
+    });
+  }
+// =====================================================
+// MultiBrand Article Suggest (Contact Forms)
+// =====================================================
+  if (MBArticleSuggest == 'true') {
+    $(function() {
+      $('#email_subject, #email_body, #chat_subject, #qna_subject, #qna_body').on("keyup paste",function() {
+          if ($('#email_subject, #email_body, #chat_subject, #qna_subject, #qna_body').val().length > 3 && $('#email_subject, #email_body, #chat_subject, #qna_subject, #qna_body').val().length <= 250) {
+            clearTimeout(window.timer);
+            window.timer=setTimeout(function(){ // setting the delay for each keypress
+              articleSuggest();
+            }, 500);
+          }
+        });
+    });
+    $(function() {
+      $('#qna_kb_topic_id').on("change",function() {
+            clearTimeout(window.timer);
+            window.timer=setTimeout(function(){ // setting the delay for each keypress
+              articleSuggest();
+            }, 500);
+        });
+    });
+    //-- MULTIBRAND ARTICLE SUGGEST
+    articleSuggest = function() {
+      $('#site-brands > div').each( function(i,e) {
+        systemLanguageDesk = $('#system_language').html();
+        resultsFound = $('#results_mobile').html();
+        brandID = e.id;
+        brandName = e.textContent;
+        as_count = 0;
+        if (currentPage == 'email_new') {
+          search_query = $('#email_subject').val() + ' ' + $('#email_body').val();
+        }
+        if (currentPage == 'question_new') {
+          search_query = $('#qna_subject').val() + ' ' + $('#qna_body').val() + ' ' + $("#qna_kb_topic_id option:selected").text();
+        }
+        if (currentPage == 'chat_new') {
+          search_query = $('#chat_subject').val();
+        }
+        $.ajax({
+          url: '//' + document.domain.toString() + '/customer/' + systemLanguageDesk + '/portal/articles/autocomplete?b_id=' + brandID + '&term=' + search_query,
+          brandID: brandID,
+          brandName: brandName,
+          dataType: 'json',
+          success: function(data) {
+            apiSuccess(data, this.brandID, this.brandName);
+            function apiSuccess(data, brandID, brandName) {
+                $('.autosuggest.multi-brand div#brand-' + brandID).remove();
+                auto_suggest_content = "";
+                auto_suggest = "";
+                system_snippet_do_these_help = $('#system-snippets-do_these_help').text() || 'Do these help?';
+                $('#common h2').html(system_snippet_do_these_help);
+                $('#common h4').hide();
+                as_count = 0;
+                $.each(data, function() {
+                  var html = $(this.label);
+                  article_title = html.find(".article-autocomplete-subject").html();
+                  if(as_count == 3 ) {
+                    auto_suggest += '<div class="collapse" id="collapse-' + brandID + '">';
+                  }
+                  if (this.id.indexOf("questions") !== -1) {
+                      auto_suggest += '<li><a target="_blank" href="' + this.id + '" class="discussion"><i class="fa fa-question"></i><span>' + article_title + '</span></a></li>';
+                  } else {
+                      auto_suggest += '<li><a target="_blank" href="' + this.id + '" class="article"><i class="fa fa-file-text-o"></i><span>' + article_title + '</span></a></li>';
+                  }
+                  as_count++;
+                });
+                if (as_count > 0) {
+                  if (as_count > 9) {
+                    $('.autosuggest.multi-brand').append('<div id="brand-' + brandID + '"><h4 class="muted"><span>' + as_count + ' + </span>' + resultsFound + ' in ' + brandName + '</h4><ul class="unstyled"></ul>');
+                  } else {
+                    $('.autosuggest.multi-brand').append('<div id="brand-' + brandID + '"><h4 class="muted"><span>' + as_count + ' </span>' + resultsFound + ' in ' + brandName + '</h4><ul class="unstyled"></ul>');
+                  }
+                  if (as_count > 0) {
+                    $('.autosuggest.multi-brand div#brand-' + brandID + ' ul').append(auto_suggest);
+                    if (as_count > 9) {
+                      $('.autosuggest.multi-brand div#brand-' + brandID + ' ul div').append('<li><a class="btn btn-submit" target="_blank" href="//' + document.domain.toString() + '/customer/' + systemLanguageDesk + '/portal/articles/search?b_id=' + brandID + '&q=' + search_query + '&displayMode=BrandOnly">View All</a></li>');
+                    }
+                    $('.autosuggest.multi-brand div#brand-' + brandID + ' ul div').append('</div>');
+                    if(as_count > 3) {
+                      $('.autosuggest.multi-brand div#brand-' + brandID + ' ul').append('<button class="btn btn-submit coltrig">More</button>');
+                    }
+                  } // IF SUGGESTIONS
+                  as_count = 0;
+                }
+            } // FUNCTION API SUCCESS
+          } // SUCCESS
+        }); // AJAX REQUEST
+      });// FOR EACH BRAND
+
+    } // ARTICLE SUGGESTION
+
+
+    //NO RESULTS
+    apiFail = function(data) {}
+
+
+    $(document).ajaxComplete(function() {
+      $('.coltrig').click(function() {
+        $(this).prevAll('div.collapse').collapse();
+        $(this).hide();
+    });
+  });
+
+
+
+  }
+// =====================================================
+// MultiBrand Search Auto Suggest
+// =====================================================
+  if (MBSearchSuggest == 'true') {
+    /* NEW MULTIBRAND AUTO COMPLETE */
+    $(function() {
+      $('#qMB').on("keyup paste",function() {
+          if ($('#qMB').val().length > 3 && $('#qMB').val().length <= 250) {
+            clearTimeout(window.timer);
+            window.timer=setTimeout(function(){ // setting the delay for each keypress
+              var position = $('#qMB').offset();
+              position.top = position.top + $('#qMB').outerHeight() - 1;
+              marginLeft = $('#qMB').css('padding-left');
+              searchWidth = $('#qMB').width();
+              $('#SearchAutoSuggest').css(position);
+              $('#SearchAutoSuggest').css('width', searchWidth);
+              $('#SearchAutoSuggest').css('margin-left', marginLeft);
+              SearchAutoSuggest();
+            }, 500);
+          }
+        });
+    });
+    /* HIDE ON CLICK OFF */
+    $(document).mouseup(function (e) {
+        var container = $("#SearchAutoSuggest");
+        if (!container.is(e.target)
+            && container.has(e.target).length === 0)
+        {
+            container.hide();
+        }
+    });
+    //-- MULTIBRAND SEARCH SUGGEST
+    SearchAutoSuggest = function() {
+      $('#site-brands > div').each( function(i,e) {
+        systemLanguageDesk = $('#system_language').html();
+        resultsFound = $('#results_mobile').html();
+        brandID = e.id;
+        brandName = e.textContent;
+        as_count = 0;
+        search_query = $('#qMB').val();
+        $.ajax({
+          url: '//' + document.domain.toString() + '/customer/' + systemLanguageDesk + '/portal/articles/autocomplete?b_id=' + brandID + '&term=' + search_query,
+          brandID: brandID,
+          brandName: brandName,
+          dataType: 'json',
+          success: function(data) {
+            apiSuccess(data, this.brandID, this.brandName);
+            function apiSuccess(data, brandID, brandName) {
+                $('#SearchAutoSuggest div#brand-' + brandID).remove();
+                auto_suggest_content = "";
+                auto_suggest = "";
+                system_snippet_do_these_help = $('#system-snippets-do_these_help').text() || 'Do these help?';
+                as_count = 0;
+                $.each(data, function() {
+                  var html = $(this.label);
+                  article_title = html.find(".article-autocomplete-subject").html();
+                  if (as_count < 5) {
+                    if (this.id.indexOf("questions") !== -1) {
+                        auto_suggest += '<li><a target="_blank" href="' + this.id + '" class="discussion"><i class="fa fa-question"></i><span>' + article_title + '</span></a></li>';
+                    } else {
+                        auto_suggest += '<li><a target="_blank" href="' + this.id + '" class="article"><i class="fa fa-file-text-o"></i><span>' + article_title + '</span></a></li>';
+                    }
+                  }
+                  as_count++;
+                });
+                if (as_count > 0) {
+                  $('#SearchAutoSuggest').show();
+                  if (as_count > 9) {
+                    $('#SearchAutoSuggest').append(' ' +
+                       '<div id="brand-' + brandID + '">' +
+                        '<h4 class="muted"><span>' + as_count + ' + </span>' + resultsFound + ' in ' + brandName + '</h4>' +
+                        '<a class="btn btn-submit" target="_blank" href="//' + document.domain.toString() + '/customer/' + systemLanguageDesk + '/portal/articles/search?b_id=' + brandID + '&q=' + search_query + '">View All</a>' +
+                        '<ul class="unstyled"></ul>'
+                      );
+                  } else {
+                    $('#SearchAutoSuggest').append(
+                      '<div id="brand-' + brandID + '">' +
+                        '<h4 class="muted"><span>' + as_count + ' </span>' + resultsFound + ' in ' + brandName + '</h4>' +
+                        '<a class="btn btn-submit" target="_blank" href="//' + document.domain.toString() + '/customer/' + systemLanguageDesk + '/portal/articles/search?b_id=' + brandID + '&q=' + search_query + '">View All</a>' +
+                        '<ul class="unstyled"></ul>'
+                      );
+                  }
+                  if (as_count > 0) {
+                    $('#SearchAutoSuggest div#brand-' + brandID + ' ul').append(auto_suggest + '</div>');
+                  } // IF SUGGESTIONS
+                  as_count = 0;
+                } else {
+                  $('#SearchAutoSuggest').hide();
+                }
+            } // BRAND REQUEST
+          } // SUCCESS
+        }); // AJAX REQUEST
+      });// FOR EACH BRAND
+    }// ARTICLE SUGGESTION ON KEYUP FUNCTION
+  };
 
 
 // =====================================================
@@ -1330,3 +1400,6 @@ $(document).ready(function() {
       });
     }
   });
+
+
+
