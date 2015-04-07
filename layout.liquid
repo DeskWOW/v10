@@ -173,18 +173,16 @@
               <a>{{ desk.page.theme.contact_us_content }}</a>
             </li>
           {% endif %}
+          <!-- PRIVATE PORTAL LOGGED IN VS GUEST -->
           {% if site.portal_authentication_enabled_config %}
-            <!-- Guest -->
             {% if current_user and current_user.is_guest == true  and page != "login" %}
+              <!-- Guest -->
               <li>
                 <!--<span class="desk-guestMessage">{{system.snippets.welcome_guest}}</span>-->
                 <a href="{{ site.authentication_login_url }}" id="desk-auth-login-link" class="">{{system.snippets.login}}<i class="fa fa-sign-in"></i></a>
               </li>
-              {% if langs_list %}
-                <li id="desk-mobile-lang-list"></li>
-              {% endif %}
-          {% else %}
-          <!-- Logged In -->
+            {% else %}
+              <!-- Logged In -->
               {% if site.myportal_enabled %}
                 <li>
                   <a href="{{ desk.system.links.myportal }}">{{system.snippets.my_cases}} <i class="fa fa-inbox"></i></a>
@@ -203,6 +201,12 @@
                 </li>
               {% endif %}
             {% endif %}
+          {% endif %}
+          <!-- LANG DROPDOWN -->
+          {% if langs_list %}
+             <li>
+              {{langs_list}}
+             </li>
           {% endif %}
       </ul>
     </div>
@@ -255,37 +259,37 @@
         </div>
         <div class="{% if widelogo == true %} col-md-12 {% else %} col-md-7 {% endif %}">
           <ul class="nav nav-pills">
-            {% if current_user and current_user.is_guest == true %}
-             {% if langs_list %}
+            <!-- LANG DROPDOWN -->
+            {% if langs_list %}
                <li>
-                    {{langs_list}}
+                {{langs_list}}
                </li>
-             {% endif %}
             {% endif %}
+            <!-- PRIVATE PORTAL LOGGED IN VS GUEST -->
             {% if site.portal_authentication_enabled_config %}
-              <!-- Guest -->
               {% if current_user and current_user.is_guest == true  and page != "login" %}
+                <!-- Guest -->
                 <li>
-                  <a href="{{ site.authentication_login_url }}" id="desk-auth-login-link" class="">{{system.snippets.login}}</a>
+                  <!--<span class="desk-guestMessage">{{system.snippets.welcome_guest}}</span>-->
+                  <a href="{{ site.authentication_login_url }}" id="desk-auth-login-link" class="">{{system.snippets.login}}<i class="fa fa-sign-in"></i></a>
                 </li>
-              {% endif %}
-              <!-- Logged In -->
-              {% if current_user and current_user.is_guest == false %}
-                <li class="desk-guestMessage"><p>{{system.snippets.welcome}} {{ current_user.customer.name }}</p></li>
-
+              {% else %}
+                <!-- Logged In -->
                 {% if site.myportal_enabled %}
                   <li>
-                    <a href="{{ desk.system.links.myportal }}">{{system.snippets.my_cases}} </a>
+                    <a href="{{ desk.system.links.myportal }}">{{system.snippets.my_cases}} <i class="fa fa-inbox"></i></a>
                   </li>
                 {% endif %}
+
                 {% if site.portal_authentication_type_config == 'desk' %}
                   <li>
-                    <a href="{{ desk.system.links.myaccount }}" id="desk-myaccount-link">{{system.snippets.my_account}}</a>
+                    <a href="{{ desk.system.links.myaccount }}" id="desk-myaccount-link">{{system.snippets.my_account}} <i class="fa fa-user"></i></a>
                   </li>
                 {% endif %}
+
                 {% if site.portal_logout_enabled_config %}
                   <li>
-                    <a href="{{ site.authentication_logout_url }}" id="desk-logout-link">{{system.snippets.logout}}</a>
+                    <a href="{{ site.authentication_logout_url }}" id="desk-logout-link">{{system.snippets.logout}} <i class="fa fa-sign-out"></i></a>
                   </li>
                 {% endif %}
               {% endif %}
