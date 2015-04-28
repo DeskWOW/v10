@@ -967,7 +967,7 @@ $(document).ready(function() {
       function highlightSearchTerms(search_terms){
         $.each(search_terms.split(' '), function(index, value) {
           if(value.length > 3) {
-            $('#content h3, #content p, #PreCreate p, #PreCreate a, .container.search h3, .container.search p').highlight($.trim(value), '<span class=\"highlight\">$1</span>');
+            $('#content p, #PreCreate p, #PreCreate a, .container.search p, .container.search h3 a span').highlight($.trim(value), '<span class=\"highlight\">$1</span>');
           }
         });
       }
