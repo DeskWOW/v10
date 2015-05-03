@@ -1902,19 +1902,19 @@ SITE CAVAS/MOBILE ------
     backface-visibility: hidden;
   }
   .show-nav #site-canvas {
-    -webkit-transform: translateX(300px);
-    transform: translateX(300px);
+    -webkit-transform: translateX(270px);
+    transform: translateX(270px);
     -webkit-transition: 300ms ease-out all;
     transition: 300ms ease-out all;
   }
   #mobile-menu {
     background: #353C45;
     color: #D4D9DE;
-    width: 300px;
+    width: 270px;
     height: 100%!important;
     position: absolute;
     top: 0;
-    left: -300px;
+    left: -270px;
     padding: 0px;
     z-index: 999;
     -webkit-transform: translateX(0);
@@ -2052,7 +2052,7 @@ MOBILE SEARCH ------
     float: left;
     margin: 8px 0 0 10px;
     padding: 4px 10px 4px 32px;
-    width: 274px;
+    width: 244px;
     color: #FFF !important;
     font-size: 13px;
     line-height: 19px;

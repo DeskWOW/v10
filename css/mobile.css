@@ -9,9 +9,6 @@
     #header,
     #search {display: none;}
     #mobileHeader {display: block;}
-    #breadcrumbs > .container > .row {
-      padding: 0px 15px;
-    }
     #content > .container > .row > .col-md-8 {
       padding: 0px 15px;
     }
