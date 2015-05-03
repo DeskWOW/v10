@@ -106,7 +106,8 @@ DESK HEADER STYLES ------
     -o-transition: ease all 0.5s;
     transition: ease all 0.5s;
   }
-  #header ul.nav.nav-pills li:hover a{
+  #header ul.nav.nav-pills li:hover a,
+  #header ul.nav.nav-pills li:focus a {
     color: #fff;
     background: none;
     border-color: #fff;
@@ -178,7 +179,8 @@ DESK SEARCH STYLES ------
     z-index: 999;
     outline: none;
   }
-  #search #support-search-submit:hover, #search input[type=submit]:hover, #search button:hover{
+  #search #support-search-submit:hover, #search input[type=submit]:hover, #search button:hover,
+  #search #support-search-submit:focus, #search input[type=submit]:focus, #search button:focus {
     background: none;
     color: #585858;
   }
@@ -263,7 +265,8 @@ SINGLE BRAND SEARCH AUTO COMPLETE ------
   ul.ui-menu li.ui-menu-item a{
     color: #3498db;
   }
-  ul.ui-menu li.ui-menu-item:hover {
+  ul.ui-menu li.ui-menu-item:hover,
+  ul.ui-menu li.ui-menu-item:focus{
     color: #fff;
     background-color: #3498db;
     cursor: pointer;
@@ -466,6 +469,7 @@ INDEX PAGE ------
     margin-bottom: 18px;
     color: #c6c6c6;
     font-size: 16px;
+    word-break: break-word;
   }
   #content .container.index .desk-topic ul li a,
   #content .container.index .desk-qna ul li a,
@@ -492,7 +496,8 @@ INDEX PAGE ------
     padding: 10px 0px;
     border-bottom: 1px solid #eaeaea;
   }
-  #content .container.index .list ul li:hover {
+  #content .container.index .list ul li:hover,
+  #content .container.index .list ul li:focus {
     background: #efefe;
   }
   #content .container.index .desk-qna.list ul
@@ -654,12 +659,14 @@ ARTICLE PAGE ------
     color: #b85252;
     border-color: #f19595;
   }
-  #rate_article a:hover {
+  #rate_article a:hover,
+  #rate_article a:focus{
     background:#65bc9c;
     color: #fff;
     text-decoration: none;
   }
-  #rate_article .rate-link-down a:hover{
+  #rate_article .rate-link-down a:hover,
+  #rate_article .rate-link-down a:focus {
     background:#f19595;
     color: #fff;
     text-decoration: none;
@@ -787,7 +794,8 @@ PUBLIC QUESTION ------
   .answer-rating a.rate.decrement {
     color: #e76565;
   }
-  .answer-rating a.rate:hover {
+  .answer-rating a.rate:hover,
+  .answer-rating a.rate:focus {
     background: #ebeced;
   }
 /* -----------------------------------------------------------
@@ -818,7 +826,8 @@ MY PORTAL INDEX------
     -o-border-radius: 4px;
     border-radius: 4px;
   }
-  .myportal.index .header ul.case-menu li.new a:hover {
+  .myportal.index .header ul.case-menu li.new a:hover,
+  .myportal.index .header ul.case-menu li.new a:focus {
     background: #353C45;
     text-decoration: none;
     color: #fff;
@@ -974,7 +983,8 @@ MY PORTAL CASE VIEW------
     border: 0px;
   }
   .myportal.case .status button:hover,
-  .myportal.case .status input[type="submit"]:hover {
+  .myportal.case .status input[type="submit"]:hover,
+  .myportal.case .status input[type="submit"]:focus {
     background: #353C45;
     text-decoration: none;
     color: #fff;
@@ -1215,7 +1225,8 @@ MY PORTAL ACCOUNT/PROFILE ------
     border-radius: 4px;
     margin-right: 14px;
   }
-  .new_customer_contact_email button:hover{
+  .new_customer_contact_email button:hover,
+  .new_customer_contact_email button:focus {
     background: #353c45;
   }
   /* ADD ACCOUNTS */
@@ -1275,7 +1286,8 @@ BUTTONS & FORMS ------
   #content a.btn.btn-pill:hover,
   #content a.btn.btn-pill:hover span,
   #content a.btn.btn-pill:hover span,
-  #content a.btn.btn-pill:hover {
+  #content a.btn.btn-pill:hover,
+  #content a.btn.btn-pill:focus {
     border-color:#999;
   }
   #content a.btn:active,
@@ -1286,7 +1298,8 @@ BUTTONS & FORMS ------
     box-shadow: none;
   }
   #content .container.topic .header .switch .btn.active,
-  #content .container.topic .header .switch .btn:hover {
+  #content .container.topic .header .switch .btn:hover,
+  #content .container.topic .header .switch .btn:focus {
     color: #FFF;
     background: #3498DB;
     border-color: #3498DB;
@@ -1572,7 +1585,8 @@ REGISTER PAGE ------
     border: 2px solid #E8E8E8;
     font-weight: 700;
   }
-  .alternatelogins > div > a:hover {
+  .alternatelogins > div > a:hover,
+  .alternatelogins > div > a:focus {
     background: #E8E8E8;
   }
   .alternatelogins #facebook {
@@ -1765,7 +1779,8 @@ SIDEBAR STYLES ------
     line-height: 1.42857;
     border-radius: 4px;
   }
-  #rowbar ul li a:hover {
+  #rowbar ul li a:hover,
+  #rowbar ul li a:focus {
     text-decoration: none;
   }
   #rowbar ul li a i {

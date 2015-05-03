@@ -1235,6 +1235,7 @@ $(document).ready(function() {
 // =====================================================
 // MultiBrand Search Page (All results, One Page!)
 // =====================================================
+if (currentPage == 'page_search_result') {
   if (MBSearchPage == 'true') {
     jQuery(document).ready(function() {
 
@@ -1324,7 +1325,7 @@ $(document).ready(function() {
         }
     });
   }
-
+}
 // =====================================================
 // MultiBrand Search Auto Suggest
 // =====================================================
