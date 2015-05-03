@@ -61,7 +61,7 @@
                             <th class="hidden-xs"><span>{{desk.system.snippets.from}}</span></th>
                             {% endif %}
                             <th class="hidden-xs"><span>{{desk.system.snippets.updated}}</span></th>
-                            <th><span>{{desk.system.snippets.status}}</span></th>
+                            <th class="hidden-xs"><span>{{desk.system.snippets.status}}</span></th>
                           </tr>
                         </thead>
                         <tbody>
@@ -74,7 +74,7 @@
                             <td class='a-casefrom hidden-xs'>{{case.customer.first_name}}</td>
                             {% endif %}
                             <td class='a-casecreated hidden-xs'>{{ case.updated_at | in_time_zone: site.timezone | date: '%b %d %Y' }}</td>
-                            <td class='a-casestatus'>{% case case.status.id %}
+                            <td class='a-casestatus hidden-xs'>{% case case.status.id %}
                               {% when 10 %}
                               {{desk.system.snippets.case_new}}
                               {% when 30 %}

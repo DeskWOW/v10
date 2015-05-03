@@ -35,6 +35,8 @@
     #PreCreate .modal-body ul.results li p{font-size: 14px;}
 
     #PreCreate .modal-footer .btn.btn-submit{font-size: 14px;padding: 7px 16px}
+
+    .myportal.index .body table tbody tr td.a-casesubject {padding: 0px 10px;}
 }
 @media only screen and (max-width : 480px) {
     #header,
