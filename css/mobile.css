@@ -81,9 +81,8 @@
       width: 100%;
       margin: 5px auto;
     }
-    .new_customer_contact_email input {
-      max-width: 75%;
-    }
+    .new_customer_contact_email input {max-width: 70%;}
+    .new_customer_contact_email button {width: 25%;margin:0px;float: right;}
     .myportal.case .status .stats {padding: 0px 15px;}
     .myportal.case .status button, .myportal.case .status input[type="submit"] {width: 100%; display: inline-block; margin-top: 15px;}
 }
