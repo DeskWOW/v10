@@ -49,9 +49,7 @@
     #content > .container > .row {
       margin: 0px -15px !important;
     }
-    #breadcrumbs > .container > .row {
-      padding: 0px 15px;
-    }
+
     #content > .container > .row > .col-md-8 {
       padding: 0px 15px;
     }

@@ -237,58 +237,59 @@
     <!-- DESKTOP HEADER -->
     <div id="header">
       <div class="container">
-
-        <div class="{% if widelogo == true %} col-md-12 {% else %} col-md-5 {% endif %}">
-            {% if desk.page.theme.header_content == "" %}
-            <h1>
-              <a href='/'>
-                {% if desk.current_brand.name == nil %}
-                  {{ site.company_name }}
-                {% else %}
-                   {{ desk.current_brand.name }}
-                {% endif %}
-              </a>
-            </h1>
-            {% else %}
-              {{ desk.page.theme.header_content }}
-            {% endif %}
-        </div>
-        <div class="{% if widelogo == true %} col-md-12 {% else %} col-md-7 {% endif %}">
-          <ul class="nav nav-pills">
-             {% if langs_list %}
-               <li>
-                    {{langs_list}}
-               </li>
-             {% endif %}
-            {% if site.portal_authentication_enabled_config %}
-              <!-- Guest -->
-              {% if current_user and current_user.is_guest == true  and page != "login" %}
-                <li>
-                  <a href="{{ site.authentication_login_url }}" id="desk-auth-login-link" class="">{{system.snippets.login}}</a>
-                </li>
+        <div class="row">
+          <div class="{% if widelogo == true %} col-md-12 {% else %} col-md-5 {% endif %}">
+              {% if desk.page.theme.header_content == "" %}
+              <h1>
+                <a href='/'>
+                  {% if desk.current_brand.name == nil %}
+                    {{ site.company_name }}
+                  {% else %}
+                     {{ desk.current_brand.name }}
+                  {% endif %}
+                </a>
+              </h1>
+              {% else %}
+                {{ desk.page.theme.header_content }}
               {% endif %}
-              <!-- Logged In -->
-              {% if current_user and current_user.is_guest == false %}
-                <li class="desk-guestMessage"><p>{{system.snippets.welcome}} {{ current_user.customer.name }}</p></li>
+          </div>
+          <div class="{% if widelogo == true %} col-md-12 {% else %} col-md-7 {% endif %}">
+            <ul class="nav nav-pills">
+               {% if langs_list %}
+                 <li>
+                      {{langs_list}}
+                 </li>
+               {% endif %}
+              {% if site.portal_authentication_enabled_config %}
+                <!-- Guest -->
+                {% if current_user and current_user.is_guest == true  and page != "login" %}
+                  <li>
+                    <a href="{{ site.authentication_login_url }}" id="desk-auth-login-link" class="">{{system.snippets.login}}</a>
+                  </li>
+                {% endif %}
+                <!-- Logged In -->
+                {% if current_user and current_user.is_guest == false %}
+                  <li class="desk-guestMessage"><p>{{system.snippets.welcome}} {{ current_user.customer.name }}</p></li>
 
-                {% if site.myportal_enabled %}
-                  <li>
-                    <a href="{{ desk.system.links.myportal }}">{{system.snippets.my_cases}} </a>
-                  </li>
-                {% endif %}
-                {% if site.portal_authentication_type_config == 'desk' %}
-                  <li>
-                    <a href="{{ desk.system.links.myaccount }}" id="desk-myaccount-link">{{system.snippets.my_account}}</a>
-                  </li>
-                {% endif %}
-                {% if site.portal_logout_enabled_config %}
-                  <li>
-                    <a href="{{ site.authentication_logout_url }}" id="desk-logout-link">{{system.snippets.logout}}</a>
-                  </li>
+                  {% if site.myportal_enabled %}
+                    <li>
+                      <a href="{{ desk.system.links.myportal }}">{{system.snippets.my_cases}} </a>
+                    </li>
+                  {% endif %}
+                  {% if site.portal_authentication_type_config == 'desk' %}
+                    <li>
+                      <a href="{{ desk.system.links.myaccount }}" id="desk-myaccount-link">{{system.snippets.my_account}}</a>
+                    </li>
+                  {% endif %}
+                  {% if site.portal_logout_enabled_config %}
+                    <li>
+                      <a href="{{ site.authentication_logout_url }}" id="desk-logout-link">{{system.snippets.logout}}</a>
+                    </li>
+                  {% endif %}
                 {% endif %}
               {% endif %}
-            {% endif %}
-          </ul>
+            </ul>
+          </div>
         </div>
       </div><!-- Container Desktop -->
     </div><!-- #desk-header -->
@@ -320,80 +321,82 @@
         <div id="breadcrumbs">
           <div class="container">
             <div class="row">
-                <ol class="breadcrumb">
-                  {% if page  == "page_index" %}
-                      <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a></li>
-                  {% elsif page == "page_article" %}
-                    {% if article %}
-                      <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
-                      <li class="crumb"><a href="{{ topic.public_articles_url }}" title="{{ topic.name }}">{{ topic.name }}</a> </li>
-                      <li class="active crumb" title="{{ article.subject_plain }}">{{ article.subject_plain }}</li>
-                    {% else %}
-                      <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
-                      <li class="crumb active">{{system.snippets.article_translation_missing}}</li>
+              <div class="col-md-12">
+                  <ol class="breadcrumb">
+                    {% if page  == "page_index" %}
+                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a></li>
+                    {% elsif page == "page_article" %}
+                      {% if article %}
+                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
+                        <li class="crumb"><a href="{{ topic.public_articles_url }}" title="{{ topic.name }}">{{ topic.name }}</a> </li>
+                        <li class="active crumb" title="{{ article.subject_plain }}">{{ article.subject_plain }}</li>
+                      {% else %}
+                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
+                        <li class="crumb active">{{system.snippets.article_translation_missing}}</li>
+                      {% endif %}
+                    {% elsif page == "page_topic" %}
+                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
+                        {% if topic %}
+                        <li class="crumb active">{{ topic.name }}</li>
+                        {% endif %}
+                    {% elsif page == "page_search_result" %}
+                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
+                        <li class="crumb">{{system.snippets.search}} </li>
+                        <li class="active crumb" title="{{ search_term }}">{{ search_term }}</li>
+                    {% elsif page == "question_show" %}
+                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
+                        <li class="crumb"><a href="{{ question.topic.public_questions_url }}" title="{{ question.topic.name }}">{{ question.topic.name  | clip:30 }}</a> </li>
+                        <li class="active crumb" title="{{ question.subject }}">{{ question.subject | clip:30 }}</li>
+                    {% elsif page == "question_new" %}
+                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
+                        <li class="active crumb" title="{{ article.subject_plain }}">{{system.snippets.post_public_question}}</li>
+                    {% elsif page == "question_pre_create" %}
+                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
+                        <li class="crumb"><a href='{{desk.system.links.question}}'>{{system.snippets.post_public_question}}</a> </li>
+                        <li class="active crumb">{{system.snippets.post_public_question}}</li>
+                    {% elsif page == "email_new" %}
+                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
+                        <li class="active crumb" title="{{ article.subject_plain }}">{{system.snippets.email_us}}</li>
+                    {% elsif page == "email_pre_create" %}
+                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> &rsaquo; {{system.snippets.email_us}}</li>
+                    {% elsif page == "email_submitted" %}
+                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
+                        <li class="active crumb">{{system.snippets.email_us}}</li>
+                    {% elsif page == "chat_new" %}
+                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
+                        <li class="active crumb" title="{{system.snippets.live_chat}}">{{system.snippets.live_chat}}</li>
+                    {% elsif page == "chat_pre_create" %}
+                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
+                        <li class="active crumb">{{system.snippets.live_chat}}</li>
+                    {% elsif page == "myportal_index" %}
+                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
+                        <li class="active crumb">{{desk.system.snippets.my_cases}}</li>
+                    {% elsif page == "myportal_show" %}
+                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
+                        {% if desk.customer.can_access_company_tickets? %}
+                        <li class="crumb"><a href='{{ desk.system.links.myportal }}'>{{ desk.page.content.case.customer.name }}</a></li>
+                        {% endif %}
+                        <li class="crumb"><a href='{{ desk.system.links.myportal }}'>{{desk.system.snippets.my_cases}}</a> </li>
+                        <li class="active crumb">{{desk.page.content.case.subject | clip:30 }}</li>
+                    {% elsif page == "login" %}
+                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
+                        <li class="crumb active">{{desk.system.snippets.login_title}}</li>
+                    {% elsif page == "registration" %}
+                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
+                        <li class="crumb"><a href='{{ site.authentication_login_url }}'>{{desk.system.snippets.login_title}}</a> </li>
+                        <li class="crumb active">{{desk.system.snippets.registration_title}}</li>
+                    {% elsif page == "forgot_password" %}
+                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
+                        <li class="crumb"><a href='{{desk.system.links.login}}'>{{desk.system.snippets.login_title}}</a> </li>
+                        <li class="crumb active">{{desk.system.snippets.password_reset_title}}</li>
+                    {% elsif page == "myaccount" %}
+                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
+                        <li class="active crumb">{{desk.system.snippets.account_title}}</li>
+                    {% elsif page == "authentication_verification" %}
+                        <li><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> &rsaquo; {{desk.system.snippets.auth_verification_title}}</li>
                     {% endif %}
-                  {% elsif page == "page_topic" %}
-                      <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
-                      {% if topic %}
-                      <li class="crumb active">{{ topic.name }}</li>
-                      {% endif %}
-                  {% elsif page == "page_search_result" %}
-                      <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
-                      <li class="crumb">{{system.snippets.search}} </li>
-                      <li class="active crumb" title="{{ search_term }}">{{ search_term }}</li>
-                  {% elsif page == "question_show" %}
-                      <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
-                      <li class="crumb"><a href="{{ question.topic.public_questions_url }}" title="{{ question.topic.name }}">{{ question.topic.name  | clip:30 }}</a> </li>
-                      <li class="active crumb" title="{{ question.subject }}">{{ question.subject | clip:30 }}</li>
-                  {% elsif page == "question_new" %}
-                      <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
-                      <li class="active crumb" title="{{ article.subject_plain }}">{{system.snippets.post_public_question}}</li>
-                  {% elsif page == "question_pre_create" %}
-                      <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
-                      <li class="crumb"><a href='{{desk.system.links.question}}'>{{system.snippets.post_public_question}}</a> </li>
-                      <li class="active crumb">{{system.snippets.post_public_question}}</li>
-                  {% elsif page == "email_new" %}
-                      <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
-                      <li class="active crumb" title="{{ article.subject_plain }}">{{system.snippets.email_us}}</li>
-                  {% elsif page == "email_pre_create" %}
-                      <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> &rsaquo; {{system.snippets.email_us}}</li>
-                  {% elsif page == "email_submitted" %}
-                      <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
-                      <li class="active crumb">{{system.snippets.email_us}}</li>
-                  {% elsif page == "chat_new" %}
-                      <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
-                      <li class="active crumb" title="{{system.snippets.live_chat}}">{{system.snippets.live_chat}}</li>
-                  {% elsif page == "chat_pre_create" %}
-                      <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
-                      <li class="active crumb">{{system.snippets.live_chat}}</li>
-                  {% elsif page == "myportal_index" %}
-                      <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
-                      <li class="active crumb">{{desk.system.snippets.my_cases}}</li>
-                  {% elsif page == "myportal_show" %}
-                      <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
-                      {% if desk.customer.can_access_company_tickets? %}
-                      <li class="crumb"><a href='{{ desk.system.links.myportal }}'>{{ desk.page.content.case.customer.name }}</a></li>
-                      {% endif %}
-                      <li class="crumb"><a href='{{ desk.system.links.myportal }}'>{{desk.system.snippets.my_cases}}</a> </li>
-                      <li class="active crumb">{{desk.page.content.case.subject | clip:30 }}</li>
-                  {% elsif page == "login" %}
-                      <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
-                      <li class="crumb active">{{desk.system.snippets.login_title}}</li>
-                  {% elsif page == "registration" %}
-                      <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
-                      <li class="crumb"><a href='{{ site.authentication_login_url }}'>{{desk.system.snippets.login_title}}</a> </li>
-                      <li class="crumb active">{{desk.system.snippets.registration_title}}</li>
-                  {% elsif page == "forgot_password" %}
-                      <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
-                      <li class="crumb"><a href='{{desk.system.links.login}}'>{{desk.system.snippets.login_title}}</a> </li>
-                      <li class="crumb active">{{desk.system.snippets.password_reset_title}}</li>
-                  {% elsif page == "myaccount" %}
-                      <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
-                      <li class="active crumb">{{desk.system.snippets.account_title}}</li>
-                  {% elsif page == "authentication_verification" %}
-                      <li><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> &rsaquo; {{desk.system.snippets.auth_verification_title}}</li>
-                  {% endif %}
-                </ol>
+                  </ol>
+              </div>
             </div>
           </div>
         </div><!-- #breadcrumbs -->
