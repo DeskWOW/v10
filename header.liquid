@@ -78,7 +78,7 @@
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <link href="//desk-customers.s3.amazonaws.com/v10/css/default.css" rel="stylesheet">
 <link href="//desk-customers.s3.amazonaws.com/v10/css/mobile.css" rel="stylesheet">
-<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,600,400,300,700,800" rel='stylesheet' type='text/css'>
+
  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -188,14 +188,15 @@
       #content .container.index .get-sat h4 a,
       #content .container.topic .body .qna h3 a,
       #content .container.topic .body .article h3 a{
-        font-family: {{desk.page.theme.header-font}};
+        {% if desk.page.theme.header-font != "" %}
+          font-family: {{desk.page.theme.header-font}};
+        {% endif %}
         color: {{desk.page.theme.default-text-color}};
       }
     /* DEFAULT CONTENT COLORS/FACES */
       body,p {
         line-height: 1.64;
         font-size: {{desk.page.theme.content-font-size }}px;
-        font-family: {{desk.page.theme.default-font}};
       }
       body, p, blockquote, ul, ol, li,
       .breadcrumb > .active,
@@ -204,7 +205,9 @@
       #content .container.index .desk-qna ul li a,
       #content .container.index .get-sat ul li a {
         color: {{desk.page.theme.content-text-color}};
-        font-family: {{ desk.page.theme.content-font }};
+        {% if desk.page.theme.default-font != "" %}
+           font-family: {{desk.page.theme.default-font}};
+        {% endif %}
       }
     /* BUTTON COLORS */
       .myportal.index .header ul.case-menu li.new a,

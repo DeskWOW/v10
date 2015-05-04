@@ -1,10 +1,11 @@
+@import url(//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800);
 /** Ultima CSS Reset **/
   fieldset,img,abbr,iframe {border:0}
   ul{-webkit-padding-start: 0px;}
   .unstyled { list-style-type: none }
 /* DEFAULT FONT(s) */
   body, p {
-    font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family: "Open Sans", Helvetica , Arial, sans-serif;
     color:#585858;
     font-size: 17px;
     -webkit-font-smoothing: antialiased;
@@ -358,9 +359,14 @@ BREADCRUMB STYLES ------
     font-size: 14px;
     font-weight: 600;
     word-break: break-word;
+    -ms-word-break: break-all;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+        hyphens: auto;
   }
   #breadcrumbs ol.breadcrumb li a {
     color: #3498db;
+
   }
   #breadcrumbs ol.breadcrumb > li + li:before {
     content:"\003e";
@@ -393,6 +399,11 @@ DEFAULT CONTENT ------
     margin-bottom: 15px;
     font-size: 28px;
     line-height: 1;
+        word-break: break-word;
+    -ms-word-break: break-all;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+        hyphens: auto;
   }
   #content > .container > .row > .col-md-8 {
     padding-right: 30px;
@@ -471,6 +482,10 @@ INDEX PAGE ------
     color: #c6c6c6;
     font-size: 16px;
     word-break: break-word;
+    -ms-word-break: break-all;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+        hyphens: auto;
   }
   #content .container.index .desk-topic ul li a,
   #content .container.index .desk-qna ul li a,
