@@ -1060,6 +1060,10 @@ $(document).ready(function() {
     $('.onclick-go-back').click(function() {
         history.back();
     });
+
+    $('#moderation_okay_button').click(function() {
+        window.location = location.origin + location.pathname;
+    });
     //BREADCRUMBS HOME LINK
     var home_link = $('#breadcrumbs a:first-child').attr("href") || location.href;
     $("a[href='/']").attr("href", home_link );
