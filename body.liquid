@@ -20,17 +20,6 @@
   {% endif %}
 {% endif %}
 
-
-<!-- FOR DEMO PURPOSES ONLY // DO REMOVE -->
-{% if desk.current_brand.id == 5305 %}
-  {% assign IndexLayout = "Grid" %}
-{% elsif desk.current_brand.id == 5306 %}
-  {% assign IndexLayout = "Topics" %}
-{% elsif desk.current_brand.id == 6430 %}
-  {% assign IndexLayout = "List" %}
-{% endif %}
-{% assign demoMode = true %}
-
 {% capture sidebar_main %}
     <!-- BEGIN MAIN SIDEBAR -->
       <div id="sidebar" class="col-md-4 {% if desk.page.theme.layout != 'left' %}left col-md-pull-8{% endif %}">
@@ -80,14 +69,6 @@
             {{gs_recent_activity_scripting}}
           </div>
           <!-- GS -->
-        {% endif %}
-        {% if demoMode == true %}
-          <h2>Layout Options</h2>
-          <ul class="options">
-            <li><a href="https://zzz-v5.desk.com/?b_id=5305">Grid Layout</a></li>
-            <li><a href="https://zzz-v5.desk.com/?b_id=5306">Topics Only Layout</a></li>
-            <li><a href="https://zzz-v5.desk.com/?b_id=6430">List Layout</a></li>
-          </ul>
         {% endif %}
       </div>
     <!-- END MAIN SIDEBAR -->
