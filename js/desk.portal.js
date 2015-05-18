@@ -448,7 +448,7 @@ function deskEV(v) {
 // =====================================================
 // Email / Chat / Question  - Related Article Suggestion
 // =====================================================
-  if (currentPage == 'email_new' || 'question_new' || 'email_pre_create' || 'chat_new') {
+  if (currentPage == 'email_new' || currentPage == 'question_new' || currentPage == 'email_pre_create' || currentPage == 'chat_new') {
     //MODAL/POPUP
     $('#PreCreate').appendTo("body").modal('show');
     //SKIP PRECREATE SITE WIDE?
@@ -923,6 +923,7 @@ $(document).ready(function() {
 // =====================================================
 // Search Related (Site Wide)
 // =====================================================
+
     //HIGHLIGHT SEARCH TERMS
     setTimeout(function(){
       function highlightSearchTerms(search_terms){
@@ -1056,12 +1057,15 @@ $(document).ready(function() {
 // =====================================================
 // ALL PAGES // SITE WIDE JS
 // =====================================================
+
     //MODAL CLOSE GO BACK
-    $('.onclick-go-back').click(function() {
+    $('#PreCreate .onclick-go-back').click(function() {
         history.back();
     });
 
-    $('#moderation_okay_button').click(function() {
+    //MODERATION FUNCTIONALITY
+    $('#Moderated').appendTo("body").modal('show');
+    $('#moderation_okay_button, #Moderated .close').click(function() {
         window.location = location.origin + location.pathname;
     });
     //BREADCRUMBS HOME LINK
@@ -1137,25 +1141,7 @@ $(document).ready(function() {
       $(".question #form").html("{{system.snippets.answers_unavailable}}");
       $("#rate_article").hide();
     }
-    //MODERATED FUNCTIONALITY
-    if ($('#system-snippets-just_moderated').text() == 'true') {
-      $('h5 a').css('display', 'none');
-      $("#moderation_okay_button").click(function() {
-        $('h5 a').css('display', 'inline');
-        $('#modal-screen').hide();
-        $('#modal').hide();
-      });
-      $("#modal-screen").css({
-        "opacity":"0.7"
-      });
-      if($.browser.msie && $.browser.version < 7) {
-        $("#qna_kb_topic_id").css("display","none");
-        $("#modal-screen").css({
-          "width": $(window).width() + "px",
-          "height": $(window).height() + "px"
-        });
-      }
-    }
+
     //Get Satisfaction
     if (deskEV('enable_gs') == 'true') {
       gsStringTable['generic_error'] = deskEV('system.snippets.get_satisfaction_error');

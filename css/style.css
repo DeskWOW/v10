@@ -1434,6 +1434,7 @@ BUTTONS & FORMS ------
     padding: 7px 12px;
     font-size: 17px;
     line-height: 1.42857143;
+    word-break: initial;
     color: #525252;
     background-color: #fff;
     background-image: none;
@@ -1541,6 +1542,7 @@ PRECREATE STYLES ------
   #PreCreate .modal-header h2 i{}
   #PreCreate .modal-header p.subheader{margin-bottom: 0px;}
   #PreCreate .modal-body {padding: 24px 24px 0px 24px;}
+  #PreCreate .modal-body.moderated {padding: 24px;}
   #PreCreate .modal-body ul.results{}
   #PreCreate .modal-body ul.results li{
     margin-bottom: 24px;
@@ -1691,7 +1693,13 @@ CUSTOMER FEEDBACK (CSAT) ------
 NOTIFICATIONS ------
 ----------------------------------------------------------- */
   #flash {
+    display: block;
     display:none;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    z-index: 1048;
+    position: absolute;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     border-radius: 0;
@@ -2285,7 +2293,6 @@ CHAT ------
 .chat-link-container {
   display: none;
 }
-
 a.chat-link {
   display: block;
   box-sizing: border-box;
@@ -2309,7 +2316,6 @@ a.chat-link {
 a.chat-link:hover {
   text-decoration: none;
 }
-
 .chat-container {
   display: none;
   padding: 0;
@@ -2325,12 +2331,10 @@ a.chat-link:hover {
   box-shadow: 0 0 25px rgba(0,0,0,.25);
   background: #eee;
 }
-
 .chatframe {
   width: 100%;
   height: 100%;
 }
-
 .chat-close {
   position: absolute;
   top: -4px;
@@ -2348,14 +2352,12 @@ a.chat-link:hover {
   box-shadow: inset 1px 1px rgba(255, 255, 255, 0.25), 1px 1px rgba(0, 0, 0, 0.25);
   border: 1px solid rgb(255, 74, 74);
 }
-
 .chat-close:hover {
   background: rgb(255, 74, 74);
   color: rgba(165, 16, 16, 1);
   text-decoration: none;
   box-shadow: inset 1px 1px rgba(255, 255, 255, 0.33), 1px 1px rgba(0, 0, 0, 0.25);
 }
-
 .chat-minimize {
   position: absolute;
   top: -4px;
@@ -2373,112 +2375,9 @@ a.chat-link:hover {
   box-shadow: inset 1px 1px rgba(255, 255, 255, 0.25), 1px 1px rgba(0, 0, 0, 0.25);
   border: 1px solid rgb(255, 143, 0);
 }
-
 .chat-minimize:hover {
   background: rgb(255, 184, 0);
   color: rgba(219, 105, 0, 1);
   text-decoration: none;
   box-shadow: inset 1px 1px rgba(255, 255, 255, 0.33), 1px 1px rgba(0, 0, 0, 0.25);
-}
-
-
-
-
- .customer_widget {
-    background: transparent;
-    box-sizing: border-box;
-    border: 0;
-    position: static;
-    font-size: 1em;
-  }
-form {
-  padding: 0;
-}
-.customer_widget .inside_title {
-  background: #3498db;
-  border-bottom: 0;
-}
-.customer_widget .inside_title,
-.customer_inner_widget {
-  padding: 15px;
-}
-.customer_widget .inside_title h1 {margin: 0px;}
-
-.customer_widget ul {
-  list-style-type: disc;
-  padding-left: 30px;
-}
-.customer_widget .autosuggest {
-  background: #FFFBE4;
-  border: 1px solid #D1BB8F;
-  border-top: 1px solid #F1E2C4;
-  border-left: 1px solid #F1E2C4;
-  border-radius: 3px;
-  padding: 10px;
-  min-width: 300px;
-  display: inline-block;
-}
-
-
- .inside_title { background: #2C97DE !important}
- .customer_widget .inside_title { border-­bottom: none!important; }
- .customer_widget {
-  background­color: #2C97DE;
-  background­position:initial initial;
-  background­repeat:initial initial;
-}
-.customer_widget .inside_title {
-  background: #1B1B1B;
-  border-bottom: 0px solid #ededed!important;
-  margin-bottom: 10px;
-  padding: 10px;
-  color: #fff;
-}
-.customer_widget {
-  border: 1px solid #e6e6e6!important;
-  position: absolute;
-  background: #fff;
-  font-size: 12px;
-}
-.customer_widget .inside_desc {
-  margin: 10px;
-  line-height: 1.1em;
-  border-bottom: 1px solid #bababa!important;
-  padding: 10px 0;
-  color: #666;
-  font-size: 14px!important;
-  font-weight:normal!important;
-}
-
-.chat_bottom_area {
-  border-bottom: 1px solid #dfdfdf;
-  bottom: 0px;
-}
-.chat_message_area {
-  bottom: 80px;
-}
-
-
-.customer_widget .form_label {
-  font-size: 1em;
-  padding: 0;
-  color: #777;
-  text-transform: uppercase;
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.form-control{
-
-}
-input.form-control,
-select.form-control,
-textarea.form-control,
-input[type=text],
-input[type=number],
-textarea {
-
-}
-.form-control:focus {
-  border: 3px solid #d3d3d3;
 }

@@ -236,11 +236,7 @@
           </div>
           <div class="{% if widelogo == true %} col-md-12 {% else %} col-md-7 {% endif %}">
             <ul class="nav nav-pills">
-               {% if langs_list %}
-                 <li>
-                      {{langs_list}}
-                 </li>
-               {% endif %}
+
               {% if site.portal_authentication_enabled_config %}
                 <!-- Guest -->
                 {% if current_user and current_user.is_guest == true  and page != "login" %}
@@ -268,6 +264,11 @@
                     </li>
                   {% endif %}
                 {% endif %}
+              {% endif %}
+              {% if langs_list %}
+                 <li>
+                      {{langs_list}}
+                 </li>
               {% endif %}
             </ul>
           </div>
@@ -405,6 +406,31 @@
       </div>
   </div>
 </div><!-- #desk-footer -->
+
+{% if just_moderated %}
+  <div id="Moderated" class="modal fade" role="dialog" tabindex="-1" aria-labelledby="PreCreateModal" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+              <h2>
+                  <h1>{{system.snippets.your_post_submitted}}</h1>
+              </h2>
+              <p class="subheader">{{system.snippets.not_shown_until_reviewed}}</p>
+          </div>
+            <div class="modal-body moderated">
+             <div id='form'>
+                <div class='input-button'>
+                  <input id='moderation_okay_button'  name='commit' type='submit'  value='{{system.snippets.okay}}' />
+                  <img alt='Ajax-loader-small' id='question_submit_spinner' src='{{ "/images/ajax-loader-small.gif" | portal_image_url: image_asset_host }}' style='display: none; margin: 7px 0 0 5px; position: absolute;'/>
+                </div>
+              </div>
+            </div>
+        </div><!-- MODAL CONTENT -->
+      </div><!-- MODAL DIALOG /  MODAL LG -->
+  </div><!-- #Moderated -->
+{% endif %}
+
 <!-- Facebook Like Button -->
 <div id="fb-root"></div>
 <!-- External Variables for Portal Header -->

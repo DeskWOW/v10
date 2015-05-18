@@ -21,25 +21,6 @@
                   <div id="system-snippets-just_moderated">{{just_moderated}}</div>
                 </div>
                 <div class="row header">
-                  {% if just_moderated %}
-                    <div id="modal-screen">&nbsp;</div>
-                    <div id="modal">
-                      <div class="inner">
-                        <div class="main">
-                          <h1>{{system.snippets.your_post_submitted}}</h1>
-                          <p class='subheader'>
-                            {{system.snippets.not_shown_until_reviewed}}
-                          </p>
-                          <div id='form'>
-                            <div class='input-button'>
-                              <input id='moderation_okay_button'  name='commit' type='submit'  value='{{system.snippets.okay}}' />
-                              <img alt='Ajax-loader-small' id='question_submit_spinner' src='{{ "/images/ajax-loader-small.gif" | portal_image_url: image_asset_host }}' style='display: none; margin: 7px 0 0 5px; position: absolute;'/>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  {% endif %}
                   <h2 class="subheader col-md-12">
                     {% if topics_count > 0 %}
                         {{system.snippets.browse_by_topic}}
