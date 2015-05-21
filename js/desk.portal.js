@@ -1171,7 +1171,7 @@ if (currentPage == 'page_search_result') {
   if (MBSearchPage == 'true') {
     jQuery(document).ready(function() {
       //VARIABLES
-        themeID = 542224; //ONLY NEEDED IF WORKING ON THEME AND WANT TO RENDER LINKS w/THEME ID
+        themeID = 0; //ONLY NEEDED IF WORKING ON THEME AND WANT TO RENDER LINKS w/THEME ID
         brandCount = 0;
         totalCount = 0;
         searchTerm = $('#search-term').html(); //LOADS SEARCH TERM
