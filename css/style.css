@@ -617,25 +617,18 @@ ARTICLE PAGE ------
   #content .container.article .body.row {
     padding-bottom: 60px;
     max-width: 100%;
-    height: auto !important;
   }
   #content .container.article .body.row > div{
     max-width: 100%;
-    height: auto !important;
   }
-  #content .container.article .body.row,
-  #content .container.article .body.row p{
-  }
+
   #content .container.article .body ul {
     margin-left: 40px;
   }
   #content .container.article .body.row img {
     padding: 10px;
   }
-  #content .container.article .body.row ul{
-  }
-  #content .container.article .body.row ul li {
-  }
+
   /* RATE BLOCK STYLES */
   div.rateblock.row {
     margin: 0px;

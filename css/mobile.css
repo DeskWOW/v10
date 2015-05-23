@@ -129,7 +129,7 @@ MOBILE SEARCH ------
     margin: 8px 0 0 10px;
     padding: 4px 0px 4px 14px;
     width: 244px;
-    color: #FFF !important;
+    color: #FFF;
     font-size: 13px;
     line-height: 19px;
     height: 27px;
@@ -344,12 +344,6 @@ MOBILE QUERIES
     #header,
     #search {display: none;}
     #mobileHeader {display: block;}
-    #content > .container > .row > .col-md-8 {
-      padding: 0px 15px;
-    }
-    #content > .container > .row > .col-md-4{
-      padding: 0px 15px;
-    }
 }
 @media only screen and (max-width : 767px) {
     #header,
@@ -378,16 +372,6 @@ MOBILE QUERIES
     #mobileHeader select {padding: 10px 15px;}
     #content .gravatar {display: none;}
     #mobile-menu .gravatar {display: block;}
-    #content > .container > .row {
-      margin: 0px -15px !important;
-    }
-
-    #content > .container > .row > .col-md-8 {
-      padding: 0px 15px;
-    }
-    #content > .container > .row > .col-md-4{
-      padding: 0px 15px;
-    }
     #content .container.index .desk-topic ul,
     #content .container.index .desk-qna ul{
       list-style: none;
