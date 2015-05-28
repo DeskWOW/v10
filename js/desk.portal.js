@@ -450,7 +450,7 @@ function deskEV(v) {
 // =====================================================
   if (currentPage == 'email_new' || currentPage == 'question_new' || currentPage == 'email_pre_create' || currentPage == 'chat_new') {
     //MODAL/POPUP
-    $('#PreCreate').appendTo("body").modal('show');
+    
     //SKIP PRECREATE SITE WIDE?
     if (SkipPreCreate == 'true') {
       $('#new_email').attr('action','/customer/portal/emails');
@@ -1057,7 +1057,7 @@ $(document).ready(function() {
 // =====================================================
 // ALL PAGES // SITE WIDE JS
 // =====================================================
-
+    $('#PreCreate').appendTo("body").modal('show');
     //MODAL CLOSE GO BACK
     $('#PreCreate .onclick-go-back').click(function() {
         history.back();
