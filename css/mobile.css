@@ -344,6 +344,8 @@ MOBILE QUERIES
     #header,
     #search {display: none;}
     #mobileHeader {display: block;}
+    #content > .container > .row > .col-md-4 {padding-left: 15px;}
+    #content > .container > .row > .col-md-8 {padding-right: 15px;}
 }
 @media only screen and (max-width : 767px) {
     #header,
@@ -353,16 +355,26 @@ MOBILE QUERIES
     #content .container.myportal.index {padding-top: 20px;}
     .myportal.index .header ul.case-menu li {width: 100%;margin-bottom: 10px;}
     .myportal.index .header ul.case-menu li.new a.button {display: inline-block; width: 100%;}
+    
 
-    #PreCreate .modal-header h2 {font-size: 22px;}
-    #PreCreate .modal-header p {font-size: 14px;}
-    #PreCreate .modal-body ul.results li {margin-bottom: 14px; font-size: 18px;}
-    #PreCreate .modal-body ul.results li h4{font-size: 18px;}
-    #PreCreate .modal-body ul.results li p{font-size: 14px;}
+    /* Email/Form Mobile Adjustments */
+    .panel-default .panel-body, .panel-default .panel-footer {padding: 15px;}
 
-    #PreCreate .modal-footer .btn.btn-submit{font-size: 14px;padding: 7px 16px}
+    #PreCreate .modal-header h2 {font-size: 18px; margin-top: 0px;}
+    #PreCreate .modal-header p {font-size: 12px;}
+    #PreCreate .modal-body {padding: 10px;}
+    #PreCreate .modal-body ul.results li {margin-bottom: 10px; font-size: 12px;}
+    #PreCreate .modal-body ul.results li h4{font-size: 16px;}
+    #PreCreate .modal-body ul.results li h4 i.fa{display:none;}
+    #PreCreate .modal-body ul.results li p{font-size: 12px; padding-left: 0px;}
+    #PreCreate .modal-body ul.results li.note {margin-bottom: 0px;}
+    #PreCreate .modal-footer {font-size: 12px; text-align: left;}
+    #PreCreate .modal-footer .btn.btn-submit{font-size: 14px;padding: 7px 16px; margin: 0px 0px 0px 10px; float: right;}
 
     .myportal.index .body table tbody tr td.a-casesubject {padding: 0px 10px;}
+
+
+
 }
 @media only screen and (max-width : 480px) {
     #header,
@@ -373,18 +385,21 @@ MOBILE QUERIES
     #content .gravatar {display: none;}
     #mobile-menu .gravatar {display: block;}
     #content .container.index .desk-topic ul,
+    #content .container.index .get-sat ul,
     #content .container.index .desk-qna ul{
       list-style: none;
       padding: 0px;
     }
     #content .container.index .desk-topic ul li,
+    #content .container.index .get-sat ul li,
     #content .container.index .desk-qna ul li {
       width: 100%;
       margin-bottom: 0px;
-      padding: 15px;
+      padding: 10px 0px;
       border-bottom: 1px solid #efefef;
     }
     #content .container.index .desk-topic ul li a,
+    #content .container.index .get-sat ul li a,
     #content .container.index .desk-qna ul li a{
       display: inline-block;
       width: 100%;

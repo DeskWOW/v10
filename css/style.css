@@ -68,16 +68,17 @@ DESK HEADER STYLES ------
 ----------------------------------------------------------- */
   #header {background: #3498db;}
   #header .container {padding:40px 15px;}
-  #header .page-header {border: none;}
-  #header h1 {
+  h1.page-header {
+    border: none;
     margin: 0px;
   }
-  #header h1 a{
+
+  h1.page-header a{
     color: #fff;
     font-weight: normal;
     font-size: 30px;
   }
-  #header h1:hover a{
+  h1.page-header:hover a{
     text-decoration: none;
   }
   #header ul.nav.nav-pills {
@@ -1539,6 +1540,7 @@ PRECREATE STYLES ------
   #PreCreate .modal-body ul.results{}
   #PreCreate .modal-body ul.results li{
     margin-bottom: 24px;
+    font-size: 14px;
   }
   #PreCreate .modal-body ul.results li h4{
     margin: 0px;
@@ -1549,7 +1551,6 @@ PRECREATE STYLES ------
     margin: 0px;
   }
   #PreCreate .modal-body ul.results li.note{
-    font-size: 14px;
     margin-bottom: 10px;
     font-style: italic;
     border-bottom: none;

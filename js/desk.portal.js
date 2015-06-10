@@ -1062,7 +1062,6 @@ $(document).ready(function() {
     $('#PreCreate .onclick-go-back').click(function() {
         history.back();
     });
-
     //MODERATION FUNCTIONALITY
     $('#Moderated').appendTo("body").modal('show');
     $('#moderation_okay_button, #Moderated .close').click(function() {
