@@ -49,7 +49,7 @@
                       <table id="MyCases" class="table table-striped table-hover {% if MyCasesSort == true %} sort {% endif %}">
                         <thead>
                           <tr>
-                            <th class="hidden-xs"><span>{{desk.system.snippets.case_id}}</span></th>
+                            <th><span>{{desk.system.snippets.case_id}}</span></th>
                             <th class="hidden-xs"><span>{{desk.system.snippets.assigned_agent}}</span></th>
                             <th><span>{{desk.system.snippets.subject}}</span></th>
                             {% if desk.customer.can_access_company_tickets? %}
@@ -62,7 +62,7 @@
                         <tbody>
                           {% for case in desk.page.content.cases %}
                           <tr>
-                            <td class='hidden-xs a-caseid'>{{ case.id }}</td>
+                            <td class='a-caseid'>{{ case.id }}</td>
                             <td class="hidden-xs"><span>{{case.user.name_public | show_something: desk.system.snippets.unassigned}}</span></td>
                             <td class='a-casesubject'><img src='{{ case.channel_icon }}'/><a href="{{ case.portal_url }}">{{ case.subject | clip:30 }}</a></td>
                             {% if desk.customer.can_access_company_tickets? %}
@@ -95,10 +95,6 @@
               </div><!-- .row-->
             </div><!-- .portal-->
           </div><!-- #content -->
-
-
-
-
           {% if MyCasesSort == true %}
             <input id="MyCaseSort" class="hidden" value="true" />
           {% endif %}

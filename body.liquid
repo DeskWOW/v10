@@ -103,8 +103,8 @@
           <div class="col-md-12">
             <form action="/customer/portal/articles/search" method="get" id="support-search-ornot" class="support-search-small-ornot">
                 {{template_form_params}}
-                <input id="q2" maxlength="100" name="q" type="text" value="" class="ui-autocomplete-input-ornot form-control" autocomplete="on">
                 <button type="submit" class="fa fa-search" id="support-search-submit" value="{{system.snippets.search}}"></button>
+                <input id="q2" maxlength="100" name="q" type="text" value="" class="ui-autocomplete-input-ornot form-control" autocomplete="on">
             </form>
           </div>
         </div>
@@ -113,19 +113,23 @@
       </div>
       <div class="brand">
         <div class="logo">
-            {% if desk.current_brand.name == nil %}
-              {{ site.company_name }}
-            {% else %}
-               {{ desk.current_brand.name }}
-            {% endif %}
-        </div>
-        <h1>
           {% if desk.current_brand.name == nil %}
             {{ site.company_name }}
           {% else %}
              {{ desk.current_brand.name }}
           {% endif %}
-        </h1>
+        </div>
+          {% if desk.page.theme.header_content == "" %}
+            <h1>
+              {% if desk.current_brand.name == nil %}
+                {{ site.company_name }}
+              {% else %}
+                 {{ desk.current_brand.name }}
+              {% endif %}
+            </h1>
+          {% else %}
+            {{ desk.page.theme.header_content }}
+          {% endif %}
           {% if current_user and current_user.is_guest == false %}
                 <h4 class="welcome">{{system.snippets.welcome}} <a href="{{ desk.system.links.myaccount }}"> {{ current_user.customer.name }}</a></h4>
                 <a href="{{ desk.system.links.myaccount }}">{{ current_user.customer.email | gravatar_image: gravatar_unknown_user, ssl }}</a>
@@ -200,15 +204,15 @@
           </a>
         </div>
         <div class="col-xs-8">
-          <h1>
-            <a class="brand" href="#">
+          {% if desk.page.theme.header_content == "" %}
               {% if desk.current_brand.name == nil %}
                 {{ site.company_name }}
               {% else %}
                  {{ desk.current_brand.name }}
               {% endif %}
-            </a>
-          </h1>
+          {% else %}
+            {{ desk.page.theme.header_content }}
+          {% endif %}
         </div>
         <div class="col-xs-2">
             <!-- {{ current_user.customer.email | gravatar_image: gravatar_unknown_user, ssl }} -->
@@ -592,25 +596,25 @@
                         {{system.snippets.community_discussions}}
                       </h2>
                     </div>
-                    <div class="row get-sat">
-                      <div class="col-md-6">
+                    <div class="row">
+                      <div class="col-md-6 get-sat">
                         <div id="gs_questions">
                           <img alt='Ajax-loader-small' id='question_submit_spinner' src='{{ "/images/ajax-loader-small.gif" | portal_image_url: image_asset_host }}' style='display:block;margin:auto;' />
                         </div>
                       </div>
-                      <div class="col-md-6">
+                      <div class="col-md-6 get-sat">
                         <div id="gs_ideas">
                           <img alt='Ajax-loader-small' id='question_submit_spinner' src='{{ "/images/ajax-loader-small.gif" | portal_image_url: image_asset_host }}' style='display:block;margin:auto;' />
                         </div>
                       </div>
                     </div>
-                    <div class="row get-sat">
-                      <div class="col-md-6">
+                    <div class="row">
+                      <div class="col-md-6 get-sat">
                         <div id="gs_problems">
                           <img alt='Ajax-loader-small' id='question_submit_spinner' src='{{ "/images/ajax-loader-small.gif" | portal_image_url: image_asset_host }}' style='display:block;margin:auto;' />
                         </div>
                       </div>
-                      <div class="col-md-6">
+                      <div class="col-md-6 get-sat">
                         <div id="gs_praises">
                           <img alt='Ajax-loader-small' id='question_submit_spinner' src='{{ "/images/ajax-loader-small.gif" | portal_image_url: image_asset_host }}' style='display:block;margin:auto;' />
                         </div>
@@ -1237,7 +1241,7 @@
                               </a>
                             </h4>
                             <p>
-                              {{ result.body_plain | clip:105 }}
+                              {{ result.body_plain | clip:80 }}
                             </p>
                           </li>
                         {% endfor %}
@@ -1423,6 +1427,7 @@
             <div id="system-snippets-question_required">{{system.snippets.question_required}}</div>
             <div id="system-snippets-exceeding_max_chars">{{system.snippets.exceeding_max_chars}}</div>
           </div>
+          <h1>{{ desk.page.theme.layout }}</h1>
           <div id="PreCreate" class="modal fade" role="dialog" tabindex="-1" aria-labelledby="PreCreateModal" aria-hidden="true">
               <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -1432,7 +1437,7 @@
                       {% if number_search_results > 0 %}
                         <i class="fa fa-exclamation-triangle warning"></i> {{system.snippets.not_posted_question_yet}}
                       {% else %}
-                        <i class="fa fa-spinner fa-spin"></i> {{system.snippets.please_wait}}
+                        <i class="fa fa-spinner fa-pulse"></i> {{system.snippets.please_wait}}
                       {% endif %}
                       </h2>
                       <p class="subheader">{{system.snippets.article_help}}</p>
@@ -1454,7 +1459,7 @@
                                 </a>
                               </h4>
                               <p>
-                                {{ result.body_plain | clip:105 }}
+                                {{ result.body_plain | clip:80 }}
                               </p>
                             </li>
                           {% endfor %}
@@ -1485,7 +1490,7 @@
           <div id="content">
             <div class="container email">
               <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-8 {% if desk.page.theme.layout != 'left' %} col-md-push-4 {% endif %}">
                   <div class="row nomarg header">
                       <h2>{{system.snippets.email_us}}</h2>
                   </div>
@@ -1674,7 +1679,7 @@
                           </a>
                         </h4>
                         <p>
-                          {{ result.body_plain | clip:105 }}
+                          {{ result.body_plain | clip:80 }}
                         </p>
                       </li>
                       {% endfor %}
@@ -1809,7 +1814,7 @@
                       <table id="MyCases" class="table table-striped table-hover {% if MyCasesSort == true %} sort {% endif %}">
                         <thead>
                           <tr>
-                            <th class="hidden-xs"><span>{{desk.system.snippets.case_id}}</span></th>
+                            <th><span>{{desk.system.snippets.case_id}}</span></th>
                             <th class="hidden-xs"><span>{{desk.system.snippets.assigned_agent}}</span></th>
                             <th><span>{{desk.system.snippets.subject}}</span></th>
                             {% if desk.customer.can_access_company_tickets? %}
@@ -1822,7 +1827,7 @@
                         <tbody>
                           {% for case in desk.page.content.cases %}
                           <tr>
-                            <td class='hidden-xs a-caseid'>{{ case.id }}</td>
+                            <td class='a-caseid'>{{ case.id }}</td>
                             <td class="hidden-xs"><span>{{case.user.name_public | show_something: desk.system.snippets.unassigned}}</span></td>
                             <td class='a-casesubject'><img src='{{ case.channel_icon }}'/><a href="{{ case.portal_url }}">{{ case.subject | clip:30 }}</a></td>
                             {% if desk.customer.can_access_company_tickets? %}
@@ -1855,10 +1860,6 @@
               </div><!-- .row-->
             </div><!-- .portal-->
           </div><!-- #content -->
-
-
-
-
           {% if MyCasesSort == true %}
             <input id="MyCaseSort" class="hidden" value="true" />
           {% endif %}

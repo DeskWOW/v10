@@ -113,19 +113,25 @@
       </div>
       <div class="brand">
         <div class="logo">
-            {% if desk.current_brand.name == nil %}
-              {{ site.company_name }}
-            {% else %}
-               {{ desk.current_brand.name }}
-            {% endif %}
-        </div>
-        <h1>
           {% if desk.current_brand.name == nil %}
             {{ site.company_name }}
           {% else %}
              {{ desk.current_brand.name }}
           {% endif %}
-        </h1>
+        </div>
+          {% if desk.page.theme.header_content == "" %}
+            <h1>
+              <a href="{{desk.system.links.home}}">
+                {% if desk.current_brand.name == nil %}
+                  {{ site.company_name }}
+                {% else %}
+                   {{ desk.current_brand.name }}
+                {% endif %}
+              </a>
+            </h1>
+          {% else %}
+            {{ desk.page.theme.header_content }}
+          {% endif %}
           {% if current_user and current_user.is_guest == false %}
                 <h4 class="welcome">{{system.snippets.welcome}} <a href="{{ desk.system.links.myaccount }}"> {{ current_user.customer.name }}</a></h4>
                 <a href="{{ desk.system.links.myaccount }}">{{ current_user.customer.email | gravatar_image: gravatar_unknown_user, ssl }}</a>
@@ -200,15 +206,15 @@
           </a>
         </div>
         <div class="col-xs-8">
-          <h1>
-            <a class="brand" href="#">
+          {% if desk.page.theme.header_content == "" %}
               {% if desk.current_brand.name == nil %}
                 {{ site.company_name }}
               {% else %}
                  {{ desk.current_brand.name }}
               {% endif %}
-            </a>
-          </h1>
+          {% else %}
+            {{ desk.page.theme.header_content }}
+          {% endif %}
         </div>
         <div class="col-xs-2">
             <!-- {{ current_user.customer.email | gravatar_image: gravatar_unknown_user, ssl }} -->
@@ -222,7 +228,7 @@
           <div class="{% if widelogo == true %} col-md-12 {% else %} col-md-5 {% endif %}">
               {% if desk.page.theme.header_content == "" %}
               <h1>
-                <a href='/'>
+                <a href="{{desk.system.links.home}}">
                   {% if desk.current_brand.name == nil %}
                     {{ site.company_name }}
                   {% else %}
