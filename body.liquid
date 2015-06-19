@@ -121,11 +121,13 @@
         </div>
           {% if desk.page.theme.header_content == "" %}
             <h1>
-              {% if desk.current_brand.name == nil %}
-                {{ site.company_name }}
-              {% else %}
-                 {{ desk.current_brand.name }}
-              {% endif %}
+              <a href="{{desk.system.links.home}}">
+                {% if desk.current_brand.name == nil %}
+                  {{ site.company_name }}
+                {% else %}
+                   {{ desk.current_brand.name }}
+                {% endif %}
+              </a>
             </h1>
           {% else %}
             {{ desk.page.theme.header_content }}
@@ -226,7 +228,7 @@
           <div class="{% if widelogo == true %} col-md-12 {% else %} col-md-5 {% endif %}">
               {% if desk.page.theme.header_content == "" %}
               <h1>
-                <a href='/'>
+                <a href="{{desk.system.links.home}}">
                   {% if desk.current_brand.name == nil %}
                     {{ site.company_name }}
                   {% else %}
@@ -857,52 +859,62 @@
                 {% if MBSearchPage == true %}
                 <div id="brandResults" class="hidden">
                 {% endif %}
-                {% for result in search_results %}
-                  {% if result.class_name == "Article" %}
-                    <article class="row result article">
-                      <div class="col-md-12">
-                        <h3>
-                          <a href='{{ result.public_url }}' title="{{ result.subject_plain }}"><span>{{ result.subject_plain }}</span></a>
-                        </h3>
-                        {% if MBSearchPage == true %}<label class="{{desk.current_brand.name}}">{{desk.current_brand.name}}</label>{% endif %}
-                        <p>{{ result.body_plain | clip:210 }}</p>
-                        <a href="{{ result.public_url }}" class="btn btn-pill">{{ system.snippets.read_article }}</a>
-                      </div>
-                    </article>
-                  {% elsif result.class_name == "Question" and MBSearchExcludeQuestions != true %}
-                    <article class="row result question">
-                      <div class="col-md-1">
-                        <span class="gravatar">
-                          {{ question.from_email | gravatar_image: gravatar_unknown_user, ssl }}
-                        </span>
-                      </div>
-                      <div class="col-md-11">
-                        <h3>
-                          <a href='{{ result.public_url }}' title="{{ result.subject_plain }}"><span>{{ result.subject_plain }}</span></a>
-                        </h3>
-                        {% if MBSearchPage == true %}<label class="{{desk.current_brand.name}}">{{desk.current_brand.name}}</label>{% endif %}
-                        <p>{{ result.body_plain | clip:210 }}</p>
-                      </div>
-                      <div class="col-md-12">
-                        {% if result.answers_agent_count > 0 %}
-                         <a href='{{ result.public_url }}' class="btn btn-pill" title="{{ result.subject_plain }}">
-                            <span>{{ result.answers_agent_count }}</span>
-                            {{ site.agent_name_config }}
-                            {{ system.snippets.answer | pluralize: result.answers_agent_count, system.snippets.answers }}
-                          </a>
-                        {% elsif result.answers_customer_count > 0 %}
-                          <a href='{{ result.public_url }}' class="btn btn-pill" title="{{ result.subject_plain }}">
-                            <span>{{ result.answers_customer_count }}</span>
-                            Community {{ system.snippets.answer | pluralize: result.answers_customer_count, system.snippets.answers }}
-                          </a>
-                        {% else %}
-                            <a href='{{ result.public_url }}' class="btn btn-pill" title="{{ result.subject_plain }}">View Question</a>
-                        {% endif %}
-                      </div>
-                    </article> <!-- article row -->
-                  {% endif %}
-                {% endfor %}
+                  <div class="body row nomarg">
+                    {% for result in search_results %}
+                      {% if result.class_name == "Article" %}
+                        <article class="row result article">
+                          <div class="col-md-12">
+                            <h3>
+                              <a href='{{ result.public_url }}' title="{{ result.subject_plain }}"><span>{{ result.subject_plain }}</span></a>
+                            </h3>
+                            {% if MBSearchPage == true %}<label class="{{desk.current_brand.name}}">{{desk.current_brand.name}}</label>{% endif %}
+                            <p>{{ result.body_plain | clip:210 }}</p>
+                            <a href="{{ result.public_url }}" class="btn btn-pill">{{ system.snippets.read_article }}</a>
+                          </div>
+                        </article>
+                      {% elsif result.class_name == "Question" and MBSearchExcludeQuestions != true %}
+                        <article class="row result question">
+                          <div class="col-md-1">
+                            <span class="gravatar">
 
+                              {{ question.from_email | gravatar_image: gravatar_unknown_user, ssl }}
+                            </span>
+                          </div>
+                          <div class="col-md-11">
+                            <h3>
+                              <a href='{{ result.public_url }}' title="{{ result.subject_plain }}"><span>{{ result.subject_plain }}</span></a>
+                            </h3>
+                            {% if MBSearchPage == true %}<label class="{{desk.current_brand.name}}">{{desk.current_brand.name}}</label>{% endif %}
+                            <p>{{ result.body_plain | clip:210 }}</p>
+                          </div>
+                          <div class="col-md-12">
+                            {% if result.answers_agent_count > 0 %}
+                             <a href='{{ result.public_url }}' class="btn btn-pill" title="{{ result.subject_plain }}">
+                                <span>{{ result.answers_agent_count }}</span>
+                                {{ site.agent_name_config }}
+                                {{ system.snippets.answer | pluralize: result.answers_agent_count, system.snippets.answers }}
+                              </a>
+                            {% elsif result.answers_customer_count > 0 %}
+                              <a href='{{ result.public_url }}' class="btn btn-pill" title="{{ result.subject_plain }}">
+                                <span>{{ result.answers_customer_count }}</span>
+                                Community {{ system.snippets.answer | pluralize: result.answers_customer_count, system.snippets.answers }}
+                              </a>
+                            {% else %}
+                                <a href='{{ result.public_url }}' class="btn btn-pill" title="{{ result.subject_plain }}">View Question</a>
+                            {% endif %}
+                          </div>
+                        </article> <!-- article row -->
+                                        <!-- pagination -->
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                  <div class="row footer">
+                      <div id='pagination'>
+                        <div class="col-md-12">
+                            {{ more_search_block }}
+                        </div>
+                      </div>
+                  </div>
                 {% if MBSearchPage == true %}
                 </div>
                 {% endif %}
@@ -916,12 +928,7 @@
                   </div>
                 {% endif %}
 
-                <!-- pagination -->
-                <div class="row footer">
-                    <div id='pagination'>
-                    {{ more_search_block }}
-                    </div>
-                </div>
+
               </div><!-- End 8 Column -->
 
               <!--Begin Sidebar-->
@@ -1881,6 +1888,7 @@
         {% assign case = desk.page.content.case %}
         <div id="desk-external-variables-myaccount" class="desk-external-variables hide">
           <div id="system-snippets-reply_required">{{system.snippets.message_required}}</div>
+          <div id="max_number_attachments">{{desk.system.max_attachments}}</div>
         </div>
         <div id="content">
           <div class="container myportal case">
@@ -2466,10 +2474,11 @@
                                           <div class="faux-file-field">
                                             <input disabled="disabled" type="text">
                                           </div>
-
                                       </div>
                                     </div>
+                                  <div class="input-button">
                                     <input id='reply_submit' name='commit' type='submit' value='{{system.snippets.send_text}}' class="btn btn-submit" />
+                                  </div>
                                   {{form_end}}
                                 {% else %}
                                   {{form_begin}}
@@ -2886,6 +2895,7 @@
   <div id="system-snippets-invalid_characters_found">{{system.snippets.invalid_characters_found}}</div>
   <div id="site-search_autocomplete_articles_url">{{site.search_autocomplete_articles_url}}</div>
   <div id="search-term">{{search_term}}</div>
+  <div id="read-article">{{ system.snippets.read_article }}</div>
   {% if desk.apps.get_satisfaction.enabled %}
     <div id="system-snippets-get_satisfaction_error">{{system.snippets.get_satisfaction_error}}</div>
     <div id="system-snippets-view_all">{{system.snippets.view_all}}</div>
