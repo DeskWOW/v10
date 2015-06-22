@@ -648,6 +648,9 @@ ARTICLE PAGE ------
     font-weight: 600;
     margin-bottom: 10px;
   }
+  #rate_article{
+    min-height: 42px;
+  }
   #rate_article span {
     display: none; /* Remove to display vote snippets */
   }
