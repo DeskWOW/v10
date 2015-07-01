@@ -161,7 +161,7 @@
             </li>
           {% endif %}
           {% if site.portal_authentication_enabled_config %}
-            {% if current_user and current_user.is_guest == true  and page != "login" %}
+            {% if current_user and current_user.is_guest == true and page != "login" %}
               <!-- Guest -->
               <li>
                 <!--<span class="desk-guestMessage">{{system.snippets.welcome_guest}}</span>-->
