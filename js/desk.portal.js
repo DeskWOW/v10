@@ -1073,8 +1073,7 @@ $(document).ready(function() {
     // HIDE VARIABLE DIVS (backup to css display:none)
     $('.desk-external-variables').hide();
     //BOOSTRAP FORM CLASSES AND LEGACY BROWSER PLACE HOLDER
-    $('input.default').addClass('form-control');
-    $('select.default').addClass('form-control');
+    $('#content input, #content select').addClass('form-control');
     $(":input[placeholder]").placeholder();
     //PAGINATION BLOCK BOOTSTRAP CONVERSION
     $( ".pagination" ).addClass("pagination-lg");

@@ -390,6 +390,7 @@ MOBILE QUERIES
       list-style: none;
       padding: 0px;
     }
+
     #content .container.index .desk-topic ul li,
     #content .container.index .get-sat ul li,
     #content .container.index .desk-qna ul li {
@@ -412,6 +413,7 @@ MOBILE QUERIES
       width: 100%;
       margin: 5px auto;
     }
+    .chat-container {width: 90%;}
     .new_customer_contact_email input {max-width: 70%;}
     .new_customer_contact_email button {width: 25%;margin:0px;float: right;}
     .myportal.case .status .stats {padding: 0px 15px;}
