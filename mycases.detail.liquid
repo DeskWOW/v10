@@ -71,10 +71,7 @@
                                   <h3>{{desk.system.snippets.attachments}}</h3>
                                   <table class="table table-hover">
                                     {% for attachment in email.attachments%}
-                                    <tr>
-                                      <td>{{ attachment.file_name }}</td><a href="{{attachment.url}}" class="kb_article_attachment_a" target="_blank"></a></td>
-                                      <td><a href="{{attachment.url}}" class="kb_article_attachment_a" target="_blank">{{ attachment.file_name }}</a></td></a>
-                                    </tr>
+                                      <tr><td>{{ attachment.file_name }}</td><a href="{{attachment.url}}" class="kb_article_attachment_a" target="_blank"></a></td></tr>
                                     {% endfor %}
                                   </table>
                               </div>
