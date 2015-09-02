@@ -410,13 +410,13 @@ DEFAULT CONTENT ------
     -moz-hyphens: auto;
         hyphens: auto;
   }
-  #content > .container > .row > .columns medium-8 {
+  #content > .container > .row > .medium-8 {
     padding-right: 30px;
   }
-  #content > .container > .row > .columns medium-4{
+  #content > .container > .row > .medium-4{
       padding-left: 45px;
   }
-  #content > .container > .row > .columns medium-4.left{
+  #content > .container > .row > .medium-4.left{
       padding-right: 45px;
   }
   .container .body.row {
@@ -737,7 +737,7 @@ PUBLIC QUESTION ------
   div.container.qna div.row.header.question {
     padding-top: 30px;
   }
-  div.container.qna div.header.question div.columns medium-1 {
+  div.container.qna div.header.question div.medium-1 {
     margin-top: 5px;
   }
   /* Answer Styles */
@@ -745,7 +745,7 @@ PUBLIC QUESTION ------
   div.container.qna div.row.body.answer {
     margin: 0px;
   }
-  div.container.qna div.row.body.answer div.columns medium-1 {
+  div.container.qna div.row.body.answer div.medium-1 {
     padding-left: 0px;
   }
   div.container.qna div.row.body.answer h3 {
@@ -773,10 +773,10 @@ PUBLIC QUESTION ------
     background: #5cb85c;
     margin-top: -10px;
    }
-  div.container.qna div.row.body.answer.best div.columns medium-1 {
+  div.container.qna div.row.body.answer.best div.medium-1 {
     padding-left: 15px;
   }
-  div.container.qna div.row.body.answer.best div.columns medium-11 {
+  div.container.qna div.row.body.answer.best div.medium-11 {
     padding-left: 30px;
   }
    div.container.qna div.row.body.answer.last hr{display:none;}
@@ -945,7 +945,7 @@ MY PORTAL CASE VIEW------
   div.myportal.case {}
   div.myportal.case div.row.header {margin:0px;}
   /* QUESTION/HEADING */
-  div.myportal.case .header .columns medium-1{
+  div.myportal.case .header .medium-1{
     margin-top: 5px;
     padding:0px;
   }
@@ -991,7 +991,7 @@ MY PORTAL CASE VIEW------
   .myportal.case .answer.row{
     margin: 0px;
   }
-  .myportal.case  .answer.row .columns medium-1{
+  .myportal.case  .answer.row .medium-1{
     margin-top: 0px;
     padding-left: 0px;
   }
@@ -1038,7 +1038,7 @@ MY PORTAL CASE VIEW------
   ul.chat-msgs li div.chat.row{
     margin: 0px;
   }
-  ul.chat-msgs li div.chat.row .columns medium-1{
+  ul.chat-msgs li div.chat.row .medium-1{
     margin-top: 0px;
     padding-left: 0px;
   }

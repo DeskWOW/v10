@@ -1,5 +1,5 @@
-# v10
-##New Default Theme
+
+##Foundation based version of new default theme
 
 
 ##INDEX Layout Options
