@@ -1,0 +1,242 @@
+
+        <!--
+        `7MMF'`7MN.   `7MF'`7MM"""Yb. `7MM"""YMM  `YMM'   `MP'
+          MM    MMN.    M    MM    `Yb. MM    `7    VMb.  ,P
+          MM    M YMb   M    MM     `Mb MM   d       `MM.M'
+          MM    M  `MN. M    MM      MM MMmmMM         MMb
+          MM    M   `MM.M    MM     ,MP MM   Y  ,    ,M'`Mb.
+          MM    M     YMM    MM    ,dP' MM     ,M   ,P   `MM.
+        .JMML..JML.    YM  .JMMmmmdP' .JMMmmmmMMM .MM:.  .:MMa.
+                      START INDEX PAGE
+                                                            -->
+        <div id="content">
+          <div class="container index">
+            <div class="row">
+            {% if IndexLayout == "Topics" %}
+              <div class="columns medium-12 centered">
+            {% else %}
+              <div class="columns medium-8 {% if desk.page.theme.layout != 'left' %} columns medium-push-4 {% endif %}">
+            {% endif %}
+                <div id="desk-external-variables-page_index" class="desk-external-variables">
+                  <div id="system-snippets-just_moderated">{{just_moderated}}</div>
+                </div>
+                <div class="row header">
+                  <h2 class="subheader columns medium-12">
+                    {% if topics_count > 0 %}
+                        {{system.snippets.browse_by_topic}}
+                    {% else %}
+                        {{system.snippets.no_topics_avail}}
+                    {% endif %}
+                  </h2>
+                </div>
+                <!-- INDEX PAGE LAYOUT CHANGE FUNCTIONALITY -->
+                {% if IndexLayout == 'List' %}
+                <!-- TOPICS LIST VIEW -->
+                    {%for topic in topics%}
+                      {% if topic.article_count > 0 %}
+                        <div class="row topic">
+                          <div class="desk-topic desk-topic-{{ topic.id }} columns medium-12 list">
+                            <h3>
+                               <a href='{{ topic.public_articles_url }}'>{{ topic.name }}</a>
+                            </h3>
+                            <ul>
+                              {% for article in topic.articles limit:5 %}
+                              <li>
+                                <h4><a href='{{ article.public_url }}'>{{ article.subject_plain }}</a></h4>
+                                <p>{{ article.body_plain | clip:210 }}</p>
+                              </li>
+                              {% endfor %}
+                            </ul>
+                            <a href='{{ topic.public_articles_url }}' class="btn btn-pill"><span class="desk-view-text">{{system.snippets.view_all}} </span>
+                              {{ topic.article_count }}
+                            </a>
+                          </div>
+                        </div>
+                      {%endif%}
+                    {%endfor%}
+                  <!-- END TOPICS LIST VIEW -->
+                  <!-- QUESTIONS LIST VIEW -->
+                  {% if site.questions_enabled_config %}
+                      <!-- DO QUESTIONS EXIST -->
+                      {%for topic in topics %}
+                          {% if topic.question_count > 0 %}
+                              {% assign questions = true %}
+                          {% endif %}
+                      {% endfor %}
+                      <!-- END QUESTION CHECK -->
+                    <div class="row header">
+                        <h2 class="subheader columns medium-12">
+                          {% if questions == true %}
+                            {{system.snippets.recent_qna}}
+                          {% endif %}
+                        </h2>
+                    </div>
+                    {% if topics_count > 0 %}
+                      {%for topic in topics%}
+                        {% if topic.question_count > 0 %}
+                          <div class="row topic">
+                            <div class="desk-qna desk-qna-{{ topic.id }} columns medium-12 list">
+                              <h3><a href='{{ topic.public_articles_url }}'>{{ topic.name }}</a></h3>
+                              <ul>
+                                {% for question in topic.questions limit:5 %}
+                                <li class='desk-question {% if question.featured? %} featured{%endif%}'>
+                                  <a href='{{ question.public_url }}'>{{ question.subject_plain }}</a>
+                                  <p>{{ question.body_plain | clip:210 }}</p>
+                                </li>
+                                {% endfor %}
+                              </ul>
+
+                              <a href='{{ topic.public_questions_url  }}' class="btn btn-pill"><span class="desk-view-text">{{system.snippets.view_all}} </span>
+                                {{ topic.question_count }}
+                                {{ system.snippets.community_discussions | pluralize: topic.question_count, system.snippets.questions }}
+                              </a>
+                            </div>
+                          </div>
+                        {%endif%}
+                      {%endfor%}
+                    {% endif %}
+                  {%endif%}
+                  <!-- END QUESTIONS LIST VIEW -->
+                <!--END LIST VIEW -->
+                {% elsif IndexLayout == "Grid" %}
+                <!--START GRID VIEW (DEFAULT) -->
+                  <!-- ARTICLES GRID VIEW -->
+                  <div class="row topic">
+                    {% assign col = 0 %}
+                    {%for topic in topics%}
+                      {% if topic.article_count > 0 %}
+                          <div class="desk-topic desk-topic-{{ topic.id }} columns medium-6">
+                            <h3>
+                               <a href='{{ topic.public_articles_url }}'>{{ topic.name }}</a></h3>
+                            <ul>
+                              {% for article in topic.articles limit:5 %}
+                              <li>
+                                <a href='{{ article.public_url }}'>{{ article.subject_plain }}</a>
+                              </li>
+                              {% endfor %}
+                            </ul>
+                            <a href='{{ topic.public_articles_url }}' class="btn btn-pill"><span class="desk-view-text">{{system.snippets.view_all}} </span>
+                              {{ topic.article_count }}
+                            </a>
+                          </div>
+
+                          {% if col == 2 %}
+                            </div><div class="row topic">
+                            {%assign col = 0 %}
+                          {%else%}
+                            {% assign col = 2 %}
+                          {%endif%}
+
+                      {%endif%}
+                    {%endfor%}
+                  </div>
+                  <!-- END ARTICLES GRID VIEW -->
+
+                  <!-- QUESTION GRID VIEW -->
+                  {% if site.questions_enabled_config %}
+                    <!-- DO QUESTIONS EXIST?-->
+                    {%for topic in topics %}
+                        {% if topic.question_count > 0 %}
+                            {% assign questions = true %}
+                        {% endif %}
+                    {% endfor %}
+                    <!-- END QUESTIONS EXIST -->
+                    <div class="row header">
+                        <h2 class="subheader columns medium-12">
+                          {% if questions == true %}
+                            {{system.snippets.recent_qna}}
+                          {% endif %}
+                        </h2>
+                    </div>
+                    <div class="row topic">
+                      {% assign col = 0 %}
+                        {%for topic in topics%}
+                          {% if topic.question_count > 0 %}
+                            <div class="desk-qna desk-qna-{{ topic.id }} columns medium-6">
+                              <h3><a href='{{ topic.public_articles_url }}'>{{ topic.name }}</a></h3>
+                              <ul>
+                                {% for question in topic.questions limit:5 %}
+                                <li class='desk-question {% if question.featured? %} featured{%endif%}'>
+                                  <a href='{{ question.public_url }}'>{{ question.subject_plain }}</a>
+                                </li>
+                                {% endfor %}
+                              </ul>
+
+                              <a href='{{ topic.public_questions_url  }}' class="btn btn-pill"><span class="desk-view-text">{{system.snippets.view_all}} </span>
+                                {{ topic.question_count }}
+                              </a>
+                            </div>
+                            {% if col == 2 %}
+                              </div><div class="row topic">
+                              {%assign col = 0 %}
+                            {%else%}
+                              {% assign col = 2 %}
+                            {%endif%}
+                          {% endif %}
+                        {% endfor %}
+                      </div><!-- .topicContainer.row -->
+                  {% endif %}
+                <!-- END GRID VIEW -->
+                {% elsif IndexLayout == "Topics" %}
+                <!--START TOPICS ONLY VIEW -->
+                  <div class="row topics-only">
+                    {% assign col = 0 %}
+                    {%for topic in topics%}
+                      {% if topic.article_count > 0 %}
+                          <div class="desk-topic desk-topic-{{ topic.id }} columns medium-6">
+                               <a href='{{ topic.public_articles_url }}' class="btn btn-primary">{{ topic.name }} <span>{{ topic.article_count }}</span></a>
+                          </div>
+                          {% if col == 2 %}
+                            </div><div class="row topics-only">
+                            {%assign col = 0 %}
+                          {%else%}
+                            {% assign col = 2 %}
+                          {%endif%}
+                      {%endif%}
+                    {%endfor%}
+                  </div>
+                <!--END TOPICS ONLY VIEW -->
+                {% endif %}
+                <!-- GET SAT -->
+                {% if desk.apps.get_satisfaction.enabled %}
+                    <div class="row header">
+                      <h2 class="columns medium-12">
+                        {{system.snippets.community_discussions}}
+                      </h2>
+                    </div>
+                    <div class="row">
+                      <div class="columns medium-6 get-sat">
+                        <div id="gs_questions">
+                          <img alt='Ajax-loader-small' id='question_submit_spinner' src='{{ "/images/ajax-loader-small.gif" | portal_image_url: image_asset_host }}' style='display:block;margin:auto;' />
+                        </div>
+                      </div>
+                      <div class="columns medium-6 get-sat">
+                        <div id="gs_ideas">
+                          <img alt='Ajax-loader-small' id='question_submit_spinner' src='{{ "/images/ajax-loader-small.gif" | portal_image_url: image_asset_host }}' style='display:block;margin:auto;' />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="columns medium-6 get-sat">
+                        <div id="gs_problems">
+                          <img alt='Ajax-loader-small' id='question_submit_spinner' src='{{ "/images/ajax-loader-small.gif" | portal_image_url: image_asset_host }}' style='display:block;margin:auto;' />
+                        </div>
+                      </div>
+                      <div class="columns medium-6 get-sat">
+                        <div id="gs_praises">
+                          <img alt='Ajax-loader-small' id='question_submit_spinner' src='{{ "/images/ajax-loader-small.gif" | portal_image_url: image_asset_host }}' style='display:block;margin:auto;' />
+                        </div>
+                      </div>
+                    </div>
+                    {{gs_scripting}}
+                {% endif %}
+                <!-- GET SAT -->
+              </div><!--Index Col 8 -->
+              <!--SIDEBAR -->
+                {% if IndexLayout != "Topics" %}
+                  {{ sidebar_main }}
+                {% endif %}
+              <!--SIDEBAR -->
+            </div><!-- Main Row-->
+          </div><!--Container-->
+        </div><!--Content-->
