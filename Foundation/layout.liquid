@@ -9,7 +9,7 @@
 {% assign MBSearchSuggest = false %} <!-- Multibrand search autocomplete similar to desk's support site -->
 {% assign MBArticleSuggest = false %} <!-- Multibrand Article suggestion on email/chat/question forms -->
 
-{% capture custom_site_url %}https://zzz-playground.desk.com{% endcapture %}
+{% capture custom_site_url %}https://zzz-v5.desk.com{% endcapture %}
 
 <!-- LOGO WIDTH TESTING // DONT REMOVE-->
 {% if desk.page.theme.logo-img != "" %}
@@ -97,7 +97,7 @@
 <div class="off-canvas-wrap" data-offcanvas>
   <div class="inner-wrap">
     <!-- Top Bar -->
-    <nav class="tab-bar">
+    <nav class="tab-bar hide-for-large-up">
       <section class="left-small">
         <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
       </section>
@@ -191,25 +191,25 @@
               <!-- Guest -->
               <li>
                 <!--<span class="desk-guestMessage">{{system.snippets.welcome_guest}}</span>-->
-                <a href="{{ site.authentication_login_url }}" id="desk-auth-login-link" class="">{{system.snippets.login}}<i class="fa fa-sign-in"></i></a>
+                <a href="{{ site.authentication_login_url }}" id="desk-auth-login-link" class="">{{system.snippets.login}}<i class="right fa fa-sign-in"></i></a>
               </li>
             {% else %}
               <!-- Logged In -->
               {% if site.myportal_enabled %}
                 <li>
-                  <a href="{{ desk.system.links.myportal }}">{{system.snippets.my_cases}} <i class="fa fa-inbox"></i></a>
+                  <a href="{{ desk.system.links.myportal }}">{{system.snippets.my_cases}} <i class="right fa fa-inbox"></i></a>
                 </li>
               {% endif %}
 
               {% if site.portal_authentication_type_config == 'desk' %}
                 <li>
-                  <a href="{{ desk.system.links.myaccount }}" id="desk-myaccount-link">{{system.snippets.my_account}} <i class="fa fa-user"></i></a>
+                  <a href="{{ desk.system.links.myaccount }}" id="desk-myaccount-link">{{system.snippets.my_account}} <i class="right fa fa-user"></i></a>
                 </li>
               {% endif %}
 
               {% if site.portal_logout_enabled_config %}
                 <li>
-                  <a href="{{ site.authentication_logout_url }}" id="desk-logout-link">{{system.snippets.logout}} <i class="fa fa-sign-out"></i></a>
+                  <a href="{{ site.authentication_logout_url }}" id="desk-logout-link">{{system.snippets.logout}} <i class="right fa fa-sign-out"></i></a>
                 </li>
               {% endif %}
             {% endif %}
@@ -219,7 +219,7 @@
     {% endif %}
     <section class="main-section">
       <!-- DESKTOP HEADER -->
-      <header id="header">
+      <header id="header" class="show-for-large-up">
         <div class="container">
           <div class="row">
             <div class="{% if widelogo == true %} columns medium-12 {% else %} columns medium-5 {% endif %}">
@@ -238,7 +238,7 @@
                 {% endif %}
             </div>
             <div class="{% if widelogo == true %} columns medium-12 {% else %} columns medium-7 {% endif %}">
-              <ul class="nav nav-pills">
+              <ul class="inline-list right">
 
                 {% if site.portal_authentication_enabled_config %}
                   <!-- Guest -->

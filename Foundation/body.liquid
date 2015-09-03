@@ -9,7 +9,7 @@
 {% assign MBSearchSuggest = false %} <!-- Multibrand search autocomplete similar to desk's support site -->
 {% assign MBArticleSuggest = false %} <!-- Multibrand Article suggestion on email/chat/question forms -->
 
-{% capture custom_site_url %}https://zzz-playground.desk.com{% endcapture %}
+{% capture custom_site_url %}https://zzz-v5.desk.com{% endcapture %}
 
 <!-- LOGO WIDTH TESTING // DONT REMOVE-->
 {% if desk.page.theme.logo-img != "" %}
@@ -97,7 +97,7 @@
 <div class="off-canvas-wrap" data-offcanvas>
   <div class="inner-wrap">
     <!-- Top Bar -->
-    <nav class="tab-bar">
+    <nav class="tab-bar hide-for-large-up">
       <section class="left-small">
         <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
       </section>
@@ -191,25 +191,25 @@
               <!-- Guest -->
               <li>
                 <!--<span class="desk-guestMessage">{{system.snippets.welcome_guest}}</span>-->
-                <a href="{{ site.authentication_login_url }}" id="desk-auth-login-link" class="">{{system.snippets.login}}<i class="fa fa-sign-in"></i></a>
+                <a href="{{ site.authentication_login_url }}" id="desk-auth-login-link" class="">{{system.snippets.login}}<i class="right fa fa-sign-in"></i></a>
               </li>
             {% else %}
               <!-- Logged In -->
               {% if site.myportal_enabled %}
                 <li>
-                  <a href="{{ desk.system.links.myportal }}">{{system.snippets.my_cases}} <i class="fa fa-inbox"></i></a>
+                  <a href="{{ desk.system.links.myportal }}">{{system.snippets.my_cases}} <i class="right fa fa-inbox"></i></a>
                 </li>
               {% endif %}
 
               {% if site.portal_authentication_type_config == 'desk' %}
                 <li>
-                  <a href="{{ desk.system.links.myaccount }}" id="desk-myaccount-link">{{system.snippets.my_account}} <i class="fa fa-user"></i></a>
+                  <a href="{{ desk.system.links.myaccount }}" id="desk-myaccount-link">{{system.snippets.my_account}} <i class="right fa fa-user"></i></a>
                 </li>
               {% endif %}
 
               {% if site.portal_logout_enabled_config %}
                 <li>
-                  <a href="{{ site.authentication_logout_url }}" id="desk-logout-link">{{system.snippets.logout}} <i class="fa fa-sign-out"></i></a>
+                  <a href="{{ site.authentication_logout_url }}" id="desk-logout-link">{{system.snippets.logout}} <i class="right fa fa-sign-out"></i></a>
                 </li>
               {% endif %}
             {% endif %}
@@ -219,7 +219,7 @@
     {% endif %}
     <section class="main-section">
       <!-- DESKTOP HEADER -->
-      <header id="header">
+      <header id="header" class="show-for-large-up">
         <div class="container">
           <div class="row">
             <div class="{% if widelogo == true %} columns medium-12 {% else %} columns medium-5 {% endif %}">
@@ -238,7 +238,7 @@
                 {% endif %}
             </div>
             <div class="{% if widelogo == true %} columns medium-12 {% else %} columns medium-7 {% endif %}">
-              <ul class="nav nav-pills">
+              <ul class="inline-list right">
 
                 {% if site.portal_authentication_enabled_config %}
                   <!-- Guest -->
@@ -410,9 +410,9 @@
           <div class="container index">
             <div class="row">
             {% if IndexLayout == "Topics" %}
-              <div class="columns medium-12 centered">
+              <div class="columns large-12 centered">
             {% else %}
-              <div class="columns medium-8 {% if desk.page.theme.layout != 'left' %} columns medium-push-4 {% endif %}">
+              <div class="columns medium-12 large-8 {% if desk.page.theme.layout != 'left' %} columns large-push-4 {% endif %}">
             {% endif %}
                 <div id="desk-external-variables-page_index" class="desk-external-variables">
                   <div id="system-snippets-just_moderated">{{just_moderated}}</div>
@@ -660,6 +660,7 @@
                 <div class="header row">
                   <div class="columns medium-12">
                         <h2>{{system.snippets.article_translation_missing}} {{system.language_name_localized}}</h2>
+                        <p class="subheader">{{system.snippets.last_update}} - <time>{{ article.updated_at | in_time_zone: site.timezone | date: '%b %d, %Y %I:%M%p %Z' }}</time></p>
                   </div>
                 </div>
               </div>
@@ -711,17 +712,17 @@
                 </div>
                 <div class="row footer">
                   <div class="columns medium-6">
-                    <p class="updated">{{system.snippets.last_update}} - <time>{{ article.updated_at | in_time_zone: site.timezone | date: '%b %d, %Y %I:%M%p %Z' }}</time></p>
+                   
                   </div>
                   <div class="columns medium-6">
-                    <ul class="social">
+                    <ul class="inline-list">
                         <li class="button-facebook">
                           <a href="#" data-href="https://developers.facebook.com/docs/plugins/" data-type="button_count" class="button-facebook fb-share-button" target="pop">Share</a>
                         </li>
-                        <li>
+                        <li class="">
                           <a href="https://twitter.com/share" target="pop" class="twitter-share-button">Tweet</a>
                         </li>
-                        <li>
+                        <li class="">
                           <a data-size="medium" data-annotation="bubble" data-width="94" class="rndbutton button-flat button-gplus g-plusone">Share</a>
                         </li>
                     </ul>
@@ -763,16 +764,16 @@
                     <div class="columns medium-5 small-12 switch">
                       {% if topic.question_count > 0 and topic.allow_questions and site.questions_enabled_config %}
                         {% if type == 'questions' %}
-                          <a class="button round active" href='{{ topic.public_questions_url }}'>{{system.snippets.questions}}</a>
+                          <a class="button tiny round active" href='{{ topic.public_questions_url }}'>{{system.snippets.questions}}</a>
                         {% else %}
-                          <a class="button round" href='{{ topic.public_questions_url }}'>{{system.snippets.questions}}</a>
+                          <a class="button round tiny" href='{{ topic.public_questions_url }}'>{{system.snippets.questions}}</a>
                         {% endif %}
                       {% endif %}
                       {% if topic.article_count > 0 %}
                         {% if type == 'articles' %}
-                          <a class="button round active" href='{{ topic.public_articles_url }}' id="desk-article-list-link">{{system.snippets.articles}}</a>
+                          <a class="button tiny round active" href='{{ topic.public_articles_url }}' id="desk-article-list-link">{{system.snippets.articles}}</a>
                         {% else %}
-                          <a class="button round" href='{{ topic.public_articles_url }}' id="desk-qna-list-link">{{system.snippets.articles}}</a>
+                          <a class="button tiny round" href='{{ topic.public_articles_url }}' id="desk-qna-list-link">{{system.snippets.articles}}</a>
                         {% endif %}
                       {% endif %}
                     </div>
@@ -786,7 +787,7 @@
                             <article>
                               <h3><a href="{{ article.public_url }}" title="{{ article.subject_plain }}">{{ article.subject_plain }}</a></h3>
                               <p>{{ article.body_plain | clip:210 }}</p>
-                              <a href="{{ article.public_url }}" class="button round">{{ system.snippets.read_article }}</a>
+                              <a href="{{ article.public_url }}" class="button tiny round">{{ system.snippets.read_article }}</a>
                             </article>
                           {% endfor %}
                         {% else %}
@@ -795,13 +796,13 @@
                               <h3><a href="{{ question.public_url }}" title="{{ question.subject_plain }}">{{ question.subject_plain }}</a></h3>
                               <p>{{ question.body_plain | clip:210 }}</p>
                               {% if question.answers_agent_count > 0 %}
-                                <a class="button round" href="{{ question.public_url }}">
+                                <a class="button tiny round" href="{{ question.public_url }}">
                                   <span>{{ question.answers_agent_count }}</span>
                                   {{ site.agent_name_config }}
                                   {{ system.snippets.answer | pluralize: question.answers_agent_count, system.snippets.answers }}
                                 </a>
                               {% else %}
-                               <a href="{{ question.public_url }}" class="button round">View Question</a>
+                               <a href="{{ question.public_url }}" class="button tiny round">View Question</a>
                               {% endif %}
                             </article>
                           {% endfor %}

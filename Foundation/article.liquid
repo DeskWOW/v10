@@ -17,6 +17,7 @@
                 <div class="header row">
                   <div class="columns medium-12">
                         <h2>{{system.snippets.article_translation_missing}} {{system.language_name_localized}}</h2>
+                        <p class="subheader">{{system.snippets.last_update}} - <time>{{ article.updated_at | in_time_zone: site.timezone | date: '%b %d, %Y %I:%M%p %Z' }}</time></p>
                   </div>
                 </div>
               </div>
@@ -68,17 +69,17 @@
                 </div>
                 <div class="row footer">
                   <div class="columns medium-6">
-                    <p class="updated">{{system.snippets.last_update}} - <time>{{ article.updated_at | in_time_zone: site.timezone | date: '%b %d, %Y %I:%M%p %Z' }}</time></p>
+                   
                   </div>
                   <div class="columns medium-6">
-                    <ul class="social">
+                    <ul class="inline-list">
                         <li class="button-facebook">
                           <a href="#" data-href="https://developers.facebook.com/docs/plugins/" data-type="button_count" class="button-facebook fb-share-button" target="pop">Share</a>
                         </li>
-                        <li>
+                        <li class="">
                           <a href="https://twitter.com/share" target="pop" class="twitter-share-button">Tweet</a>
                         </li>
-                        <li>
+                        <li class="">
                           <a data-size="medium" data-annotation="bubble" data-width="94" class="rndbutton button-flat button-gplus g-plusone">Share</a>
                         </li>
                     </ul>
