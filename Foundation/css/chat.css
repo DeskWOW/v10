@@ -180,11 +180,11 @@ CHAT WIDGET------
     border: 1px solid #007dc3;
   }
 
-  .btn.btn-primary {
+  .button.button-primary {
     background: #3498DB;
     border-color: #3498DB;
   }
-  .btn.btn-primary:hover {
+  .button.button-primary:hover {
     background:#74747a;
     border-color:#74747a ;
   }

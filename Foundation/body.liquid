@@ -9,6 +9,7 @@
 {% assign MBSearchSuggest = false %} <!-- Multibrand search autocomplete similar to desk's support site -->
 {% assign MBArticleSuggest = false %} <!-- Multibrand Article suggestion on email/chat/question forms -->
 
+{% capture custom_site_url %}https://zzz-playground.desk.com{% endcapture %}
 
 <!-- LOGO WIDTH TESTING // DONT REMOVE-->
 {% if desk.page.theme.logo-img != "" %}
@@ -93,66 +94,82 @@
     </div>
     <!-- END AUTO SUGGEST SIDEBAR -->
 {% endcapture %}
+<div class="off-canvas-wrap" data-offcanvas>
+  <div class="inner-wrap">
+    <!-- Top Bar -->
+    <nav class="tab-bar">
+      <section class="left-small">
+        <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
+      </section>
 
-<div id="site-wrapper" class="wrapper">
-  <div id="site-canvas" class="content {{ desk.current_brand.name }}">
-    <!--MOBILE SLIDEOUT MENU -->
-    <div id="mobile-menu">
-      <div class="search">
-        <div class="row">
-          <div class="columns medium-12">
-            <form action="/customer/portal/articles/search" method="get" id="support-search-ornot" class="support-search-small-ornot">
-                {{template_form_params}}
-                <button type="submit" class="fa fa-search" id="support-search-submit" value="{{system.snippets.search}}"></button>
-                <input id="q2" maxlength="100" name="q" type="text" value="" class="ui-autocomplete-input-ornot form-control" autocomplete="on">
-            </form>
-          </div>
-        </div>
-      </div>
-      <div class="mobile-suggest">
-      </div>
-      <div class="brand">
-        <div class="logo">
-          {% if desk.current_brand.name == nil %}
-            {{ site.company_name }}
-          {% else %}
-             {{ desk.current_brand.name }}
-          {% endif %}
-        </div>
-          {% if desk.page.theme.header_content == "" %}
-            <h1>
-              <a href="{{desk.system.links.home}}">
-                {% if desk.current_brand.name == nil %}
-                  {{ site.company_name }}
-                {% else %}
-                   {{ desk.current_brand.name }}
-                {% endif %}
-              </a>
-            </h1>
-          {% else %}
-            {{ desk.page.theme.header_content }}
-          {% endif %}
-          {% if current_user and current_user.is_guest == false %}
-                <h4 class="welcome">{{system.snippets.welcome}} <a href="{{ desk.system.links.myaccount }}"> {{ current_user.customer.name }}</a></h4>
-                <a href="{{ desk.system.links.myaccount }}">{{ current_user.customer.email | gravatar_image: gravatar_unknown_user, ssl }}</a>
-                <h5>{{ current_user.customer.email }}</h5>
-          {% endif %}
-      </div>
-      <ul class="nav nav-pills nav-stacked">
-          {% if site.questions_enabled_config %}
+      <section class="middle tab-bar-section">
+        {% if desk.page.theme.header_content == "" %}
+        <h1>
+          <a href="{{desk.system.links.home}}">
+            {% if desk.current_brand.name == nil %}
+              {{ site.company_name }}
+            {% else %}
+               {{ desk.current_brand.name }}
+            {% endif %}
+          </a>
+        </h1>
+        {% else %}
+          {{ desk.page.theme.header_content }}
+        {% endif %}
+      </section>
+      {% if site.portal_authentication_enabled_config %}
+      <section class="right-small">
+          <a class="right-off-canvas-toggle menu-icon" ><span></span></a>
+      </section>
+      {% endif %}
+    </nav>
+    <!-- Mobile Nav -->
+    <aside class="left-off-canvas-menu">
+      <ul class="off-canvas-list">
+        <li><label>{{system.snippets.browse_by_topic}}</label></li>
+
+          {% assign current_article = article.id %}
+          {% assign current_topic_id = topic.id %}
+          {% for topic in site.topics %}
+            {% if topic.article_count > 0 %}
+              {% if topic.id == current_topic_id %}
+                <li class="current has-submenu">
+              {% else %}
+                <li class="has-submenu">
+              {% endif %}
+                  <a href='#'>{{ topic.name }}</a>
+                    <ul class="left-submenu">
+                      <li><label>{{ topic.name }}</label></li>  
+                      {% for article in topic.articles %}
+                        {% if article.id == current_article %}
+                          <li class="current"><a href="{{ custom_site_url }}/{{ article.public_url }}">{{ article.subject_plain }}</a></li>
+                        {% else %}
+                          <li><a href="{{ custom_site_url }}/{{ article.public_url }}">{{ article.subject_plain }}</a></li>
+                        {% endif %}
+                      {% endfor %}
+                      <li class="back"><a href="#">Back</a></li>
+                    </ul>
+                </li>
+            {% endif %}
+          {% endfor %}
+
+      </ul>
+      <ul class="off-canvas-list">
+        <li><label for="">{{system.snippets.contact_us}}</label></li>
+        {% if site.questions_enabled_config %}
             <li>
-              <a href='{{desk.system.links.question}}'>{{system.snippets.post_public_question}}<i class="fa fa-question"></i></a>
+              <a href='{{desk.system.links.question}}'>{{system.snippets.post_public_question}}<i class="right fa fa-question"></i></a>
             </li>
           {% endif %}
 
           {% if site.email_enabled_config %}
             <li>
-              <a href='{{desk.system.links.email}}'>{{system.snippets.email_us}}<i class="fa fa-envelope"></i></a>
+              <a href='{{desk.system.links.email}}'>{{system.snippets.email_us}}<i class="right fa fa-envelope"></i></a>
             </li>
           {% endif %}
           {% if site.chat_enabled_config %}
             <li>
-              <a href='{{desk.system.links.chat}}'>{{system.snippets.live_chat}}<i class="fa fa-comments"></i></a>
+              <a href='{{desk.system.links.chat}}'>{{system.snippets.live_chat}}<i class="right fa fa-comments"></i></a>
             </li>
           {% endif %}
           {% if site.phone_enabled_config %}
@@ -160,8 +177,17 @@
               <a>{{ desk.page.theme.contact_us_content }}</a>
             </li>
           {% endif %}
+          {% if langs_list %}
+            <li id="desk-mobile-lang-list"></li>
+          {% endif %}
+      </ul>
+    </aside>
+    {% if site.portal_authentication_enabled_config %}
+    <aside class="right-off-canvas-menu">
+      <ul class="off-canvas-list">
+        <li><label>User</label></li>
           {% if site.portal_authentication_enabled_config %}
-            {% if current_user and current_user.is_guest == true  and page != "login" %}
+            {% if current_user and current_user.is_guest == true and page != "login" %}
               <!-- Guest -->
               <li>
                 <!--<span class="desk-guestMessage">{{system.snippets.welcome_guest}}</span>-->
@@ -188,209 +214,186 @@
               {% endif %}
             {% endif %}
           {% endif %}
-          {% if langs_list %}
-            <li id="desk-mobile-lang-list"></li>
-          {% endif %}
       </ul>
-    </div>
-    <!--MOBILE HEADER/TOPBAR -->
-    <div id="mobileHeader">
-      <div class="row">
-        <div class="small-2">
-          <a id="MobileToggle" class="menu-button">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-          </a>
-        </div>
-        <div class="small-8">
-          {% if desk.page.theme.header_content == "" %}
-              {% if desk.current_brand.name == nil %}
-                {{ site.company_name }}
-              {% else %}
-                 {{ desk.current_brand.name }}
-              {% endif %}
-          {% else %}
-            {{ desk.page.theme.header_content }}
-          {% endif %}
-        </div>
-        <div class="small-2">
-            <!-- {{ current_user.customer.email | gravatar_image: gravatar_unknown_user, ssl }} -->
-        </div>
-      </div>
-    </div>
-    <!-- DESKTOP HEADER -->
-    <div id="header">
-      <div class="container">
-        <div class="row">
-          <div class="{% if widelogo == true %} columns medium-12 {% else %} columns medium-5 {% endif %}">
-              {% if desk.page.theme.header_content == "" %}
-              <h1>
-                <a href="{{desk.system.links.home}}">
-                  {% if desk.current_brand.name == nil %}
-                    {{ site.company_name }}
-                  {% else %}
-                     {{ desk.current_brand.name }}
-                  {% endif %}
-                </a>
-              </h1>
-              {% else %}
-                {{ desk.page.theme.header_content }}
-              {% endif %}
-          </div>
-          <div class="{% if widelogo == true %} columns medium-12 {% else %} columns medium-7 {% endif %}">
-            <ul class="nav nav-pills">
-
-              {% if site.portal_authentication_enabled_config %}
-                <!-- Guest -->
-                {% if current_user and current_user.is_guest == true  and page != "login" %}
-                  <li>
-                    <a href="{{ site.authentication_login_url }}" id="desk-auth-login-link" class="">{{system.snippets.login}}</a>
-                  </li>
-                {% endif %}
-                <!-- Logged In -->
-                {% if current_user and current_user.is_guest == false %}
-                  <li class="desk-guestMessage"><p>{{system.snippets.welcome}} {{ current_user.customer.name }}</p></li>
-
-                  {% if site.myportal_enabled %}
-                    <li>
-                      <a href="{{ desk.system.links.myportal }}">{{system.snippets.my_cases}} </a>
-                    </li>
-                  {% endif %}
-                  {% if site.portal_authentication_type_config == 'desk' %}
-                    <li>
-                      <a href="{{ desk.system.links.myaccount }}" id="desk-myaccount-link">{{system.snippets.my_account}}</a>
-                    </li>
-                  {% endif %}
-                  {% if site.portal_logout_enabled_config %}
-                    <li>
-                      <a href="{{ site.authentication_logout_url }}" id="desk-logout-link">{{system.snippets.logout}}</a>
-                    </li>
-                  {% endif %}
-                {% endif %}
-              {% endif %}
-              {% if langs_list %}
-                 <li>
-                      {{langs_list}}
-                 </li>
-              {% endif %}
-            </ul>
-          </div>
-        </div>
-      </div><!-- Container Desktop -->
-    </div><!-- #desk-header -->
-
-    <!-- SEARCH -->
-    {% if page == "myportal_index" or page == "myaccount" or page == "login" or page == "registration" or page == "authentication_verification" or page == "forgot_password" or page == "authentication_verification" %} {% else %}
-        <div id="search" class="hidden-phone">
-          <div class="container">
-            <div class="row">
-              {{ search_form_begin }}
-              <div class="columns medium-12">
-                {{template_form_params}}
-                {% if MBSearchSuggest == true %}
-                  <input type="text" id="qMB" name="q" maxlength="100" value="" placeholder="{{system.snippets.have_a_question}}" class="input form-control" autocomplete="off" />
-                {% else %}
-                  <input type="text" id="q" name="q" maxlength="100" value="" placeholder="{{system.snippets.have_a_question}}" class="input form-control" />
-                {% endif %}
-                  <button type="submit" class="fa fa-search" id="support-search-submit" value="{{system.snippets.search}}"></button>
-              </div>
-              {{ search_form_end }}
-            </div>
-          </div><!-- Search Container -->
-        </div><!-- #desk-search -->
-        <div id="SearchAutoSuggest" class="ui-multi-brand"></div>
+    </aside>
     {% endif %}
-    <!-- END SEARCH -->
-    <!-- BREADCRUMBS -->
-    {% if page  != "page_index" %}
-        <div id="breadcrumbs">
-          <div class="container">
-            <div class="row">
-              <div class="columns medium-12">
-                  <ol class="breadcrumb">
-                    {% if page  == "page_index" %}
-                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a></li>
-                    {% elsif page == "page_article" %}
-                      {% if article %}
-                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
-                        <li class="crumb"><a href="{{ topic.public_articles_url }}" title="{{ topic.name }}">{{ topic.name }}</a> </li>
-                        <li class="active crumb" title="{{ article.subject_plain }}">{{ article.subject_plain }}</li>
-                      {% else %}
-                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
-                        <li class="crumb active">{{system.snippets.article_translation_missing}}</li>
-                      {% endif %}
-                    {% elsif page == "page_topic" %}
-                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
-                        {% if topic %}
-                        <li class="crumb active">{{ topic.name }}</li>
-                        {% endif %}
-                    {% elsif page == "page_search_result" %}
-                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
-                        <li class="crumb">{{system.snippets.search}} </li>
-                        <li class="active crumb" title="{{ search_term }}">{{ search_term }}</li>
-                    {% elsif page == "question_show" %}
-                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
-                        <li class="crumb"><a href="{{ question.topic.public_questions_url }}" title="{{ question.topic.name }}">{{ question.topic.name  | clip:30 }}</a> </li>
-                        <li class="active crumb" title="{{ question.subject }}">{{ question.subject | clip:30 }}</li>
-                    {% elsif page == "question_new" %}
-                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
-                        <li class="active crumb" title="{{ article.subject_plain }}">{{system.snippets.post_public_question}}</li>
-                    {% elsif page == "question_pre_create" %}
-                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
-                        <li class="crumb"><a href='{{desk.system.links.question}}'>{{system.snippets.post_public_question}}</a> </li>
-                        <li class="active crumb">{{system.snippets.post_public_question}}</li>
-                    {% elsif page == "email_new" %}
-                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
-                        <li class="active crumb" title="{{ article.subject_plain }}">{{system.snippets.email_us}}</li>
-                    {% elsif page == "email_pre_create" %}
-                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> &rsaquo; {{system.snippets.email_us}}</li>
-                    {% elsif page == "email_submitted" %}
-                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
-                        <li class="active crumb">{{system.snippets.email_us}}</li>
-                    {% elsif page == "chat_new" %}
-                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
-                        <li class="active crumb" title="{{system.snippets.live_chat}}">{{system.snippets.live_chat}}</li>
-                    {% elsif page == "chat_pre_create" %}
-                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
-                        <li class="active crumb">{{system.snippets.live_chat}}</li>
-                    {% elsif page == "myportal_index" %}
-                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
-                        <li class="active crumb">{{desk.system.snippets.my_cases}}</li>
-                    {% elsif page == "myportal_show" %}
-                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
-                        {% if desk.customer.can_access_company_tickets? %}
-                        <li class="crumb"><a href='{{ desk.system.links.myportal }}'>{{ desk.page.content.case.customer.name }}</a></li>
-                        {% endif %}
-                        <li class="crumb"><a href='{{ desk.system.links.myportal }}'>{{desk.system.snippets.my_cases}}</a> </li>
-                        <li class="active crumb">{{desk.page.content.case.subject | clip:30 }}</li>
-                    {% elsif page == "login" %}
-                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
-                        <li class="crumb active">{{desk.system.snippets.login_title}}</li>
-                    {% elsif page == "registration" %}
-                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
-                        <li class="crumb"><a href='{{ site.authentication_login_url }}'>{{desk.system.snippets.login_title}}</a> </li>
-                        <li class="crumb active">{{desk.system.snippets.registration_title}}</li>
-                    {% elsif page == "forgot_password" %}
-                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
-                        <li class="crumb"><a href='{{desk.system.links.login}}'>{{desk.system.snippets.login_title}}</a> </li>
-                        <li class="crumb active">{{desk.system.snippets.password_reset_title}}</li>
-                    {% elsif page == "myaccount" %}
-                        <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
-                        <li class="active crumb">{{desk.system.snippets.account_title}}</li>
-                    {% elsif page == "authentication_verification" %}
-                        <li><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> &rsaquo; {{desk.system.snippets.auth_verification_title}}</li>
+    <section class="main-section">
+      <!-- DESKTOP HEADER -->
+      <header id="header">
+        <div class="container">
+          <div class="row">
+            <div class="{% if widelogo == true %} columns medium-12 {% else %} columns medium-5 {% endif %}">
+                {% if desk.page.theme.header_content == "" %}
+                <h1>
+                  <a href="{{desk.system.links.home}}">
+                    {% if desk.current_brand.name == nil %}
+                      {{ site.company_name }}
+                    {% else %}
+                       {{ desk.current_brand.name }}
                     {% endif %}
-                  </ol>
-              </div>
+                  </a>
+                </h1>
+                {% else %}
+                  {{ desk.page.theme.header_content }}
+                {% endif %}
+            </div>
+            <div class="{% if widelogo == true %} columns medium-12 {% else %} columns medium-7 {% endif %}">
+              <ul class="nav nav-pills">
+
+                {% if site.portal_authentication_enabled_config %}
+                  <!-- Guest -->
+                  {% if current_user and current_user.is_guest == true  and page != "login" %}
+                    <li>
+                      <a href="{{ site.authentication_login_url }}" id="desk-auth-login-link" class="">{{system.snippets.login}}</a>
+                    </li>
+                  {% endif %}
+                  <!-- Logged In -->
+                  {% if current_user and current_user.is_guest == false %}
+                    <li class="desk-guestMessage"><p>{{system.snippets.welcome}} {{ current_user.customer.name }}</p></li>
+
+                    {% if site.myportal_enabled %}
+                      <li>
+                        <a href="{{ desk.system.links.myportal }}">{{system.snippets.my_cases}} </a>
+                      </li>
+                    {% endif %}
+                    {% if site.portal_authentication_type_config == 'desk' %}
+                      <li>
+                        <a href="{{ desk.system.links.myaccount }}" id="desk-myaccount-link">{{system.snippets.my_account}}</a>
+                      </li>
+                    {% endif %}
+                    {% if site.portal_logout_enabled_config %}
+                      <li>
+                        <a href="{{ site.authentication_logout_url }}" id="desk-logout-link">{{system.snippets.logout}}</a>
+                      </li>
+                    {% endif %}
+                  {% endif %}
+                {% endif %}
+                {% if langs_list %}
+                   <li>
+                        {{langs_list}}
+                   </li>
+                {% endif %}
+              </ul>
             </div>
           </div>
-        </div><!-- #breadcrumbs -->
-    {% endif %}
-    <!-- END BREADCRUMBS -->
-    <!--begin:portal_body-->
+        </div><!-- Container Desktop -->
+      </header><!-- #desk-header -->
+
+      <!-- SEARCH -->
+      {% if page == "myportal_index" or page == "myaccount" or page == "login" or page == "registration" or page == "authentication_verification" or page == "forgot_password" or page == "authentication_verification" %} {% else %}
+          <div id="search">
+            <div class="container">
+            <div class="row">
+              <div class="columns medium-12">
+                {{ search_form_begin }}
+                  {{template_form_params}}
+                  <div class="row collapse">
+                    <div class="small-10 medium-11 columns">
+                    {% if MBSearchSuggest == true %}
+                      <input type="text" id="qMB" name="q" maxlength="100" value="" placeholder="{{system.snippets.have_a_question}}" autocomplete="off" />
+                    {% else %}
+                      <input type="text" id="q" name="q" maxlength="100" value="" placeholder="{{system.snippets.have_a_question}}" />
+                    {% endif %}
+                    </div>
+                    <div class="small-2 medium-1 columns">
+                      <button type="submit" class="postfix" id="support-search-submit" value="{{system.snippets.search}}"><i class="fa fa-search"></i></button>
+                    </div>
+                  </div>
+                {{ search_form_end }}
+              </div>
+              </div>
+            </div><!-- Search Container -->
+          </div><!-- #desk-search -->
+          <div id="SearchAutoSuggest" class="ui-multi-brand"></div>
+      {% endif %}
+      <!-- END SEARCH -->
+      <!-- BREADCRUMBS -->
+      {% if page  != "page_index" %}
+          <div id="breadcrumbs">
+            <div class="container">
+              <div class="row">
+                <div class="columns medium-12">
+                    <ul class="breadcrumbs">
+                      {% if page  == "page_index" %}
+                          <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a></li>
+                      {% elsif page == "page_article" %}
+                        {% if article %}
+                          <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
+                          <li class="crumb"><a href="{{ topic.public_articles_url }}" title="{{ topic.name }}">{{ topic.name }}</a> </li>
+                          <li class="active crumb" title="{{ article.subject_plain }}">{{ article.subject_plain }}</li>
+                        {% else %}
+                          <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
+                          <li class="crumb active">{{system.snippets.article_translation_missing}}</li>
+                        {% endif %}
+                      {% elsif page == "page_topic" %}
+                          <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
+                          {% if topic %}
+                          <li class="crumb active">{{ topic.name }}</li>
+                          {% endif %}
+                      {% elsif page == "page_search_result" %}
+                          <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
+                          <li class="crumb">{{system.snippets.search}} </li>
+                          <li class="active crumb" title="{{ search_term }}">{{ search_term }}</li>
+                      {% elsif page == "question_show" %}
+                          <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
+                          <li class="crumb"><a href="{{ question.topic.public_questions_url }}" title="{{ question.topic.name }}">{{ question.topic.name  | clip:30 }}</a> </li>
+                          <li class="active crumb" title="{{ question.subject }}">{{ question.subject | clip:30 }}</li>
+                      {% elsif page == "question_new" %}
+                          <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
+                          <li class="active crumb" title="{{ article.subject_plain }}">{{system.snippets.post_public_question}}</li>
+                      {% elsif page == "question_pre_create" %}
+                          <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
+                          <li class="crumb"><a href='{{desk.system.links.question}}'>{{system.snippets.post_public_question}}</a> </li>
+                          <li class="active crumb">{{system.snippets.post_public_question}}</li>
+                      {% elsif page == "email_new" %}
+                          <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
+                          <li class="active crumb" title="{{ article.subject_plain }}">{{system.snippets.email_us}}</li>
+                      {% elsif page == "email_pre_create" %}
+                          <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> &rsaquo; {{system.snippets.email_us}}</li>
+                      {% elsif page == "email_submitted" %}
+                          <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
+                          <li class="active crumb">{{system.snippets.email_us}}</li>
+                      {% elsif page == "chat_new" %}
+                          <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
+                          <li class="active crumb" title="{{system.snippets.live_chat}}">{{system.snippets.live_chat}}</li>
+                      {% elsif page == "chat_pre_create" %}
+                          <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
+                          <li class="active crumb">{{system.snippets.live_chat}}</li>
+                      {% elsif page == "myportal_index" %}
+                          <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
+                          <li class="active crumb">{{desk.system.snippets.my_cases}}</li>
+                      {% elsif page == "myportal_show" %}
+                          <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
+                          {% if desk.customer.can_access_company_tickets? %}
+                          <li class="crumb"><a href='{{ desk.system.links.myportal }}'>{{ desk.page.content.case.customer.name }}</a></li>
+                          {% endif %}
+                          <li class="crumb"><a href='{{ desk.system.links.myportal }}'>{{desk.system.snippets.my_cases}}</a> </li>
+                          <li class="active crumb">{{desk.page.content.case.subject | clip:30 }}</li>
+                      {% elsif page == "login" %}
+                          <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
+                          <li class="crumb active">{{desk.system.snippets.login_title}}</li>
+                      {% elsif page == "registration" %}
+                          <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
+                          <li class="crumb"><a href='{{ site.authentication_login_url }}'>{{desk.system.snippets.login_title}}</a> </li>
+                          <li class="crumb active">{{desk.system.snippets.registration_title}}</li>
+                      {% elsif page == "forgot_password" %}
+                          <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
+                          <li class="crumb"><a href='{{desk.system.links.login}}'>{{desk.system.snippets.login_title}}</a> </li>
+                          <li class="crumb active">{{desk.system.snippets.password_reset_title}}</li>
+                      {% elsif page == "myaccount" %}
+                          <li class="crumb"><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> </li>
+                          <li class="active crumb">{{desk.system.snippets.account_title}}</li>
+                      {% elsif page == "authentication_verification" %}
+                          <li><a href='{{desk.system.links.home}}'>{{system.snippets.home}}</a> &rsaquo; {{desk.system.snippets.auth_verification_title}}</li>
+                      {% endif %}
+                    </ul>
+                </div>
+              </div>
+            </div>
+          </div><!-- #breadcrumbs -->
+      {% endif %}
+      <!-- END BREADCRUMBS -->
+      <!--begin:portal_body-->
 {% if page  == "page_index" %}
 <!--begin:page_index-->
         <!--
@@ -415,13 +418,15 @@
                   <div id="system-snippets-just_moderated">{{just_moderated}}</div>
                 </div>
                 <div class="row header">
-                  <h2 class="subheader columns medium-12">
-                    {% if topics_count > 0 %}
-                        {{system.snippets.browse_by_topic}}
-                    {% else %}
-                        {{system.snippets.no_topics_avail}}
-                    {% endif %}
-                  </h2>
+                  <div class="columns medium-12">
+                    <h2>
+                      {% if topics_count > 0 %}
+                          {{system.snippets.browse_by_topic}}
+                      {% else %}
+                          {{system.snippets.no_topics_avail}}
+                      {% endif %}
+                    </h2>
+                  </div>
                 </div>
                 <!-- INDEX PAGE LAYOUT CHANGE FUNCTIONALITY -->
                 {% if IndexLayout == 'List' %}
@@ -441,7 +446,7 @@
                               </li>
                               {% endfor %}
                             </ul>
-                            <a href='{{ topic.public_articles_url }}' class="btn btn-pill"><span class="desk-view-text">{{system.snippets.view_all}} </span>
+                            <a href='{{ topic.public_articles_url }}' class="button tiny round"><span class="desk-view-text">{{system.snippets.view_all}} </span>
                               {{ topic.article_count }}
                             </a>
                           </div>
@@ -480,7 +485,7 @@
                                 {% endfor %}
                               </ul>
 
-                              <a href='{{ topic.public_questions_url  }}' class="btn btn-pill"><span class="desk-view-text">{{system.snippets.view_all}} </span>
+                              <a href='{{ topic.public_questions_url  }}' class="button tiny round"><span class="desk-view-text">{{system.snippets.view_all}} </span>
                                 {{ topic.question_count }}
                                 {{ system.snippets.community_discussions | pluralize: topic.question_count, system.snippets.questions }}
                               </a>
@@ -509,7 +514,7 @@
                               </li>
                               {% endfor %}
                             </ul>
-                            <a href='{{ topic.public_articles_url }}' class="btn btn-pill"><span class="desk-view-text">{{system.snippets.view_all}} </span>
+                            <a href='{{ topic.public_articles_url }}' class="button tiny round"><span class="desk-view-text">{{system.snippets.view_all}} </span>
                               {{ topic.article_count }}
                             </a>
                           </div>
@@ -556,7 +561,7 @@
                                 {% endfor %}
                               </ul>
 
-                              <a href='{{ topic.public_questions_url  }}' class="btn btn-pill"><span class="desk-view-text">{{system.snippets.view_all}} </span>
+                              <a href='{{ topic.public_questions_url  }}' class="button tiny round"><span class="desk-view-text">{{system.snippets.view_all}} </span>
                                 {{ topic.question_count }}
                               </a>
                             </div>
@@ -578,7 +583,7 @@
                     {%for topic in topics%}
                       {% if topic.article_count > 0 %}
                           <div class="desk-topic desk-topic-{{ topic.id }} columns medium-6">
-                               <a href='{{ topic.public_articles_url }}' class="btn btn-primary">{{ topic.name }} <span>{{ topic.article_count }}</span></a>
+                               <a href='{{ topic.public_articles_url }}' class="button button-primary">{{ topic.name }} <span>{{ topic.article_count }}</span></a>
                           </div>
                           {% if col == 2 %}
                             </div><div class="row topics-only">
@@ -710,14 +715,14 @@
                   </div>
                   <div class="columns medium-6">
                     <ul class="social">
-                        <li class="btn-facebook">
-                          <a href="#" data-href="https://developers.facebook.com/docs/plugins/" data-type="button_count" class="btn-facebook fb-share-button" target="pop">Share</a>
+                        <li class="button-facebook">
+                          <a href="#" data-href="https://developers.facebook.com/docs/plugins/" data-type="button_count" class="button-facebook fb-share-button" target="pop">Share</a>
                         </li>
                         <li>
                           <a href="https://twitter.com/share" target="pop" class="twitter-share-button">Tweet</a>
                         </li>
                         <li>
-                          <a data-size="medium" data-annotation="bubble" data-width="94" class="rndbtn btn-flat btn-gplus g-plusone">Share</a>
+                          <a data-size="medium" data-annotation="bubble" data-width="94" class="rndbutton button-flat button-gplus g-plusone">Share</a>
                         </li>
                     </ul>
                   </div>
@@ -758,16 +763,16 @@
                     <div class="columns medium-5 small-12 switch">
                       {% if topic.question_count > 0 and topic.allow_questions and site.questions_enabled_config %}
                         {% if type == 'questions' %}
-                          <a class="btn btn-pill active" href='{{ topic.public_questions_url }}'>{{system.snippets.questions}}</a>
+                          <a class="button round active" href='{{ topic.public_questions_url }}'>{{system.snippets.questions}}</a>
                         {% else %}
-                          <a class="btn btn-pill" href='{{ topic.public_questions_url }}'>{{system.snippets.questions}}</a>
+                          <a class="button round" href='{{ topic.public_questions_url }}'>{{system.snippets.questions}}</a>
                         {% endif %}
                       {% endif %}
                       {% if topic.article_count > 0 %}
                         {% if type == 'articles' %}
-                          <a class="btn btn-pill active" href='{{ topic.public_articles_url }}' id="desk-article-list-link">{{system.snippets.articles}}</a>
+                          <a class="button round active" href='{{ topic.public_articles_url }}' id="desk-article-list-link">{{system.snippets.articles}}</a>
                         {% else %}
-                          <a class="btn btn-pill" href='{{ topic.public_articles_url }}' id="desk-qna-list-link">{{system.snippets.articles}}</a>
+                          <a class="button round" href='{{ topic.public_articles_url }}' id="desk-qna-list-link">{{system.snippets.articles}}</a>
                         {% endif %}
                       {% endif %}
                     </div>
@@ -778,27 +783,27 @@
                       <div class="columns medium-12">
                         {% if type == 'articles' %}
                           {% for article in articles %}
-                            <div class="article row nomarg">
+                            <article>
                               <h3><a href="{{ article.public_url }}" title="{{ article.subject_plain }}">{{ article.subject_plain }}</a></h3>
                               <p>{{ article.body_plain | clip:210 }}</p>
-                              <a href="{{ article.public_url }}" class="btn btn-pill">{{ system.snippets.read_article }}</a>
-                            </div>
+                              <a href="{{ article.public_url }}" class="button round">{{ system.snippets.read_article }}</a>
+                            </article>
                           {% endfor %}
                         {% else %}
                           {% for question in questions %}
-                            <div class="qna row nomarg">
+                            <article>
                               <h3><a href="{{ question.public_url }}" title="{{ question.subject_plain }}">{{ question.subject_plain }}</a></h3>
                               <p>{{ question.body_plain | clip:210 }}</p>
                               {% if question.answers_agent_count > 0 %}
-                                <a class="btn btn-pill" href="{{ question.public_url }}">
+                                <a class="button round" href="{{ question.public_url }}">
                                   <span>{{ question.answers_agent_count }}</span>
                                   {{ site.agent_name_config }}
                                   {{ system.snippets.answer | pluralize: question.answers_agent_count, system.snippets.answers }}
                                 </a>
                               {% else %}
-                               <a href="{{ question.public_url }}" class="btn btn-pill">View Question</a>
+                               <a href="{{ question.public_url }}" class="button round">View Question</a>
                               {% endif %}
-                            </div>
+                            </article>
                           {% endfor %}
                         {% endif %}
                       </div><!-- end columns medium-12 -->
@@ -859,18 +864,17 @@
                 {% if MBSearchPage == true %}
                 <div id="brandResults" class="hidden">
                 {% endif %}
-                  <div class="body row nomarg">
                     {% for result in search_results %}
                       {% if result.class_name == "Article" %}
                         <article class="row result article">
-                          <div class="columns medium-12">
+                          <article class="columns medium-12 article">
                             <h3>
                               <a href='{{ result.public_url }}' title="{{ result.subject_plain }}"><span>{{ result.subject_plain }}</span></a>
                             </h3>
                             {% if MBSearchPage == true %}<label class="{{desk.current_brand.name}}">{{desk.current_brand.name}}</label>{% endif %}
                             <p>{{ result.body_plain | clip:210 }}</p>
-                            <a href="{{ result.public_url }}" class="btn btn-pill">{{ system.snippets.read_article }}</a>
-                          </div>
+                            <a href="{{ result.public_url }}" class="button tiny round">{{ system.snippets.read_article }}</a>
+                          </article>
                         </article>
                       {% elsif result.class_name == "Question" and MBSearchExcludeQuestions != true %}
                         <article class="row result question">
@@ -889,25 +893,25 @@
                           </div>
                           <div class="columns medium-12">
                             {% if result.answers_agent_count > 0 %}
-                             <a href='{{ result.public_url }}' class="btn btn-pill" title="{{ result.subject_plain }}">
+                             <a href='{{ result.public_url }}' class="button tiny round" title="{{ result.subject_plain }}">
                                 <span>{{ result.answers_agent_count }}</span>
                                 {{ site.agent_name_config }}
                                 {{ system.snippets.answer | pluralize: result.answers_agent_count, system.snippets.answers }}
                               </a>
                             {% elsif result.answers_customer_count > 0 %}
-                              <a href='{{ result.public_url }}' class="btn btn-pill" title="{{ result.subject_plain }}">
+                              <a href='{{ result.public_url }}' class="button tiny round" title="{{ result.subject_plain }}">
                                 <span>{{ result.answers_customer_count }}</span>
                                 Community {{ system.snippets.answer | pluralize: result.answers_customer_count, system.snippets.answers }}
                               </a>
                             {% else %}
-                                <a href='{{ result.public_url }}' class="btn btn-pill" title="{{ result.subject_plain }}">View Question</a>
+                                <a href='{{ result.public_url }}' class="button tiny round" title="{{ result.subject_plain }}">View Question</a>
                             {% endif %}
                           </div>
                         </article> <!-- article row -->
                                         <!-- pagination -->
                       {% endif %}
                     {% endfor %}
-                  </div>
+
                   <div class="row footer">
                       <div id='pagination'>
                         <div class="columns medium-12">
@@ -1101,7 +1105,7 @@
                             <textarea cols="40" id="qna_body" class="form-control" name="qna[body]" rows="6">{{ qna.body }}</textarea>
                           </div>
                           <div class="input-button">
-                            <input id="answer_submit" class="btn btn-submit" name="commit" type="submit" value="{{system.snippets.post_answer}}" />
+                            <input id="answer_submit" class="button button-submit" name="commit" type="submit" value="{{system.snippets.post_answer}}" />
                           </div>
                         </div>
                       </div>
@@ -1181,7 +1185,7 @@
                       <div class="autosuggest visible-xs right-side hide"> </div>
                     </div>
                     <div class="panel-footer input-button">
-                      <input id='email_submit' class="btn btn-submit" name='commit' type='submit' value='{{system.snippets.ask_question}}' />
+                      <input id='email_submit' class="button button-submit" name='commit' type='submit' value='{{system.snippets.ask_question}}' />
                     </div>
                     {{form_end}}
                   </div><!-- end .panel -->
@@ -1262,7 +1266,7 @@
                         {{form_begin}}
                             <div class='input-button'>
                               {{system.snippets.did_not_help}}
-                              <input id="question_submit" name="commit" type="submit" value="{{system.snippets.post_question}}" class="btn btn-submit " />
+                              <input id="question_submit" name="commit" type="submit" value="{{system.snippets.post_question}}" class="button button-submit " />
                               <img alt='Ajax-loader-small' id='email_submit_spinner' src='{{ "/images/ajax-loader-small.gif" | portal_image_url: image_asset_host }}' style='display: none; margin: 7px 0 0 5px; position: absolute;' />
                             </div>
                         {{form_end}}
@@ -1319,7 +1323,7 @@
                       <div class="autosuggest visible-xs right-side hide"> </div>
                     </div>
                     <div class="panel-footer input-button">
-                      <input id='email_submit' class="btn btn-submit" name='commit' type='submit' value='{{system.snippets.ask_question}}' />
+                      <input id='email_submit' class="button button-submit" name='commit' type='submit' value='{{system.snippets.ask_question}}' />
                     </div>
                     {{form_end}}
                   </div><!-- end .panel -->
@@ -1401,7 +1405,7 @@
                       </div>
                     </div>
                     <div class="panel-footer input-button">
-                      <button id='email_submit' class="btn btn-submit" name='commit' type='submit' value='{{system.snippets.send_email}}'>{{system.snippets.send_email}}</button>
+                      <button id='email_submit' class="button button-submit" name='commit' type='submit' value='{{system.snippets.send_email}}'>{{system.snippets.send_email}}</button>
                     </div>
                     {{form_end}}
                   </div>
@@ -1480,7 +1484,7 @@
                           {{form_begin}}
                               <div class='input-button'>
                                 {{system.snippets.did_not_help}}
-                                <input id='email_submit' class="btn btn-submit" name='commit' type='submit' value='{{system.snippets.send_your_email}}' />
+                                <input id='email_submit' class="button button-submit" name='commit' type='submit' value='{{system.snippets.send_your_email}}' />
                                 <img alt='Ajax-loader-small' id='email_submit_spinner' src='{{ "/images/ajax-loader-small.gif" | portal_image_url: image_asset_host }}' style='display: none; margin: 7px 0 0 5px; position: absolute;' />
                               </div>
                           {{form_end}}
@@ -1541,7 +1545,7 @@
                         </div>
                       </div>
                       <div class="panel-footer input-button">
-                        <button id='email_submit' class="btn btn-submit" name='commit' type='submit' value='{{system.snippets.send_email}}'>{{system.snippets.send_email}}</button>
+                        <button id='email_submit' class="button button-submit" name='commit' type='submit' value='{{system.snippets.send_email}}'>{{system.snippets.send_email}}</button>
                       </div>
                       {{form_end}}
                     </div>
@@ -1624,7 +1628,7 @@
                       <div class="autosuggest visible-xs right-side hide"></div>
                     </div>
                     <div class="panel-footer input-button">
-                       <input id='email_submit' class="btn btn-submit" name='commit' type='submit' value='{{system.snippets.go_chat}}' />
+                       <input id='email_submit' class="button button-submit" name='commit' type='submit' value='{{system.snippets.go_chat}}' />
                     </div>
                   {{form_end}}
                   </div> <!-- .panel-default.form -->
@@ -1699,7 +1703,7 @@
                   {{form_begin}}
                   <div class="input-button">
                     {{system.snippets.did_not_help}}
-                     <input id="chat_submit" name="commit" type="submit" value="{{system.snippets.start_chat}}" class="btn btn-submit" />
+                     <input id="chat_submit" name="commit" type="submit" value="{{system.snippets.start_chat}}" class="button button-submit" />
                   </div>
                   {{form_end}}
                 </div>
@@ -1712,7 +1716,7 @@
                     <div id='form'>
                       {{form_begin}}
                         <div class='input-button'>
-                          <input id='chat_submit' name='commit' type='submit' class="btn btn-submit" value='{{system.snippets.start_chat}}' />
+                          <input id='chat_submit' name='commit' type='submit' class="button button-submit" value='{{system.snippets.start_chat}}' />
                         </div>
                       {{form_end}}
                     </div>
@@ -1758,7 +1762,7 @@
                         <div class="autosuggest visible-xs right-side hide"></div>
                       </div>
                       <div class="panel-footer input-button">
-                         <input id='email_submit' class="btn btn-submit" name='commit' type='submit' value='{{system.snippets.go_chat}}' />
+                         <input id='email_submit' class="button button-submit" name='commit' type='submit' value='{{system.snippets.go_chat}}' />
                       </div>
                     {{form_end}}
                     </div> <!-- .panel-default.form -->
@@ -2474,7 +2478,7 @@
                                       </div>
                                     </div>
                                   <div class="input-button">
-                                    <input id='reply_submit' name='commit' type='submit' value='{{system.snippets.send_text}}' class="btn btn-submit" />
+                                    <input id='reply_submit' name='commit' type='submit' value='{{system.snippets.send_text}}' class="button button-submit" />
                                   </div>
                                   {{form_end}}
                                 {% else %}
@@ -2484,7 +2488,7 @@
                                     <textarea class="form-control"  id="interaction_body" name="interaction[body]" rows="6" cols="40"></textarea>
                                   </div>
                                   <div class="input-button">
-                                    <input id='reply_submit' name='commit' type='submit' value='{{system.snippets.post_answer}}' class="btn btn-submit" />
+                                    <input id='reply_submit' name='commit' type='submit' value='{{system.snippets.post_answer}}' class="button button-submit" />
                                   </div>
                                   {{form_end}}
                                 {% endif %}
@@ -2516,7 +2520,7 @@
         <div id="content">
           <div class="container login">
             <div class="body row">
-              <div class="columns medium-6 columns medium-offset-3">
+              <div class="columns medium-6 medium-offset-3">
                 <div id="desk-external-variables-myportal_show" class="desk-external-variables hide">
                   <div id="system-snippets-email_required" class=""><p class="error">{{system.snippets.email_required}}</p></div>
                   <div id="system-snippets-invalid_email" class="alert hide">{{system.snippets.invalid_email}}</div>
@@ -2558,7 +2562,7 @@
         <div id="content">
           <div class="container register">
             <div class="row">
-              <div class="columns medium-6 columns medium-offset-3">
+              <div class="columns medium-6 medium-offset-3">
                 <div id="desk-external-variables-myportal_show" class="desk-external-variables hide">
                   <div id="system-snippets-email_required" class=""><p class="error">{{system.snippets.email_required}}</p></div>
                   <div id="system-snippets-invalid_email" class="alert hide">{{system.snippets.invalid_email}}</div>
@@ -2596,7 +2600,7 @@
         <div id="content">
           <div class="container password">
             <div class="row">
-              <div class="columns medium-6 columns medium-offset-3">
+              <div class="columns medium-6 medium-offset-3">
                 <div id="desk-external-variables-myportal_show" class="desk-external-variables hide">
                   <div id="system-snippets-email_required" class=""><p class="error">{{system.snippets.email_required}}</p></div>
                   <div id="system-snippets-invalid_email" class="alert hide">{{system.snippets.invalid_email}}</div>
@@ -2716,7 +2720,7 @@
         <div id="content">
           <div class="container feedback main-customer-feedback">
             <div class="row">
-              <div class="columns medium-6 columns medium-offset-3">
+              <div class="columns medium-6 medium-offset-3">
                 <div class="panel panel-default form" id="form">
                 {% if customer_feedback.feedback_enabled? %}
                     <div class="panel-heading">
@@ -2730,18 +2734,18 @@
                         <input id="customer-feedback-checked-rating" type="hidden" name="checked_rating" value="{{customer_feedback.rating}}">
                         {% if customer_feedback.yes_no_rating? %}
                           <div class="row two-up">
-                            <div class="small-3">
+                            <div class="columns small-3">
                               <div class="form-group">
                                 <input id="customer-feedback-rating0" class="" name="customer_feedback[rating]" type="radio" value="0">
-                                <button type="button" class="btn btn-primary btn-radio value-0">
+                                <button type="button" class="button button-primary button-radio value-0">
                                   <img class="radio-label-rating-type" src='{{ "/images/rating_type100_0.png" | portal_image_url: image_asset_host }}'>
                                 </button>
                               </div>
                             </div>
-                            <div class="small-3">
+                            <div class="columns small-3">
                               <div class="form-group">
                                 <input id="customer-feedback-rating1" class="" name="customer_feedback[rating]" type="radio" value="3">
-                                <button type="button" class="btn btn-primary btn-radio value-3">
+                                <button type="button" class="button button-primary button-radio value-3">
                                  <img class="radio-label-rating-type" src='{{ "/images/rating_type100_3.png" | portal_image_url: image_asset_host }}'>
                                 </button>
                               </div>
@@ -2749,34 +2753,34 @@
                           </div>
                         {% else %}
                           <div class="row four-up">
-                            <div class="small-3">
+                            <div class="columns small-3">
                                 <div class="form-group">
                                   <input id="customer-feedback-rating0" class="" name="customer_feedback[rating]" type="radio" value="0">
-                                  <button type="button" class="btn btn-primary btn-radio value-0">
+                                  <button type="button" class="button button-primary button-radio value-0">
                                     <img class="radio-label-rating-type" src='{{ "/images/rating_type200_0.png" | portal_image_url: image_asset_host }}'>
                                   </button>
                                 </div>
                             </div>
-                            <div class="small-3">
+                            <div class="columns small-3">
                               <div class="form-group">
                                 <input id="customer-feedback-rating1" class="" name="customer_feedback[rating]" type="radio" value="1">
-                                <button type="button" class="btn btn-primary btn-radio value-1">
+                                <button type="button" class="button button-primary button-radio value-1">
                                   <img class="radio-label-rating-type" src='{{ "/images/rating_type200_1.png" | portal_image_url: image_asset_host }}'>
                                 </button>
                               </div>
                             </div>
-                            <div class="small-3">
+                            <div class="columns small-3">
                               <div class="form-group">
                                 <input id="customer-feedback-rating2" class="" name="customer_feedback[rating]" type="radio" value="2">
-                                <button type="button" class="btn btn-primary btn-radio value-2">
+                                <button type="button" class="button button-primary button-radio value-2">
                                    <img class="radio-label-rating-type" src='{{ "/images/rating_type200_2.png" | portal_image_url: image_asset_host }}'>
                                 </button>
                               </div>
                             </div>
-                            <div class="small-3">
+                            <div class="columns small-3">
                               <div class="form-group">
                                 <input id="customer-feedback-rating3" class="" name="customer_feedback[rating]" type="radio" value="3">
-                                <button type="button" class="btn btn-primary btn-radio value-3">
+                                <button type="button" class="button button-primary button-radio value-3">
                                   <img class="radio-label-rating-type" src='{{ "/images/rating_type200_3.png" | portal_image_url: image_asset_host }}'>
                                 </button>
                               </div>
@@ -2822,27 +2826,30 @@
 {%endif%}
 <!--end:portal_body-->
 
-  </div> <!-- END CONTENT -->
-</div> <!-- Wrapper -->
-<div id="footer">
-  <div class="container">
-      <div class="row">
-        {{ desk.page.theme.footer_content }}
-      </div>
-      <div class="row attribution">
-        <div class="columns medium-12">
-          <!--
-          ***************
-          The following attribution needs to remain as is in terms of wording with the appropriate link back to desk.com as per our terms of service: http://www.desk.com/terms
-          If you would like, you may change the location or the styling to better match your site, but the content and the link must remain in the template and visible to end users.
-          ****************
-          -->
-          <div id="desk-attribution"><a href="http://www.desk.com/">Customer service software <span>powered by Desk.com</span></a></div>
-        </div>
-      </div>
-  </div>
-</div><!-- #desk-footer -->
 
+      <footer id="footer">
+        <div class="container">
+            <div class="row">
+              {{ desk.page.theme.footer_content }}
+            </div>
+            <div class="row attribution">
+              <div class="columns medium-12">
+                <!--
+                ***************
+                The following attribution needs to remain as is in terms of wording with the appropriate link back to desk.com as per our terms of service: http://www.desk.com/terms
+                If you would like, you may change the location or the styling to better match your site, but the content and the link must remain in the template and visible to end users.
+                ****************
+                -->
+                <div id="desk-attribution" class="text-center"><a href="http://www.desk.com/">Customer service software <span>powered by Desk.com</span></a></div>
+              </div>
+            </div>
+        </div>
+      </footer><!-- #desk-footer -->
+
+    </section><!-- Main Section -->
+
+  </div><!-- Inner Wrap -->
+</div><!-- Off Canvas Wrap -->
 {% if just_moderated %}
   <div id="Moderated" class="modal fade" role="dialog" tabindex="-1" aria-labelledby="PreCreateModal" aria-hidden="true">
       <div class="modal-dialog modal-lg">
@@ -2930,5 +2937,6 @@
     <div id="MBArticleSuggest">true</div>
   {% endif %}
 </div>
-<script src="//desk-customers.s3.amazonaws.com/desk/themes/foundation/js/foundation.js" type="text/javascript"></script>
+
+<script src="//desk-customers.s3.amazonaws.com/desk/themes/foundation/js/foundation.min.js" type="text/javascript"></script>
 <script src="//desk-customers.s3.amazonaws.com/desk/themes/foundation/js/desk.portal.js" type="text/javascript"></script>

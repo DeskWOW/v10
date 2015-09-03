@@ -369,7 +369,7 @@ MOBILE QUERIES
     #PreCreate .modal-body ul.results li p{font-size: 12px; padding-left: 0px;}
     #PreCreate .modal-body ul.results li.note {margin-bottom: 0px;}
     #PreCreate .modal-footer {font-size: 12px; text-align: left;}
-    #PreCreate .modal-footer .btn.btn-submit{font-size: 14px;padding: 7px 16px; margin: 0px 0px 0px 10px; float: right;}
+    #PreCreate .modal-footer .button.button-submit{font-size: 14px;padding: 7px 16px; margin: 0px 0px 0px 10px; float: right;}
 
     .myportal.index .body table tbody tr td.a-casesubject {padding: 0px 10px;}
 

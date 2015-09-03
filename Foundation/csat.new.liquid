@@ -17,18 +17,18 @@
                         <input id="customer-feedback-checked-rating" type="hidden" name="checked_rating" value="{{customer_feedback.rating}}">
                         {% if customer_feedback.yes_no_rating? %}
                           <div class="row two-up">
-                            <div class="small-3">
+                            <div class="columns small-3">
                               <div class="form-group">
                                 <input id="customer-feedback-rating0" class="" name="customer_feedback[rating]" type="radio" value="0">
-                                <button type="button" class="btn btn-primary btn-radio value-0">
+                                <button type="button" class="button button-primary button-radio value-0">
                                   <img class="radio-label-rating-type" src='{{ "/images/rating_type100_0.png" | portal_image_url: image_asset_host }}'>
                                 </button>
                               </div>
                             </div>
-                            <div class="small-3">
+                            <div class="columns small-3">
                               <div class="form-group">
                                 <input id="customer-feedback-rating1" class="" name="customer_feedback[rating]" type="radio" value="3">
-                                <button type="button" class="btn btn-primary btn-radio value-3">
+                                <button type="button" class="button button-primary button-radio value-3">
                                  <img class="radio-label-rating-type" src='{{ "/images/rating_type100_3.png" | portal_image_url: image_asset_host }}'>
                                 </button>
                               </div>
@@ -36,34 +36,34 @@
                           </div>
                         {% else %}
                           <div class="row four-up">
-                            <div class="small-3">
+                            <div class="columns small-3">
                                 <div class="form-group">
                                   <input id="customer-feedback-rating0" class="" name="customer_feedback[rating]" type="radio" value="0">
-                                  <button type="button" class="btn btn-primary btn-radio value-0">
+                                  <button type="button" class="button button-primary button-radio value-0">
                                     <img class="radio-label-rating-type" src='{{ "/images/rating_type200_0.png" | portal_image_url: image_asset_host }}'>
                                   </button>
                                 </div>
                             </div>
-                            <div class="small-3">
+                            <div class="columns small-3">
                               <div class="form-group">
                                 <input id="customer-feedback-rating1" class="" name="customer_feedback[rating]" type="radio" value="1">
-                                <button type="button" class="btn btn-primary btn-radio value-1">
+                                <button type="button" class="button button-primary button-radio value-1">
                                   <img class="radio-label-rating-type" src='{{ "/images/rating_type200_1.png" | portal_image_url: image_asset_host }}'>
                                 </button>
                               </div>
                             </div>
-                            <div class="small-3">
+                            <div class="columns small-3">
                               <div class="form-group">
                                 <input id="customer-feedback-rating2" class="" name="customer_feedback[rating]" type="radio" value="2">
-                                <button type="button" class="btn btn-primary btn-radio value-2">
+                                <button type="button" class="button button-primary button-radio value-2">
                                    <img class="radio-label-rating-type" src='{{ "/images/rating_type200_2.png" | portal_image_url: image_asset_host }}'>
                                 </button>
                               </div>
                             </div>
-                            <div class="small-3">
+                            <div class="columns small-3">
                               <div class="form-group">
                                 <input id="customer-feedback-rating3" class="" name="customer_feedback[rating]" type="radio" value="3">
-                                <button type="button" class="btn btn-primary btn-radio value-3">
+                                <button type="button" class="button button-primary button-radio value-3">
                                   <img class="radio-label-rating-type" src='{{ "/images/rating_type200_3.png" | portal_image_url: image_asset_host }}'>
                                 </button>
                               </div>

@@ -39,18 +39,17 @@
                 {% if MBSearchPage == true %}
                 <div id="brandResults" class="hidden">
                 {% endif %}
-                  <div class="body row nomarg">
                     {% for result in search_results %}
                       {% if result.class_name == "Article" %}
                         <article class="row result article">
-                          <div class="columns medium-12">
+                          <article class="columns medium-12 article">
                             <h3>
                               <a href='{{ result.public_url }}' title="{{ result.subject_plain }}"><span>{{ result.subject_plain }}</span></a>
                             </h3>
                             {% if MBSearchPage == true %}<label class="{{desk.current_brand.name}}">{{desk.current_brand.name}}</label>{% endif %}
                             <p>{{ result.body_plain | clip:210 }}</p>
-                            <a href="{{ result.public_url }}" class="btn btn-pill">{{ system.snippets.read_article }}</a>
-                          </div>
+                            <a href="{{ result.public_url }}" class="button tiny round">{{ system.snippets.read_article }}</a>
+                          </article>
                         </article>
                       {% elsif result.class_name == "Question" and MBSearchExcludeQuestions != true %}
                         <article class="row result question">
@@ -69,25 +68,25 @@
                           </div>
                           <div class="columns medium-12">
                             {% if result.answers_agent_count > 0 %}
-                             <a href='{{ result.public_url }}' class="btn btn-pill" title="{{ result.subject_plain }}">
+                             <a href='{{ result.public_url }}' class="button tiny round" title="{{ result.subject_plain }}">
                                 <span>{{ result.answers_agent_count }}</span>
                                 {{ site.agent_name_config }}
                                 {{ system.snippets.answer | pluralize: result.answers_agent_count, system.snippets.answers }}
                               </a>
                             {% elsif result.answers_customer_count > 0 %}
-                              <a href='{{ result.public_url }}' class="btn btn-pill" title="{{ result.subject_plain }}">
+                              <a href='{{ result.public_url }}' class="button tiny round" title="{{ result.subject_plain }}">
                                 <span>{{ result.answers_customer_count }}</span>
                                 Community {{ system.snippets.answer | pluralize: result.answers_customer_count, system.snippets.answers }}
                               </a>
                             {% else %}
-                                <a href='{{ result.public_url }}' class="btn btn-pill" title="{{ result.subject_plain }}">View Question</a>
+                                <a href='{{ result.public_url }}' class="button tiny round" title="{{ result.subject_plain }}">View Question</a>
                             {% endif %}
                           </div>
                         </article> <!-- article row -->
                                         <!-- pagination -->
                       {% endif %}
                     {% endfor %}
-                  </div>
+
                   <div class="row footer">
                       <div id='pagination'>
                         <div class="columns medium-12">

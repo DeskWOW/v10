@@ -24,16 +24,16 @@
                     <div class="columns medium-5 small-12 switch">
                       {% if topic.question_count > 0 and topic.allow_questions and site.questions_enabled_config %}
                         {% if type == 'questions' %}
-                          <a class="btn btn-pill active" href='{{ topic.public_questions_url }}'>{{system.snippets.questions}}</a>
+                          <a class="button round active" href='{{ topic.public_questions_url }}'>{{system.snippets.questions}}</a>
                         {% else %}
-                          <a class="btn btn-pill" href='{{ topic.public_questions_url }}'>{{system.snippets.questions}}</a>
+                          <a class="button round" href='{{ topic.public_questions_url }}'>{{system.snippets.questions}}</a>
                         {% endif %}
                       {% endif %}
                       {% if topic.article_count > 0 %}
                         {% if type == 'articles' %}
-                          <a class="btn btn-pill active" href='{{ topic.public_articles_url }}' id="desk-article-list-link">{{system.snippets.articles}}</a>
+                          <a class="button round active" href='{{ topic.public_articles_url }}' id="desk-article-list-link">{{system.snippets.articles}}</a>
                         {% else %}
-                          <a class="btn btn-pill" href='{{ topic.public_articles_url }}' id="desk-qna-list-link">{{system.snippets.articles}}</a>
+                          <a class="button round" href='{{ topic.public_articles_url }}' id="desk-qna-list-link">{{system.snippets.articles}}</a>
                         {% endif %}
                       {% endif %}
                     </div>
@@ -44,27 +44,27 @@
                       <div class="columns medium-12">
                         {% if type == 'articles' %}
                           {% for article in articles %}
-                            <div class="article row nomarg">
+                            <article>
                               <h3><a href="{{ article.public_url }}" title="{{ article.subject_plain }}">{{ article.subject_plain }}</a></h3>
                               <p>{{ article.body_plain | clip:210 }}</p>
-                              <a href="{{ article.public_url }}" class="btn btn-pill">{{ system.snippets.read_article }}</a>
-                            </div>
+                              <a href="{{ article.public_url }}" class="button round">{{ system.snippets.read_article }}</a>
+                            </article>
                           {% endfor %}
                         {% else %}
                           {% for question in questions %}
-                            <div class="qna row nomarg">
+                            <article>
                               <h3><a href="{{ question.public_url }}" title="{{ question.subject_plain }}">{{ question.subject_plain }}</a></h3>
                               <p>{{ question.body_plain | clip:210 }}</p>
                               {% if question.answers_agent_count > 0 %}
-                                <a class="btn btn-pill" href="{{ question.public_url }}">
+                                <a class="button round" href="{{ question.public_url }}">
                                   <span>{{ question.answers_agent_count }}</span>
                                   {{ site.agent_name_config }}
                                   {{ system.snippets.answer | pluralize: question.answers_agent_count, system.snippets.answers }}
                                 </a>
                               {% else %}
-                               <a href="{{ question.public_url }}" class="btn btn-pill">View Question</a>
+                               <a href="{{ question.public_url }}" class="button round">View Question</a>
                               {% endif %}
-                            </div>
+                            </article>
                           {% endfor %}
                         {% endif %}
                       </div><!-- end columns medium-12 -->
