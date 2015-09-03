@@ -464,7 +464,7 @@
                       {% endfor %}
                       <!-- END QUESTION CHECK -->
                     <div class="row header">
-                        <h2 class="subheader columns medium-12">
+                        <h2 class=" columns medium-12">
                           {% if questions == true %}
                             {{system.snippets.recent_qna}}
                           {% endif %}
@@ -540,13 +540,13 @@
                         {% endif %}
                     {% endfor %}
                     <!-- END QUESTIONS EXIST -->
+                    {% if questions == true %}
                     <div class="row header">
-                        <h2 class="subheader columns medium-12">
-                          {% if questions == true %}
-                            {{system.snippets.recent_qna}}
-                          {% endif %}
-                        </h2>
+                        <div class="colmumns medium-12">
+                            <h2>{{system.snippets.recent_qna}}</h2>
+                        </div>
                     </div>
+                    {% endif %}
                     <div class="row topic">
                       {% assign col = 0 %}
                         {%for topic in topics%}
@@ -764,16 +764,17 @@
                     <div class="columns medium-5 small-12 switch">
                       {% if topic.question_count > 0 and topic.allow_questions and site.questions_enabled_config %}
                         {% if type == 'questions' %}
-                          <a class="button tiny round active" href='{{ topic.public_questions_url }}'>{{system.snippets.questions}}</a>
+                          <a class="button right tiny round success" href='{{ topic.public_questions_url }}'>{{system.snippets.questions}}</a>
                         {% else %}
-                          <a class="button round tiny" href='{{ topic.public_questions_url }}'>{{system.snippets.questions}}</a>
+                          <a class="button right round tiny" href='{{ topic.public_questions_url }}'>{{system.snippets.questions}}</a>
                         {% endif %}
-                      {% endif %}
-                      {% if topic.article_count > 0 %}
-                        {% if type == 'articles' %}
-                          <a class="button tiny round active" href='{{ topic.public_articles_url }}' id="desk-article-list-link">{{system.snippets.articles}}</a>
-                        {% else %}
-                          <a class="button tiny round" href='{{ topic.public_articles_url }}' id="desk-qna-list-link">{{system.snippets.articles}}</a>
+
+                        {% if topic.article_count > 0 %}
+                          {% if type == 'articles' %}
+                            <a class="button right tiny round success" href='{{ topic.public_articles_url }}' id="desk-article-list-link">{{system.snippets.articles}}</a>
+                          {% else %}
+                            <a class="button right tiny round" href='{{ topic.public_articles_url }}' id="desk-qna-list-link">{{system.snippets.articles}}</a>
+                          {% endif %}
                         {% endif %}
                       {% endif %}
                     </div>
