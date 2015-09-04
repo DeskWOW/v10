@@ -18,58 +18,55 @@
               <div class="row">
                 <div class="columns medium-12">
                   <div class="header row">
-                    <div class="columns medium-12">
-                      <!-- <h2>{{desk.system.snippets.my_cases}}</h2> -->
-                      <ul class="case-menu">
-                        <li>
-                          <select id="CaseFilter" class="form-control">
-                            <option value="my">{{desk.system.snippets.show_my_cases}}</option>
-                            {% if desk.customer.can_access_company_tickets? %}
-                            <option value="company" selected="selected">{{desk.system.snippets.show_all_cases}}</option>
-                            {% endif %}
-                            <option value="7">{{desk.system.snippets.show_last_num_days | format_snippet: '"num":"7"' }}</option>
-                            <option value="30">{{desk.system.snippets.show_last_num_days | format_snippet: '"num":"30"' }}</option>
-                          </select>
-                        </li>
-                        <li>
-                          <label class="checkbox">
-                            <input class="checkbox" id="ActiveOnly" type="checkbox" name="checkbox"></input>
-                            <span></span>
-                          </label>
-                          <label for="checkbox">{{desk.system.snippets.active_only}}</label>
-                        </li>
-                        {% if site.email_enabled_config %}
-                          <li class="new"><a href="{{desk.system.links.email}}" class="button">{{desk.system.snippets.create_new_case}}</a></li>
-                        {% endif %}
-                      </ul>
+                    <div class="columns medium-4 small-12">
+                        <select id="CaseFilter" class="form-control">
+                          <option value="my">{{desk.system.snippets.show_my_cases}}</option>
+                          {% if desk.customer.can_access_company_tickets? %}
+                          <option value="company" selected="selected">{{desk.system.snippets.show_all_cases}}</option>
+                          {% endif %}
+                          <option value="7">{{desk.system.snippets.show_last_num_days | format_snippet: '"num":"7"' }}</option>
+                          <option value="30">{{desk.system.snippets.show_last_num_days | format_snippet: '"num":"30"' }}</option>
+                        </select>
+                    </div>
+                    <div class="columns medium-4 small-6">
+                        <div class="switch left">
+                          <input class="checkbox" id="ActiveOnly" type="checkbox" name="checkbox"></input>
+                          <label for="ActiveOnly"></label>
+                        </div>
+                        <h6 class="left">&nbsp; &nbsp;{{desk.system.snippets.active_only}}</h6>
+                    </div>
+                    <div class="columns medium-4 small-6">
+                      {% if site.email_enabled_config %}
+                        <a href="{{desk.system.links.email}}" class="button right ">{{desk.system.snippets.create_new_case}}</a>
+                      {% endif %}
                     </div>
                   </div>
                   <div class="body row">
                     <div class="columns medium-12">
-                      <table id="MyCases" class="table table-striped table-hover {% if MyCasesSort == true %} sort {% endif %}">
+                      <table id="MyCases" class="{% if MyCasesSort == true %} sort {% endif %}" width="100%">
                         <thead>
                           <tr>
-                            <th><span>{{desk.system.snippets.case_id}}</span></th>
-                            <th class="hidden-xs"><span>{{desk.system.snippets.assigned_agent}}</span></th>
-                            <th><span>{{desk.system.snippets.subject}}</span></th>
+                            <th>{{desk.system.snippets.case_id}}</th>
+                            <th class="hide-for-small-only">{{desk.system.snippets.assigned_agent}}</th>
+                            <th>{{desk.system.snippets.subject}}</th>
                             {% if desk.customer.can_access_company_tickets? %}
-                            <th class="hidden-xs"><span>{{desk.system.snippets.from}}</span></th>
+                            <th class="hide-for-small-only">{{desk.system.snippets.from}}</th>
                             {% endif %}
-                            <th class="hidden-xs"><span>{{desk.system.snippets.updated}}</span></th>
-                            <th class="hidden-xs"><span>{{desk.system.snippets.status}}</span></th>
+                            <th class="hide-for-small-only">{{desk.system.snippets.updated}}</th>
+                            <th class="hide-for-small-only">{{desk.system.snippets.status}}</th>
                           </tr>
                         </thead>
                         <tbody>
                           {% for case in desk.page.content.cases %}
                           <tr>
                             <td class='a-caseid'>{{ case.id }}</td>
-                            <td class="hidden-xs"><span>{{case.user.name_public | show_something: desk.system.snippets.unassigned}}</span></td>
-                            <td class='a-casesubject'><img src='{{ case.channel_icon }}'/><a href="{{ case.portal_url }}">{{ case.subject | clip:30 }}</a></td>
+                            <td class="hide-for-small-only"><span>{{case.user.name_public | show_something: desk.system.snippets.unassigned}}</span></td>
+                            <td class='a-casesubject'><img src='{{ case.channel_icon }}'/> <a href="{{ case.portal_url }}">{{ case.subject | clip:50 }}</a></td>
                             {% if desk.customer.can_access_company_tickets? %}
-                            <td class='a-casefrom hidden-xs'>{{case.customer.first_name}}</td>
+                            <td class='a-casefrom hide-for-small-only'>{{case.customer.first_name}}</td>
                             {% endif %}
-                            <td class='a-casecreated hidden-xs'>{{ case.updated_at | in_time_zone: site.timezone | date: '%b %d %Y' }}</td>
-                            <td class='a-casestatus hidden-xs'>{% case case.status.id %}
+                            <td class='a-casecreated hide-for-small-only'>{{ case.updated_at | in_time_zone: site.timezone | date: '%b %d %Y' }}</td>
+                            <td class='a-casestatus hide-for-small-only'>{% case case.status.id %}
                               {% when 10 %}
                               {{desk.system.snippets.case_new}}
                               {% when 30 %}
@@ -96,7 +93,5 @@
             </div><!-- .portal-->
           </div><!-- #content -->
           {% if MyCasesSort == true %}
-            <input id="MyCaseSort" class="hidden" value="true" />
+            <input id="MyCaseSort" class="hidden hide" value="true" />
           {% endif %}
-
-
