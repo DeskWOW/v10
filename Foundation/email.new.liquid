@@ -23,14 +23,17 @@
           <div class="container email">
             <div class="row">
               <div class="columns medium-8 {% if desk.page.theme.layout != 'left' %} columns medium-push-4 {% endif %}">
-                <div class="row nomarg header">
+                <div class="row header">
+                  <div class="columns medium-12">
                     <h2>{{system.snippets.email_us}}</h2>
+                  </div>
                 </div>
-                <div class="row nomarg body">
-                  <div class="panel panel-default form">
-                   {{form_begin}}
-                    <div class="panel-body">
-                      {% if current_user == nil or current_user.is_guest %}
+                <div class="row body">
+                  <div class="columns medium-12">
+                    <div class="panel form">
+                     {{form_begin}}
+
+                        {% if current_user == nil or current_user.is_guest %}
                         <div class="row">
                           <div class="columns medium-6">
                             <div class="form-group">
@@ -45,30 +48,30 @@
                             </div>
                           </div>
                         </div>
-                      {% endif %}
-                      <div class="form-group">
-                        <label for="email_subject" class="control-label">{{system.snippets.subject}} ({{system.snippets.required}}):</label>
-                        <input id='email_subject' class="form-control" maxlength='100' name='email[subject]' type='text' value='{% if search_term and search_term != '' %}{{search_term}}{% else %}{{email.subject}}{%endif%}' required/>
-                      </div>
-                      <div class="form-group">
-                        <label for="email_body" class="control-label">{{system.snippets.message}} ({{system.snippets.required}}):</label>
-                        <textarea id='email_body' class="form-control" rows="6" cols="6" name='email[body]' required>{{email.body}}</textarea>
-                      </div>
-                      <div class="form-group attachments">
-                        <label for="case_attachment[attachment]" class="control-label"><i class="fa fa-paperclip"></i>{{system.snippets.file_attachment}}</label>
-                        <div class="desk_file_upload">
-                            <input type="button" value="{{system.snippets.choose_file}}">
-                            <input name="case_attachment[attachment]" size="84" type="file">
-                            <div class="faux-file-field">
-                              <input disabled="disabled" type="text">
-                            </div>
+                        {% endif %}
+                        <div class="form-group">
+                          <label for="email_subject" class="control-label">{{system.snippets.subject}} ({{system.snippets.required}}):</label>
+                          <input id='email_subject' class="form-control" maxlength='100' name='email[subject]' type='text' value='{% if search_term and search_term != '' %}{{search_term}}{% else %}{{email.subject}}{%endif%}' required/>
                         </div>
-                      </div>
+                        <div class="form-group">
+                          <label for="email_body" class="control-label">{{system.snippets.message}} ({{system.snippets.required}}):</label>
+                          <textarea id='email_body' class="form-control" rows="6" cols="6" name='email[body]' required>{{email.body}}</textarea>
+                        </div>
+                        <div class="form-group attachments">
+                          <label for="case_attachment[attachment]" class="control-label"><i class="fa fa-paperclip"></i>{{system.snippets.file_attachment}}</label>
+                          <div class="desk_file_upload">
+                              <input class="button tiny" type="button" value="{{system.snippets.choose_file}}">
+                              <input name="case_attachment[attachment]" size="84" type="file">
+                              <div class="faux-file-field">
+                                <input disabled="disabled" type="text">
+                              </div>
+                          </div>
+                        </div>
+                        <div class="input-button">
+                          <button id='email_submit' class="button button-submit" name='commit' type='submit' value='{{system.snippets.send_email}}'>{{system.snippets.send_email}}</button>
+                        </div>
+                      {{form_end}}
                     </div>
-                    <div class="panel-footer input-button">
-                      <button id='email_submit' class="button button-submit" name='commit' type='submit' value='{{system.snippets.send_email}}'>{{system.snippets.send_email}}</button>
-                    </div>
-                    {{form_end}}
                   </div>
                 </div>
               </div>

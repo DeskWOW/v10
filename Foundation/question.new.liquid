@@ -33,21 +33,17 @@
                   <div class="columns medium-12">
                     <div class="panel form">
                       {{form_begin}}
-                      <div class="panel-body">
-                        <div class="form-group row">
-
-                        </div>
                         {% if current_user == nil or current_user.is_guest %}
-                          <div class="row">
-                            <div class="form-group columns medium-6">
-                              <label for="interaction_name" class="control-label">{{system.snippets.your_name}} ({{system.snippets.required}}):</label>
-                              <input value="{{ interaction.name }}" id="interaction_name" class="form-control" maxlength="100" name="interaction[name]" type="text" />
-                            </div>
-                            <div class="form-group columns medium-6">
-                              <label for="interaction_email" class="control-label">{{system.snippets.your_email}} ({{system.snippets.required}}):</label>
-                              <input value="{{ interaction.email }}" id="interaction_email" class="form-control" maxlength="100" name="interaction[email]" type="text" />
-                            </div>
+                        <div class="row">
+                          <div class="form-group columns medium-6">
+                            <label for="interaction_name" class="control-label">{{system.snippets.your_name}} ({{system.snippets.required}}):</label>
+                            <input value="{{ interaction.name }}" id="interaction_name" class="form-control" maxlength="100" name="interaction[name]" type="text" />
                           </div>
+                          <div class="form-group columns medium-6">
+                            <label for="interaction_email" class="control-label">{{system.snippets.your_email}} ({{system.snippets.required}}):</label>
+                            <input value="{{ interaction.email }}" id="interaction_email" class="form-control" maxlength="100" name="interaction[email]" type="text" />
+                          </div>
+                        </div>
                         {% endif %}
                         <div class="row">
                           <div class="form-group columns medium-6">
@@ -67,10 +63,9 @@
                           <label for="qna_body" class="control-label">{{system.snippets.your_question}} ({{system.snippets.required}}):</label>
                           <textarea id='qna_body' class="form-control" rows="6" cols="6" name='qna[body]'>{{qna.body}}</textarea>
                         </div>
-                      </div>
-                      <div class="panel-footer input-button clearfix">
-                        <input id='email_submit' class="button button-submit right" name='commit' type='submit' value='{{system.snippets.ask_question}}' />
-                      </div>
+                        <div class="input-button clearfix">
+                          <input id='email_submit' class="button button-submit right" name='commit' type='submit' value='{{system.snippets.ask_question}}' />
+                        </div>
                       {{form_end}}
                     </div><!-- end .panel -->
                   </div>
