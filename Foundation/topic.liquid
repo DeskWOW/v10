@@ -44,35 +44,35 @@
                   <div class="body row">
                     {% if topic == null %}
                     {% else %}
-                      <div class="columns medium-12">
-                        {% if type == 'articles' %}
-                          {% for article in articles %}
-                            <article class="article">
-                              <h3><a href="{{ article.public_url }}" title="{{ article.subject_plain }}">{{ article.subject_plain }}</a></h3>
-                              <p>{{ article.body_plain | clip:210 }}</p>
-                              <a href="{{ article.public_url }}" class="button radius">{{ system.snippets.read_article }}</a>
-                            </article>
+                      
+                      {% if type == 'articles' %}
+                        {% for article in articles %}
+                          <article class="columns medium-12 article">
+                            <h3><a href="{{ article.public_url }}" title="{{ article.subject_plain }}">{{ article.subject_plain }}</a></h3>
+                            <p>{{ article.body_plain | clip:210 }}</p>
+                            <a href="{{ article.public_url }}" class="button radius">{{ system.snippets.read_article }}</a>
                             <hr>
-                          {% endfor %}
-                        {% else %}
-                          {% for question in questions %}
-                            <article class="question">
-                              <h3><a href="{{ question.public_url }}" title="{{ question.subject_plain }}">{{ question.subject_plain }}</a></h3>
-                              <p>{{ question.body_plain | clip:210 }}</p>
-                              {% if question.answers_agent_count > 0 %}
-                                <a class="button radius" href="{{ question.public_url }}">
-                                  <span>{{ question.answers_agent_count }}</span>
-                                  {{ site.agent_name_config }}
-                                  {{ system.snippets.answer | pluralize: question.answers_agent_count, system.snippets.answers }}
-                                </a>
-                              {% else %}
-                               <a href="{{ question.public_url }}" class="button radius">View Question</a>
-                              {% endif %}
-                            </article>
+                          </article> 
+                        {% endfor %}
+                      {% else %}
+                        {% for question in questions %}
+                          <article class="columns medium-12 question">
+                            <h3><a href="{{ question.public_url }}" title="{{ question.subject_plain }}">{{ question.subject_plain }}</a></h3>
+                            <p>{{ question.body_plain | clip:210 }}</p>
+                            {% if question.answers_agent_count > 0 %}
+                              <a class="button radius" href="{{ question.public_url }}">
+                                <span>{{ question.answers_agent_count }}</span>
+                                {{ site.agent_name_config }}
+                                {{ system.snippets.answer | pluralize: question.answers_agent_count, system.snippets.answers }}
+                              </a>
+                            {% else %}
+                             <a href="{{ question.public_url }}" class="button radius">View Question</a>
+                            {% endif %}
                             <hr>
-                          {% endfor %}
-                        {% endif %}
-                      </div><!-- end columns medium-12 -->
+                          </article>
+                          
+                        {% endfor %}
+                      {% endif %}
                     {% endif %}
                   </div>
               </div>

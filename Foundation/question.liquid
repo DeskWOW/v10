@@ -25,119 +25,117 @@
           <div class="container qna">
             <div class="row">
               <div class="columns medium-8 {% if desk.page.theme.layout != 'left' %} columns medium-push-4 {% endif %}">
+                
                 <!-- THE QUESTION -->
-                <div class="row header question">
-                    <div class="columns medium-1">
-                      <span class="gravatar">
-                        {{ question.from_email | gravatar_image: gravatar_unknown_user, ssl }}
-                      </span>
-                    </div>
-                    <div class="columns medium-11">
-                      <h2>{{ question.subject }}</h2>
-                      <h3 class="meta">{{ question.from_name }} &mdash; {{ question.created_at | in_time_zone: site.timezone | date: '%b %d, %Y %I:%M%p %Z' }} </h3>
-                    </div>
-                </div>
-                <div class="row body question">
-                  <div class="columns medium-12">
-                     <p>{{ question.body }}</p>
-                     <hr>
-                  </div>
-                </div><!-- THE QUESTION -->
-                {% if best_answer != nil %}
-                    <div class="row header answer">
-                      <div class="columns medium-12">
-                        <h2>
-                          {{ answers_count }}
-                          {{ system.snippets.community_answer | pluralize: answer_count, system.snippets.community_answers }}
-                        </h2>
-                      </div>
-                    </div>
-
-                    <div class="row body answer best">
+                <article class="answer">
+                    <div class="row collapse">
                       <div class="columns medium-1">
-                        <span class="gravatar">
-                          {{ best_answer.from_email | gravatar_image: gravatar_unknown_user,  ssl }}
-                        </span>
+                        <div class="th">{{ question.from_email | gravatar_image: gravatar_unknown_user, ssl }}</div>
                       </div>
-                      <div  class="columns medium-11">
-                        <h3>
-                          {{ best_answer.from_name }}
-                          - <small>
-                            {{ best_answer.updated_at | in_time_zone: site.timezone | date: '%b %d, %Y %I:%M%p %Z' }}
-                          </small>
-                          <span class="best">{{system.snippets.best_answer}}</span>
-                        </h3>
-                          <p>{{ best_answer.body }}</p>
-
-                          {% if question.answers_count > 1 %}
-                          <hr />
-                          <a href="#bestanswer">{{system.snippets.view_conversation}}</a>
-                          {% endif %}
-
+                      <div class="columns medium-11">
+                        <div class="columns medium-12"> 
+                          <h4>{{ question.subject }}</h4>
+                          <time>{{ question.from_name }} &mdash; {{ question.created_at | in_time_zone: site.timezone | date: '%b %d, %Y %I:%M%p %Z' }} </time>
+                          <hr>
+                          <p>{{ question.body }}</p>
+                        </div>
                       </div>
                     </div>
-                {% endif %}
-                {% if question.non_best_answers_exist %}
-                  {% if best_answer == nil %}
-                    <div class="row header answer">
-                      <div class="columns medium-12">
-                        <h2>
-                          {{ answers_count }}
-                          {{ system.snippets.community_answer | pluralize: answer_count, system.snippets.community_answers }}
-                        </h2>
-                      </div>
-                    </div>
-                  {% endif %}
-                  {% for answer in question.answers %}
-                      <div class="row body answer">
+                </article>
+
+                <!-- ANSWER COUNT -->
+                <div class="row">
+                  <div class="columns medium-12">
+                    <h4>{{ answers_count }} {{ system.snippets.community_answer | pluralize: answer_count, system.snippets.community_answers }}</h4>
+                  </div>
+                </div>
+
+                <!-- BEST ANSWER -->
+                {% if best_answer != nil %}
+                  <article class="best answer">
+                    <div class="panel callout radius">
+                      <div class="row collapse">
                         <div class="columns medium-1">
-                          <span class="gravatar">
-                            {{ answer.from_email | gravatar_image: gravatar_unknown_user,  ssl }}
-                          </span>
+                          <div class="th">{{ best_answer.from_email | gravatar_image: gravatar_unknown_user,  ssl }}</div>
                         </div>
                         <div class="columns medium-11">
-                          <h3>
-                            {{ answer.from_name }}<small class="muted"> - {{ answer.updated_at | in_time_zone: site.timezone | date: '%b %d, %Y at %I:%M%p %Z' }}</small>
-                          </h3>
-                          {% if answer.agent? %}
-                            <h4><span class="label muted">{{ site.company_name }} {{ site.agent_name_config }}</span></h4>
-                          {% endif %}
-                          <p>{{ answer.body }}</p>
+                          <div class="columns medium-12"> 
+                            <h4>{{ best_answer.from_name }}
+                              <span class="label success right"><i class="fa fa-check-circle"></i>{{system.snippets.best_answer}}</span>{% if best_answer.agent? %}<span class="label right">{{ site.company_name }} {{ site.agent_name_config }}</span>{% endif %}
+                            </h4>
+                            <time>{{ best_answer.updated_at | in_time_zone: site.timezone | date: '%b %d, %Y %I:%M%p %Z' }}</time>
+                            <hr>
+                            <p>{{ best_answer.body }}</p>
                             {% if question.answers_count > 1 %}
-                            <!--
-                            <a href="#best-answer-conversation">{{system.snippets.view_conversation}}</a>
-                            -->
+                              <a href="#bestanswer">{{system.snippets.view_conversation}}</a>
                             {% endif %}
-                            {% if current_user == answer.user %}
-                              <div class='answer-rating rating-true'>
-                                <div>
-                                  <span class='score {% if answer.rating_value > 0 %}score-positive{% elsif answer.rating_value < 0 %}score-negative{% endif %}' id='score-{{answer.id}}'>{{ answer.rating_value }}</span>
-                                  <span class='dialog'>{{system.snippets.score}}</span>
-                                </div>
-                              </div>
-                            {% else %}
-                              <div class='answer-rating rating-{{ answer | already_rated_by_user: current_user }}'>
-                                <div>
-                                  <span class='dialog'>{{system.snippets.rated}} : </span>
-                                  <span class='score {% if answer.rating_value > 0 %}score-positive{% elsif answer.rating_value < 0 %}score-negative{% endif %}' id='score-{{answer.id}}'>{{ answer.rating_value }}</span>
-                                  {{ answer | already_rated_up: current_user }}
-                                  {{ answer | already_rated_down: current_user }}
-                                </div>
-                              </div>
-                            {% endif %}
-                            <hr />
+                          </div>
                         </div>
                       </div>
-                    {% endfor %}
-                  {% endif %}
-                  <div class="reply row">
+                    </div>
+                  </article>
+                {% endif %}
+                
+                <!-- ALL ANSWERS -->
+                {% for answer in question.answers %}
+                <div class="panel radius">
+                  <article class="answer">
+                      <div class="row collapse">
+                        <div class="columns medium-1">
+                          <div class="th">{{ answer.from_email | gravatar_image: gravatar_unknown_user,  ssl }}</div>
+                              {% if current_user == answer.user %}
+                                <div class='answer-rating rating-true'>
+                                  <div>
+                                    <span class='score {% if answer.rating_value > 0 %}score-positive{% elsif answer.rating_value < 0 %}score-negative{% endif %}' id='score-{{answer.id}}'>{{ answer.rating_value }}</span>
+                                    <span class='dialog'>{{system.snippets.score}}</span>
+                                  </div>
+                                </div>
+                              {% else %}
+                                <div class='answer-rating rating-{{ answer | already_rated_by_user: current_user }}'>
+                                  <div>
+                                    <span class='dialog'>{{system.snippets.rated}} : </span>
+                                    <span class='score {% if answer.rating_value > 0 %}score-positive{% elsif answer.rating_value < 0 %}score-negative{% endif %}' id='score-{{answer.id}}'>{{ answer.rating_value }}</span>
+                                    <div class="row">
+                                      {{ answer | already_rated_up: current_user }}
+                                      {{ answer | already_rated_down: current_user }}
+                                    </div>
+                                  </div>
+                                </div>
+                              {% endif %}
+                        </div>
+                        <div class="columns medium-11">
+                        <div class="row">
+                            <div class="columns medium-8 small-12">
+                              <h4>{{ answer.from_name }}</h4>
+                              <time>{{ answer.updated_at | in_time_zone: site.timezone | date: '%b %d, %Y %I:%M%p %Z' }}</time>
+                            </div>
+                            <div class="columns medium-4 small-12">
+                                {% if answer.id == best_answer.id %}<span class="label success right"><i class="fa fa-check-circle"></i>{{system.snippets.best_answer}}</span>{% endif %}
+                                {% if answer.agent? %}<span class="label right">{{ site.company_name }} {{ site.agent_name_config }}</span>{% endif %}
+                            </div>
+                          </div>
+                        </div>
+                        <div class="columns medium-12"> 
+                          <hr>
+                          <p>{{ answer.body }}</p>
+                        </div>
+
+                      </div>
+                  </article>
+                </div>
+                {% endfor %}
+                
+                 
+
+
+
+                  <div class="reply">
                     {% if question.allow_answers? != true or question.case.closed? %}
                       <div class="alert">{{system.snippets.question_closed}}</div>
                     {% else %}
-                      <h2>{{system.snippets.post_public_answer}}</h2>
+                      <h4>{{system.snippets.post_public_answer}}</h4>
                       {{ form_begin }}
-                      <div class="form panel panel-default">
-                        <div class="panel-footer no-body ">
+                      <div class="form panel clearfix">
                           {% if current_user == nil or current_user.is_guest %}
                             <div class="row">
                               <div class="columns medium-6">
@@ -159,9 +157,8 @@
                             <textarea cols="40" id="qna_body" class="form-control" name="qna[body]" rows="6">{{ qna.body }}</textarea>
                           </div>
                           <div class="input-button">
-                            <input id="answer_submit" class="button button-submit" name="commit" type="submit" value="{{system.snippets.post_answer}}" />
+                            <input id="answer_submit" class="button button-submit right" name="commit" type="submit" value="{{system.snippets.post_answer}}" />
                           </div>
-                        </div>
                       </div>
                       {{ form_end }}
                     {% endif %}
