@@ -22,12 +22,15 @@
         </div>
 
         <div id="content">
-          <div id="PreCreate" class="modal fade" role="dialog" tabindex="-1" aria-labelledby="PreCreateModal" aria-hidden="true">
+
+
+
+          <div id="PreCreate" class="reveal-modal medium" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
             <div class="modal-dialog modal-lg">
               <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close onclick-go-back"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h2>
+                    <a class="onclick-go-back close-reveal-modal" aria-label="Close">&#215;</a>
+                    <h2 id="modalTitle">
                     {% if number_search_results > 0 %}
                       <i class="fa fa-exclamation-triangle warning"></i> {{system.snippets.not_posted_question_yet}}
                     {% else %}
@@ -38,37 +41,30 @@
                 </div>
                 {% if number_search_results > 0 %}
                   <div class="modal-body">
-                      <ul id='search-results' class='results unstyled'>
+                      <dl>
                         {% for result in search_results limit:3 %}
-                          <li class='{% if result.class_name == "Question" and result.featured? == false %}question{% elsif result.class_name == "Question" and result.featured? %}question featured{% elsif result.class_name == "Article" %}article{% endif %}'>
-                            <h4>
-                              {% if result.class_name == "Question" %}
-                                  <i class="fa fa-question"></i>
-                              {% elsif result.class_name == "Article" %}
-                                  <i class="fa fa-file-text-o"></i>
-                              {% endif %}
+                            <dt>
                               <a href='{{ result.public_url }}' target='_blank'>
-                                {{ result.subject_plain | clip:70 }}
+                                {% if result.class_name == "Question" %}
+                                    <i class=" fa fa-question"></i>  {{ result.subject_plain | clip:70 }}
+                                {% elsif result.class_name == "Article" %}
+                                    <i class=" fa fa-file-text-o"></i>  {{ result.subject_plain | clip:70 }}
+                                {% endif %}
                               </a>
-                            </h4>
-                            <p>
-                              {{ result.body_plain | clip:80 }}
-                            </p>
-                          </li>
+                            </dt>
+                            <dd>{{ result.body_plain | clip:80 }}</dd>
                         {% endfor %}
-                        <li class="note">
-                          ({{system.snippets.click_open_window}})
-                        </li>
-                      </ul>
+                      </dl>
+                      <span class="text-center">({{system.snippets.click_open_window}})</span>
                   </div>
-                  <div class="modal-footer">
+                  <div class="modal-footer clearfix">
                       <div id='form'>
                         {{form_begin}}
-                            <div class='input-button'>
-                              {{system.snippets.did_not_help}}
-                              <input id="question_submit" name="commit" type="submit" value="{{system.snippets.post_question}}" class="button button-submit " />
-                              <img alt='Ajax-loader-small' id='email_submit_spinner' src='{{ "/images/ajax-loader-small.gif" | portal_image_url: image_asset_host }}' style='display: none; margin: 7px 0 0 5px; position: absolute;' />
-                            </div>
+                          <div class='right input-button'>
+                            <p>{{system.snippets.did_not_help}}</p>
+                            <input id="question_submit" name="commit" type="submit" value="{{system.snippets.post_question}}" class="button button-submit"/>
+                            <img alt='Ajax-loader-small' id='email_submit_spinner' src='{{ "/images/ajax-loader-small.gif" | portal_image_url: image_asset_host }}' style='display: none; margin: 7px 0 0 5px; position: absolute;' />
+                          </div>
                         {{form_end}}
                       </div>
                   </div>
@@ -80,6 +76,10 @@
               </div><!-- MODAL CONTENT -->
             </div><!-- MODAL DIALOG /  MODAL LG -->
           </div><!-- #PreCreate -->
+
+
+
+
           <div class="container qna">
             <div class="row">
               <div class="columns medium-8 {% if desk.page.theme.layout != 'left' %} columns medium-push-4 {% endif %}">

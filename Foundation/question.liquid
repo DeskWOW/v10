@@ -27,7 +27,7 @@
               <div class="columns medium-8 {% if desk.page.theme.layout != 'left' %} columns medium-push-4 {% endif %}">
                 
                 <!-- THE QUESTION -->
-                <article class="answer">
+                <article class="question">
                     <div class="row collapse">
                       <div class="columns medium-1">
                         <div class="th">{{ question.from_email | gravatar_image: gravatar_unknown_user, ssl }}</div>
@@ -104,16 +104,11 @@
                               {% endif %}
                         </div>
                         <div class="columns medium-11">
-                        <div class="row">
-                            <div class="columns medium-8 small-12">
-                              <h4>{{ answer.from_name }}</h4>
-                              <time>{{ answer.updated_at | in_time_zone: site.timezone | date: '%b %d, %Y %I:%M%p %Z' }}</time>
-                            </div>
-                            <div class="columns medium-4 small-12">
-                                {% if answer.id == best_answer.id %}<span class="label success right"><i class="fa fa-check-circle"></i>{{system.snippets.best_answer}}</span>{% endif %}
-                                {% if answer.agent? %}<span class="label right">{{ site.company_name }} {{ site.agent_name_config }}</span>{% endif %}
-                            </div>
-                          </div>
+                            <h4>{{ answer.from_name }}
+                              {% if answer.id == best_answer.id %}<span class="label success right"><i class="fa fa-check-circle"></i>{{system.snippets.best_answer}}</span>{% endif %}
+                              {% if answer.agent? %}<span class="label right">{{ site.company_name }} {{ site.agent_name_config }}</span>{% endif %}
+                            </h4>
+                            <time>{{ answer.updated_at | in_time_zone: site.timezone | date: '%b %d, %Y %I:%M%p %Z' }}</time>
                         </div>
                         <div class="columns medium-12"> 
                           <hr>

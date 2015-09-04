@@ -24,50 +24,56 @@
           <div class="container qna">
             <div class="row">
               <div class="columns medium-8 {% if desk.page.theme.layout != 'left' %} columns medium-push-4 {% endif %}">
-                <div class="row nomarg header">
-                  <h2>{{system.snippets.post_public_question}}</h2>
+                <div class="header row">
+                  <div class="columns medium-12">
+                    <h2>{{system.snippets.post_public_question}}</h2>
+                  </div>
                 </div>
                 <div class="row nomarg body">
-                  <div class="panel panel-default form">
-                    {{form_begin}}
-                    <div class="panel-body">
-                      <div class="form-group row">
-                        <div class="columns medium-6">
-                          <label for="qna_kb_topic_id" class="control-label">{{system.snippets.topic}} ({{system.snippets.required}}):</label>
-                          <select id='qna_kb_topic_id' name='qna[kb_topic_id]' class="form-control">
-                            {% for topic in topics %}
-                            <option value='{{ topic.id }}'>{{ topic.name | clip:30 }}</option>
-                            {% endfor %}
-                          </select>
+                  <div class="columns medium-12">
+                    <div class="panel form">
+                      {{form_begin}}
+                      <div class="panel-body">
+                        <div class="form-group row">
+
                         </div>
-                      </div>
-                      {% if current_user == nil or current_user.is_guest %}
+                        {% if current_user == nil or current_user.is_guest %}
+                          <div class="row">
+                            <div class="form-group columns medium-6">
+                              <label for="interaction_name" class="control-label">{{system.snippets.your_name}} ({{system.snippets.required}}):</label>
+                              <input value="{{ interaction.name }}" id="interaction_name" class="form-control" maxlength="100" name="interaction[name]" type="text" />
+                            </div>
+                            <div class="form-group columns medium-6">
+                              <label for="interaction_email" class="control-label">{{system.snippets.your_email}} ({{system.snippets.required}}):</label>
+                              <input value="{{ interaction.email }}" id="interaction_email" class="form-control" maxlength="100" name="interaction[email]" type="text" />
+                            </div>
+                          </div>
+                        {% endif %}
                         <div class="row">
                           <div class="form-group columns medium-6">
-                            <label for="interaction_name" class="control-label">{{system.snippets.your_name}} ({{system.snippets.required}}):</label>
-                            <input value="{{ interaction.name }}" id="interaction_name" class="form-control" maxlength="100" name="interaction[name]" type="text" />
+                            <label for="qna_subject" class="control-label">{{system.snippets.subject}} ({{system.snippets.required}}):</label>
+                            <input id='qna_subject' maxlength='100' name='qna[subject]' class="form-control" type='text' value='{% if search_term and search_term != '' %}{{search_term}}{% else %}{{qna.subject}}{%endif%}' />
                           </div>
                           <div class="form-group columns medium-6">
-                            <label for="interaction_email" class="control-label">{{system.snippets.your_email}} ({{system.snippets.required}}):</label>
-                            <input value="{{ interaction.email }}" id="interaction_email" class="form-control" maxlength="100" name="interaction[email]" type="text" />
+                            <label for="qna_kb_topic_id" class="control-label">{{system.snippets.topic}} ({{system.snippets.required}}):</label>
+                            <select id='qna_kb_topic_id' name='qna[kb_topic_id]' class="form-control">
+                              {% for topic in topics %}
+                              <option value='{{ topic.id }}'>{{ topic.name | clip:30 }}</option>
+                              {% endfor %}
+                            </select>
                           </div>
                         </div>
-                      {% endif %}
-                      <div class="form-group">
-                        <label for="qna_subject" class="control-label">{{system.snippets.subject}} ({{system.snippets.required}}):</label>
-                        <input id='qna_subject' maxlength='100' name='qna[subject]' class="form-control" type='text' value='{% if search_term and search_term != '' %}{{search_term}}{% else %}{{qna.subject}}{%endif%}' />
+                        <div class="form-group">
+                          <label for="qna_body" class="control-label">{{system.snippets.your_question}} ({{system.snippets.required}}):</label>
+                          <textarea id='qna_body' class="form-control" rows="6" cols="6" name='qna[body]'>{{qna.body}}</textarea>
+                        </div>
                       </div>
-                      <div class="form-group">
-                        <label for="qna_body" class="control-label">{{system.snippets.your_question}} ({{system.snippets.required}}):</label>
-                        <textarea id='qna_body' class="form-control" rows="6" cols="6" name='qna[body]'>{{qna.body}}</textarea>
+                      <div class="panel-footer input-button clearfix">
+                        <input id='email_submit' class="button button-submit right" name='commit' type='submit' value='{{system.snippets.ask_question}}' />
                       </div>
-                      <div class="autosuggest visible-xs right-side hide"> </div>
-                    </div>
-                    <div class="panel-footer input-button">
-                      <input id='email_submit' class="button button-submit" name='commit' type='submit' value='{{system.snippets.ask_question}}' />
-                    </div>
-                    {{form_end}}
-                  </div><!-- end .panel -->
+                      {{form_end}}
+                    </div><!-- end .panel -->
+                  </div>
                 </div><!-- end .body.row -->
               </div><!-- end .columns medium-8 -->
               {{ sidebar_suggest }}
