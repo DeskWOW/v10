@@ -139,7 +139,7 @@ function deskEV(v) {
           }
         },
           highlight: function (element) {
-              $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+              $(element).closest('.form-group').removeClass('has-success').addClass('error');
               $('label:empty').remove();
           },
           success: function (element) {
@@ -194,7 +194,7 @@ function deskEV(v) {
           }
         },
         highlight: function (element) {
-                $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+                $(element).closest('.form-group').removeClass('has-success').addClass('error');
                 $('label:empty').remove();
             },
         success: function (element) {
@@ -257,7 +257,7 @@ function deskEV(v) {
             }
         },
         highlight: function (element) {
-            $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+            $(element).closest('.form-group').removeClass('has-success').addClass('error');
             $('label:empty').remove();
         },
         success: function (element) {
@@ -371,7 +371,7 @@ function deskEV(v) {
           }
         },
           highlight: function (element) {
-              $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+              $(element).closest('.form-group').removeClass('has-success').addClass('error');
               $('label:empty').remove();
           },
           success: function (element) {
@@ -685,7 +685,7 @@ function deskEV(v) {
           messages:{'interaction[body]':{'required':$("#system-snippets-reply_required").html(),}},
           rules:{'interaction[body]':{'required':true }},
           highlight: function (element) {
-                  $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+                  $(element).closest('.form-group').removeClass('has-success').addClass('error');
                   $('label:empty').remove();
               },
           success: function (element) {
@@ -705,8 +705,8 @@ function deskEV(v) {
 // =====================================================
   if (currentPage == 'login') {
     //LOGIN PAGE SOCIAL BUTTON TWEAKS
-    $("div.forgotpw a").addClass('button tiny').prependTo(".button-group.account").wrap('<li/>');
-    $("div.newaccount a").addClass('button tiny').prependTo(".button-group.account").wrap('<li/>');
+    $("div.forgotpw a").addClass('button tiny success').prependTo(".button-group.account").wrap('<li/>');
+    $("div.newaccount a").addClass('button tiny success').prependTo(".button-group.account").wrap('<li/>');
     
     $(".alternatelogins a[href*='facebook']").prepend('<i class="fa fa-facebook fa-lg"></i> ').addClass('button tiny').prependTo('.button-group.login').wrap('<li/>');
     $(".alternatelogins a[href*='twitter']").prepend('<i class="fa fa-twitter fa-lg"></i> ').addClass('button tiny').prependTo('.button-group.login').wrap('<li/>');
@@ -741,7 +741,7 @@ function deskEV(v) {
           }
         },
         highlight: function (element) {
-            $(element).closest('.field').removeClass('has-success').addClass('has-error');
+            $(element).closest('.field').removeClass('has-success').addClass('error');
             $('label:empty').remove();
         },
         success: function (element) {
@@ -754,6 +754,7 @@ function deskEV(v) {
 // Registration Page
 // =====================================================
   if (currentPage == 'registration') {
+    $('.input-button  input').addClass('button right');
     $('#form form').validate({
       submitHandler: function(form) {
         $('#registration_submit').attr('disabled',true);
@@ -773,7 +774,7 @@ function deskEV(v) {
         }
       },
       highlight: function (element) {
-          $(element).closest('div.field').removeClass('has-success').addClass('has-error');
+          $(element).closest('div.field').removeClass('has-success').addClass('error');
           $('label:empty').remove();
       },
       success: function (element) {
@@ -842,7 +843,7 @@ function deskEV(v) {
           }
         },
         highlight: function (element) {
-            $('.form-group').removeClass('has-success').addClass('has-error');
+            $('.form-group').removeClass('has-success').addClass('error');
             $('label:empty').remove();
         },
         success: function (element) {
