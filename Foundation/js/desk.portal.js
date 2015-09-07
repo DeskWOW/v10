@@ -787,6 +787,7 @@ function deskEV(v) {
 // Forgot Password
 // =====================================================
   if (currentPage == 'forgot_password') {
+    $('.input-button  input').addClass('button right');
     $(function(){
       $("#email").focus();
       $("#identity_password").focus();
