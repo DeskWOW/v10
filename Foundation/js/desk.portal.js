@@ -519,9 +519,9 @@ function deskEV(v) {
                 });
                 if (as_count > 0) {
                   if (as_count > 9) {
-                    $('.autosuggest.multi-brand').append('<div id="brand-' + brandID + '"><h4 class="muted"><span>' + as_count + ' + </span>' + resultsFound + ' in ' + brandName + '</h4><ul class="unstyled"></ul>');
+                    $('.autosuggest.multi-brand').append('<div id="brand-' + brandID + '"><h4 class="muted"><span>' + as_count + ' + </span>' + resultsFound + ' in ' + brandName + '</h4><ul class="side-nav"></ul>');
                   } else {
-                    $('.autosuggest.multi-brand').append('<div id="brand-' + brandID + '"><h4 class="muted"><span>' + as_count + ' </span>' + resultsFound + ' in ' + brandName + '</h4><ul class="unstyled"></ul>');
+                    $('.autosuggest.multi-brand').append('<div id="brand-' + brandID + '"><h4 class="muted"><span>' + as_count + ' </span>' + resultsFound + ' in ' + brandName + '</h4><ul class="side-nav"></ul>');
                   }
                   if (as_count > 0) {
                     $('.autosuggest.multi-brand div#brand-' + brandID + ' ul').append(auto_suggest);
@@ -572,14 +572,14 @@ function deskEV(v) {
       auto_suggest_articles = "";
       auto_suggest_questions = "";
       var system_snippet_do_these_help = $('#system-snippets-do_these_help').text() || 'Do these help?';
-      $('.autosuggest').html('<h2 class="muted">' + system_snippet_do_these_help + '</h4><ul class="unstyled"></ul>');
+      $('.autosuggest').html('<h2 class="muted">' + system_snippet_do_these_help + '</h4><ul class="side-nav"></ul>');
       $.each(data, function() {
         var html = $(this.label);
         article_title = html.find(".article-autocomplete-subject").html();
         if (this.id.indexOf("questions") !== -1) {
-            auto_suggest_questions += '<li><a target="_blank" href="' + this.id + '" class="discussion"><span>' + article_title + '</span><i class="fa fa-angle-right"></i></a></li>';
+            auto_suggest_questions += '<li><a target="_blank" href="' + this.id + '" class="discussion"><span>' + article_title + '</span></a></li>';
         } else {
-            auto_suggest_articles += '<li><a target="_blank" href="' + this.id + '" class="article"><span>' + article_title + '</span><i class="fa fa-angle-right"></i></a></li>';
+            auto_suggest_articles += '<li><a target="_blank" href="' + this.id + '" class="article"><span>' + article_title + '</span></a></li>';
         }
         as_count++;
       });
