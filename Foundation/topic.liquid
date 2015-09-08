@@ -23,7 +23,7 @@
                     </div>
                     <div class="columns medium-5 small-12">
                       {% if topic.question_count > 0 and topic.allow_questions and site.questions_enabled_config %}
-                        <ul class="button-group radius right">
+                        <ul class="button-group right">
                           {% if type == 'questions' %}
                             <li><a class="button" href='{{ topic.public_questions_url }}'>{{system.snippets.questions}}</a></li>
                           {% else %}
@@ -50,7 +50,7 @@
                           <article class="columns medium-12 article">
                             <h3><a href="{{ article.public_url }}" title="{{ article.subject_plain }}">{{ article.subject_plain }}</a></h3>
                             <p>{{ article.body_plain | clip:210 }}</p>
-                            <a href="{{ article.public_url }}" class="button radius">{{ system.snippets.read_article }}</a>
+                            <a href="{{ article.public_url }}" class="button">{{ system.snippets.read_article }}</a>
                             <hr>
                           </article> 
                         {% endfor %}
@@ -60,13 +60,13 @@
                             <h3><a href="{{ question.public_url }}" title="{{ question.subject_plain }}">{{ question.subject_plain }}</a></h3>
                             <p>{{ question.body_plain | clip:210 }}</p>
                             {% if question.answers_agent_count > 0 %}
-                              <a class="button radius" href="{{ question.public_url }}">
+                              <a class="button" href="{{ question.public_url }}">
                                 <span>{{ question.answers_agent_count }}</span>
                                 {{ site.agent_name_config }}
                                 {{ system.snippets.answer | pluralize: question.answers_agent_count, system.snippets.answers }}
                               </a>
                             {% else %}
-                             <a href="{{ question.public_url }}" class="button radius">View Question</a>
+                             <a href="{{ question.public_url }}" class="button">View Question</a>
                             {% endif %}
                             <hr>
                           </article>
