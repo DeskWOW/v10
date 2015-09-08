@@ -864,18 +864,37 @@ function deskEV(v) {
     }
     jQuery(document).ready(function() {
         //MY ACCOUNT PAGE TWEAKS
-        $("#new_email").wrap('<div class="form-group"></div>');
-        $("#add_email").appendTo('.form-group');
-        $(".myaccount-form input#new_email").addClass('form-control');
-        $(".myportal #add_facebook input").addClass('btn');
-        $(".myportal #add_twitter input").addClass('btn');
+
+        $(".myportal #add_facebook input").addClass('button tiny');
+        $(".myportal #add_twitter input").addClass('button tiny');
         $(".myportal #add_facebook").appendTo('#facebookAdd');
         $(".myportal #add_twitter").appendTo('#twitterAdd');
         $('.myportal .email_delete [type^="submit"]').val("x");
-        $('.myportal [id^="email_"] [alt^="Verified"]').parent().parent().addClass('confirmed');
+        
         $('<i class="fa fa-twitter"></i>').prependTo('.myportal [id^="twitter_"]');
         $('<i class="fa fa-facebook"></i>').prependTo('.myportal [id^="facebook_"]');
-        $('<i class="fa fa-envelope"></i>').prependTo('.myportal [id^="email_"]');
+        $('<i class="fa fa-envelope"></i>').prependTo('.myportal [id^="email_"] .email_address');
+
+        $('.myportal [id^="twitter_"]').addClass('alert-box secondary clearfix');
+        $('.myportal [id^="facebook_"]').addClass('alert-box secondary clearfix');
+        $('.myportal [id^="email_"]').addClass('alert-box secondary clearfix');
+
+
+        
+        $('#new_customer_contact_email').addClass('row collapse');
+        $('input#new_email').wrap('<div class="columns medium-10 small-9"></div>')
+        $('button#add_email').wrap('<div class="columns medium-2 small-3"></div>').addClass('postfix')
+
+        //Verify
+        $('.myportal [alt^="Verified"]').parent().parent().addClass('success').removeClass('secondary');
+        $('.myportal .verify-checked').parent().parent().addClass('success').removeClass('secondary');
+        $('.myportal .verified').addClass('right');
+        $('.myportal img[alt="Verified"]').replaceWith('<i class="fa fa-check-circle"></i>');
+        
+        $('.myportal .alert-box img').addClass('hide');
+        $('.myportal .email_address').addClass('left');
+       $('.myportal .verified .button_to [type="submit"]').addClass('right tiny button');
+       $('.myportal .email_delete [type^="submit"]').addClass('right tiny button alert');
     });
   };
 // =====================================================
