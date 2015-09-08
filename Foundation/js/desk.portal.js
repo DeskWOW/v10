@@ -893,7 +893,7 @@ function deskEV(v) {
         
         $('.myportal .alert-box img').addClass('hide');
         $('.myportal .email_address').addClass('left');
-       $('.myportal .verified .button_to [type="submit"]').addClass('right tiny button');
+       $('.myportal .verified .button_to [type="submit"]').addClass('right tiny button success');
        $('.myportal .email_delete [type^="submit"]').addClass('right tiny button alert');
     });
   };
