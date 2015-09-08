@@ -27,8 +27,16 @@
                 <div id="siteResults">
                   <div class="body row">
                     <div class="columns medium-12">
+                      <ul class="tabs" data-tab role="tablist">
+                      </ul>
+                      <div class="tabs-content">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="body row">
+                    <div class="columns medium-12">
                       <div role="tabpanel">
-                        <ul class="nav nav-tabs" role="tablist"></ul>
+                        <ul class="nav nav-tabs" data-tab role="tablist"></ul>
                         <div class="tab-content"></div>
                       </div>
                     </div>
@@ -37,14 +45,14 @@
                 <!-- End - Don't Edit between these lines -->
                 {% endif %}
                 {% if MBSearchPage == true %}
-                <div id="brandResults" class="hidden">
+                <div id="brandResults" class="hide">
                 {% endif %}
                     {% for result in search_results %}
                       {% if result.class_name == "Article" %}
                         <article class="row result article">
                           <div class="columns medium-12">
                             <h3>
-                              <a href='{{ result.public_url }}' title="{{ result.subject_plain }}"><span>{{ result.subject_plain }}</span></a><i class="right fa fa-file-text"></i>
+                              <a href='{{ result.public_url }}' title="{{ result.subject_plain }}"><span>{{ result.subject_plain }}</span></a>
                             </h3>
                             {% if MBSearchPage == true %}<label class="{{desk.current_brand.name}}">{{desk.current_brand.name}}</label>{% endif %}
                             <p>{{ result.body_plain | clip:210 }}</p>
@@ -56,7 +64,7 @@
                         <article class="row result question">
                           <div class="columns medium-12">
                             <h3>
-                              <a href='{{ result.public_url }}' title="{{ result.subject_plain }}"><span>{{ result.subject_plain }}</span></a> <i class="right fa fa-question-circle"></i>
+                              <a href='{{ result.public_url }}' title="{{ result.subject_plain }}"><span>{{ result.subject_plain }}</span></a>
                             </h3>
                             {% if MBSearchPage == true %}<label class="{{desk.current_brand.name}}">{{desk.current_brand.name}}</label>{% endif %}
                             <p>{{ result.body_plain | clip:210 }}</p>

@@ -56,7 +56,11 @@
                           <label for="email_body" class="control-label">{{system.snippets.message}} ({{system.snippets.required}}):</label>
                           <textarea id='email_body' class="form-control" rows="6" cols="6" name='email[body]' required>{{email.body}}</textarea>
                         </div>
-                        <div class="autosuggest show-for-small-only"></div>
+                        {% if MBArticleSuggest == true %}
+                          <div class="autosuggest multi-brand show-for-small-only"></div>
+                        {% else %}
+                          <div class="autosuggest show-for-small-only"></div>
+                        {% endif %}
                         <div class="form-group attachments">
                           <label for="case_attachment[attachment]" class="control-label"><i class="fa fa-paperclip"></i>{{system.snippets.file_attachment}}</label>
                           <div class="desk_file_upload">

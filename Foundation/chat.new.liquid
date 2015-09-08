@@ -45,7 +45,11 @@
                         <label for="chat_subject" class="control-label">{{system.snippets.question}} ({{system.snippets.required}}):</label>
                         <textarea id='chat_subject' name='chat[subject]' type='text' value='{% if search_term and search_term != '' %}{{search_term}}{% else %}{{chat.subject}}{%endif%}' rows="6" cols="40" class="form-control">{{chat.body}}</textarea>
                       </div>
-                      <div class="autosuggest show-for-small-only"></div>
+                      {% if MBArticleSuggest == true %}
+                        <div class="autosuggest multi-brand show-for-small-only"></div>
+                      {% else %}
+                        <div class="autosuggest show-for-small-only"></div>
+                      {% endif %}
 
                       <div class="input-button clearfix">
                          <input id='email_submit' class="button button-submit right" name='commit' type='submit' value='{{system.snippets.go_chat}}' />
