@@ -76,7 +76,7 @@
                     <!-- END QUESTIONS EXIST -->
                     {% if questions == true %}
                     <div class="row header">
-                        <div class="colmumns medium-12">
+                        <div class="columns medium-12">
                             <h2>{{system.snippets.recent_qna}}</h2>
                         </div>
                     </div>
@@ -110,45 +110,9 @@
                       </div><!-- .topicContainer.row -->
                   {% endif %}
                 <!-- END GRID VIEW -->
-                <!-- GET SAT -->
-                {% if desk.apps.get_satisfaction.enabled %}
-                    <div class="row header">
-                      <h2 class="columns medium-12">
-                        {{system.snippets.community_discussions}}
-                      </h2>
-                    </div>
-                    <div class="row">
-                      <div class="columns medium-6 get-sat">
-                        <div id="gs_questions">
-                          <img alt='Ajax-loader-small' id='question_submit_spinner' src='{{ "/images/ajax-loader-small.gif" | portal_image_url: image_asset_host }}' style='display:block;margin:auto;' />
-                        </div>
-                      </div>
-                      <div class="columns medium-6 get-sat">
-                        <div id="gs_ideas">
-                          <img alt='Ajax-loader-small' id='question_submit_spinner' src='{{ "/images/ajax-loader-small.gif" | portal_image_url: image_asset_host }}' style='display:block;margin:auto;' />
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="columns medium-6 get-sat">
-                        <div id="gs_problems">
-                          <img alt='Ajax-loader-small' id='question_submit_spinner' src='{{ "/images/ajax-loader-small.gif" | portal_image_url: image_asset_host }}' style='display:block;margin:auto;' />
-                        </div>
-                      </div>
-                      <div class="columns medium-6 get-sat">
-                        <div id="gs_praises">
-                          <img alt='Ajax-loader-small' id='question_submit_spinner' src='{{ "/images/ajax-loader-small.gif" | portal_image_url: image_asset_host }}' style='display:block;margin:auto;' />
-                        </div>
-                      </div>
-                    </div>
-                    {{gs_scripting}}
-                {% endif %}
-                <!-- GET SAT -->
               </div><!--Index Col 8 -->
               <!--SIDEBAR -->
-                {% if IndexLayout != "Topics" %}
-                  {{ sidebar_main }}
-                {% endif %}
+              {{ sidebar_main }}
               <!--SIDEBAR -->
             </div><!-- Main Row-->
           </div><!--Container-->

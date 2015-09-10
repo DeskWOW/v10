@@ -1344,11 +1344,9 @@ if (currentPage == 'page_search_result') {
             window.timer=setTimeout(function(){ // setting the delay for each keypress
               var position = $('#qMB').offset();
               position.top = position.top + $('#qMB').outerHeight() - 1;
-              marginLeft = $('#qMB').css('padding-left');
-              searchWidth = $('#qMB').width();
+              searchWidth = $('#qMB').outerWidth();
               $('#SearchAutoSuggest').css(position);
               $('#SearchAutoSuggest').css('width', searchWidth);
-              $('#SearchAutoSuggest').css('margin-left', marginLeft);
               SearchAutoSuggest();
             }, 500);
           }
@@ -1390,9 +1388,9 @@ if (currentPage == 'page_search_result') {
                   article_title = html.find(".article-autocomplete-subject").html();
                   if (as_count < 5) {
                     if (this.id.indexOf("questions") !== -1) {
-                        auto_suggest += '<li><a target="_blank" href="' + this.id + '" class="discussion"><i class="fa fa-question"></i><span>' + article_title + '</span></a></li>';
+                        auto_suggest += '<li><a target="_blank" href="' + this.id + '" class="discussion"><i class="fa fa-question"></i>&nbsp;<span>' + article_title + '</span></a></li>';
                     } else {
-                        auto_suggest += '<li><a target="_blank" href="' + this.id + '" class="article"><i class="fa fa-file-text-o"></i><span>' + article_title + '</span></a></li>';
+                        auto_suggest += '<li><a target="_blank" href="' + this.id + '" class="article"><i class="fa fa-file-text-o"></i>&nbsp;<span>' + article_title + '</span></a></li>';
                     }
                   }
                   as_count++;
@@ -1402,15 +1400,15 @@ if (currentPage == 'page_search_result') {
                   if (as_count > 9) {
                     $('#SearchAutoSuggest').append(' ' +
                        '<div class="columns medium-12" id="brand-' + brandID + '">' +
-                        '<div class="row"><h4 class="muted"><span>' + as_count + ' + </span>' + resultsFound + ' in ' + brandName + '</h4>' +
-                        '<a class="button" target="_blank" href="//' + document.domain.toString() + '/customer/' + systemLanguageDesk + '/portal/articles/search?b_id=' + brandID + '&q=' + search_query + '">View All</a></div>' +
+                        '<div class="row"><h4 class="left subheader"><span>' + as_count + ' + </span>' + resultsFound + ' in ' + brandName + '</h4>' +
+                        '<a class="button tiny right" target="_blank" href="//' + document.domain.toString() + '/customer/' + systemLanguageDesk + '/portal/articles/search?b_id=' + brandID + '&q=' + search_query + '">View All</a></div>' +
                         '<div class="row"><ul class="unstyled"></ul></div>'
                       );
                   } else {
                     $('#SearchAutoSuggest').append(
                       '<div class="columns medium-12" id="brand-' + brandID + '">' +
-                        '<div class="row"><h4 class="muted"><span>' + as_count + ' </span>' + resultsFound + ' in ' + brandName + '</h4>' +
-                        '<a class="button" target="_blank" href="//' + document.domain.toString() + '/customer/' + systemLanguageDesk + '/portal/articles/search?b_id=' + brandID + '&q=' + search_query + '">View All</a></div>' +
+                        '<div class="row"><h4 class="left subheader"><span>' + as_count + ' </span>' + resultsFound + ' in ' + brandName + '</h4>' +
+                        '<a class="button tiny right" target="_blank" href="//' + document.domain.toString() + '/customer/' + systemLanguageDesk + '/portal/articles/search?b_id=' + brandID + '&q=' + search_query + '">View All</a></div>' +
                         '<div class="row"><ul class="unstyled"></ul></div>'
                       );
                   }
