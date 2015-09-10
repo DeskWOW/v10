@@ -672,6 +672,7 @@ function deskEV(v) {
 // My Portal - Show Case
 // =====================================================
   if (currentPage == 'myportal_show') {
+    $('input#update_status').addClass('button expand success');
         $('#qna_body').textarea_maxlength();
         $('#new_reply').validate({
           submitHandler: function(form) {
