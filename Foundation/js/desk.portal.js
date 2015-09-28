@@ -1122,10 +1122,7 @@ $(document).ready(function() {
     $("#desk-mobile-lang-list select").change(function() {
       $('#a-content-select').val($("#desk-mobile-lang-list select").val()).change();
     });
-    $('#a-content-select').customSelect({customClass:'langslct'});
-    $('.langslctInner').append('<i class="fa fa-angle-down"></i>');
-    $('#desk-mobile-lang-list').customSelect({customClass:'moblangslct'});
-    $('.moblangslctInner').append('<i class="fa fa-language"></i>');
+
     //CONVERT HEADER TEXT COLOR TO RGBA COLORS FOR BORDERS
     function hexToRgbA(hex){
         var c;
