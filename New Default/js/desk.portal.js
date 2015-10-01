@@ -1071,6 +1071,10 @@ $(document).ready(function() {
     $('#PreCreate .onclick-go-back').click(function() {
         history.back();
     });
+
+    var currentPage = deskEV('current-page');
+    $('body').addClass(currentPage);
+    $('#flash').addClass('alert-box success text-center')
     //MODERATION FUNCTIONALITY
     $('#Moderated').appendTo("body").modal('show');
     $('#moderation_okay_button, #Moderated .close').click(function() {
