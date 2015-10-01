@@ -1086,7 +1086,9 @@ $(document).ready(function() {
     $(document).on('close.fndtn.reveal', '[data-reveal]', function () {
       history.back();
     });
-
+    var currentPage = deskEV('current-page');
+    $('body').addClass(currentPage);
+    $('#flash').addClass('alert-box success text-center')
     //MODERATION FUNCTIONALITY
     $('#Moderated').foundation('reveal', 'open');
     $('#moderation_okay_button, #Moderated .close').click(function() {
