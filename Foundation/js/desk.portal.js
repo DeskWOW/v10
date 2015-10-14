@@ -20,12 +20,11 @@ function deskEV(v) {
 // =====================================================
 // Theme Option Variables
 // =====================================================
-  var currentPage = deskEV('current-page');
   var MBSearchPage = deskEV('MBSearchPage');
   var MBSearchSuggest = deskEV('MBSearchSuggest');
   var MBArticleSuggest = deskEV('MBArticleSuggest');
   var SkipPreCreate = deskEV('SkipPreCreate');
-  
+  var responsiveImages = deskEV('responsiveImages');
 // =====================================================
 // Index Page
 // =====================================================
@@ -45,9 +44,11 @@ function deskEV(v) {
 // =====================================================
   if (currentPage == 'page_article') {
     //ARTICLE CONTENT ADJUSTMENTS
+    if (responsiveImages == 'true') {
       $(".container.article .body.row img").addClass("img-responsive");
       $('.container.article .body.row img').css('width', '');
       $('.container.article .body.row img').css('height', '');
+    }
     //ARTICLE RATEBLOCK
       setTimeout(function() {
         $('a.rate.increment').html('<i class="fa fa-thumbs-up"></i>')
@@ -1086,8 +1087,7 @@ $(document).ready(function() {
     $(document).on('close.fndtn.reveal', '[data-reveal]', function () {
       history.back();
     });
-    var currentPage = deskEV('current-page');
-    $('body').addClass(currentPage);
+    $('body').addClass(deskEV('current-page'));
     $('#flash').addClass('alert-box success text-center')
     //MODERATION FUNCTIONALITY
     $('#Moderated').foundation('reveal', 'open');
