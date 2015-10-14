@@ -35,6 +35,7 @@ function deskEV(v) {
   var MBSearchSuggest = deskEV('MBSearchSuggest');
   var MBArticleSuggest = deskEV('MBArticleSuggest');
   var SkipPreCreate = deskEV('SkipPreCreate');
+  var responsiveImages = deskEV('responsiveImages');
 // =====================================================
 // Index Page
 // =====================================================
@@ -54,9 +55,11 @@ function deskEV(v) {
 // =====================================================
   if (currentPage == 'page_article') {
     //ARTICLE CONTENT ADJUSTMENTS
+    if (responsiveImages == 'true') {
       $(".container.article .body.row img").addClass("img-responsive");
       $('.container.article .body.row img').css('width', '');
       $('.container.article .body.row img').css('height', '');
+    }
     //ARTICLE RATEBLOCK
       setTimeout(function() {
         $('a.rate.increment').html('<i class="fa fa-thumbs-up"></i>')
@@ -1066,14 +1069,12 @@ $(document).ready(function() {
 // =====================================================
 // ALL PAGES // SITE WIDE JS
 // =====================================================
+    $('body').addClass(deskEV('current-page'));
     $('#PreCreate').appendTo("body").modal('show');
     //MODAL CLOSE GO BACK
     $('#PreCreate .onclick-go-back').click(function() {
         history.back();
     });
-
-    var currentPage = deskEV('current-page');
-    $('body').addClass(currentPage);
     //MODERATION FUNCTIONALITY
     $('#Moderated').appendTo("body").modal('show');
     $('#moderation_okay_button, #Moderated .close').click(function() {
